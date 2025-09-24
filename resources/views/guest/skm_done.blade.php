@@ -1,0 +1,140 @@
+@extends('layouts.app')
+
+@section('styles')
+    <style>
+        :root {
+            --primary-color: #337354;
+            --secondary-color: #ffbb00;
+            --text-dark: #2d2d2d;
+            --text-light: #ffffff;
+            --bg-light: #fcfcfc;
+            --bg-table-header: #d6e3dd;
+            --border-color-light: #77a28d;
+            --border-color-dark: #337354;
+            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* HEADER */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--text-light);
+            border-bottom: 1px solid var(--border-color-semitransparent);
+            padding: 0 40px;
+            height: 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* wajib biar full layar */
+            z-index: 1000;
+            /* supaya selalu di atas */
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 200px 40px 100px;
+            /* ditambah padding-top biar konten tidak ketutupan header */
+            text-align: center;
+            overflow: hidden;
+
+            min-height: 58vh;
+            background-image: url('./image/background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            color: var(--primary-color);
+        }
+
+        .hero-title {
+            font-weight: 790;
+            font-size: 65px;
+            line-height: 55px;
+            color: var(--primary-color);
+            margin: 0;
+            max-width: 1500px;
+        }
+
+        .hero-subtitle {
+            font-weight: 400;
+            font-size: 25px;
+            line-height: 36px;
+            color: var(--primary-color);
+            margin: 0;
+            max-width: 950px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 26px;
+            padding: 14px 60px;
+            border-radius: 40px;
+            text-decoration: none;
+        }
+
+        .cta-button svg {
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+@endsection
+
+@section('content')
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">TERIMA KASIH ATAS PARTISIPASI ANDA</h1>
+            <p class="hero-subtitle">
+                Kami sangat menghargai waktu dan jawaban yang telah Anda berikan. <br> Masukan dari Anda akan menjadi dasar
+                penting bagi kami untuk terus meningkatkan kualitas pelayanan publik.
+            </p>
+            <a href="{{ route('guest.dashboard') }}" class="cta-button">
+                <span>Kembali</span>
+                <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16.7003 31.1333L22.0503 25.7833L25.3336 22.5166C26.7169 21.1333 26.7169 18.8833 25.3336 17.5L16.7003 8.86662C15.5669 7.73329 13.6336 8.54996 13.6336 10.1333V19.4833V29.8666C13.6336 31.4666 15.5669 32.2666 16.7003 31.1333Z"
+                        fill="#292D32" />
+                </svg>
+            </a>
+        </div>
+    </section>
+@endsection

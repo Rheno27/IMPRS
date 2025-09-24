@@ -1,0 +1,606 @@
+@extends('layouts.app')
+
+@section('styles')
+    <style>
+        :root {
+            --primary-color: #337354;
+            --primary-light: #77a28d;
+            --primary-lighter: #d6e3dd;
+            --primary-dark: #2a7f54;
+            --text-primary: #2d2d2d;
+            --text-secondary: #717680;
+            --text-placeholder: #9e9e9e;
+            --text-white: #ffffff;
+            --btn-active-bg: #ffbb00;
+            --btn-active-text: #6f5405;
+            --btn-disabled-bg: #eae8e8;
+            --btn-disabled-text: rgba(0, 0, 0, 0.25);
+            --error-red: #f90606;
+            --bg-color: #fcfcfc;
+            --border-color: #77a28d;
+            --border-color-light: rgba(119, 162, 141, 0.5);
+            --border-color-strong: #337354;
+            --border-color-header: rgba(51, 115, 84, 0.5);
+            --accent-color: #99ce55;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+        }
+
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+
+        .icon-button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .icon-button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* CSS from section:header */
+        /* CSS from section:header */
+        .site-header {
+            display: flex;
+            position: fixed;
+            top: 0;
+            /* penting biar nempel di atas */
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--primary-color);
+            padding: 0 40px;
+            height: 80px;
+            /* lebih proporsional, jangan terlalu tinggi */
+            box-sizing: border-box;
+            /* biar padding gak nambah tinggi */
+        }
+
+        main {
+            margin-top: 70px;
+            /* samain dengan tinggi header */
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            height: 70px;
+            /* hampir sama dengan tinggi avatar */
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* User info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 18px;
+            /* sebanding dengan tinggi avatar/logo */
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .logout-link:hover {
+            background: rgba(51, 115, 84, 0.1);
+        }
+
+        .logout-icon {
+            height: 28px;
+            width: 28px;
+        }
+
+        /* CSS from section:survey */
+        .survey-wrapper {
+            padding: 72px;
+        }
+
+        .survey-container {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .survey-title {
+            background-color: var(--primary-color);
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 28px;
+            line-height: 36px;
+            text-align: center;
+            margin: 0;
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .survey-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .question-block {
+            border: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .question-text {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid var(--primary-dark);
+            padding-top: 12px;
+            padding-bottom: 12px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            box-sizing: border-box;
+            /* biar padding ga bikin ngelebar */
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-top: 16px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-item input[type="radio"] {
+            accent-color: var(--primary-color);
+            /* otomatis pake warna brand */
+            width: 18px;
+            height: 18px;
+        }
+
+        .option-item label {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 500;
+        }
+
+        .option-item label img {
+            width: 22px;
+            height: 22px;
+        }
+
+        .question-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary, #333);
+        }
+
+        .feedback-input {
+            min-height: 120px;
+            padding: 12px 14px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .feedback-input:focus {
+            outline: none;
+            border-color: var(--primary-color, #4a90e2);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+
+        .form-navigation {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            /* efek hover lembut */
+        }
+
+        .nav-button:active {
+            transform: scale(0.97);
+            /* efek klik */
+        }
+
+        .prev-button {
+            background-color: var(--btn-disabled-bg);
+            color: var(--btn-disabled-text);
+        }
+
+        .prev-button img {
+            transform: rotate(-90deg);
+            width: 30px;
+            height: 30px;
+        }
+
+        .next-button {
+            background-color: var(--primary-color);
+            color: var(--text-white);
+        }
+
+        .next-button img {
+            transform: rotate(90deg);
+            width: 30px;
+            height: 30px;
+        }
+
+        .nav-button:disabled {
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .survey-wrapper {
+                padding: 32px 16px;
+            }
+
+            .survey-title {
+                font-size: 22px;
+            }
+
+            .question-text,
+            .option-item label {
+                font-size: 13px;
+            }
+
+            .pagination-nav {
+                flex-direction: column;
+                gap: 16px;
+                margin-top: 40px;
+            }
+
+            .pagination-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+@endsection
+
+@section('content')
+    <main id="survey-section" class="survey-wrapper">
+        <div class="survey-container">
+            <h2 class="survey-title">Keselamatan Pasien</h2>
+            <form class="survey-form">
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pemahaman Saudara tentang kemudahan prosedur pelayanan di Rumah
+                        Sakit Daerah Kalisat?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak mudah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang mudah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Mudah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat mudah</label>
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pemahaman Saudara tentang kemudahan prosedur pelayanan di Rumah
+                        Sakit Daerah Kalisat?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak jelas</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang jelas</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Jelas</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat jelas</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pendapat Saudara tentang kecepatan dan ketepatan pelayanan di
+                        Rumah Sakit Daerah Kalisat?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak cepat</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang cepat</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Cepat</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat cepat</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pendapat Saudara tentang kesopanan dan keramahan petugas dalam
+                        memberikan pelayanan?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak sopan dan tidak ramah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang sopan dan kurang ramah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Sopan dan ramah</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat sopan dan ramah</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pendapat Saudara tentang kewajaran biaya untuk mendapatkan
+                        pelayanan?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak wajar</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang wajar</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Wajar</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat wajar</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pendapat Saudara tentang kenyamanan dan kebersihan di lingkungan
+                        Rumah Sakit Daerah Kalisat?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak nyaman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang nyaman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Nyaman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat nyaman</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Bagaimana pendapat Saudara tentang keamanan pelayanan di ruangan ini
+                    </legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Tidak aman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kurang aman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Aman</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Sangat aman</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Apakah pertimbangan Anda memilih dirawat di RumahSakit Daerah Kalisat?
+                    </legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Pelayanan yang baik</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Bangunan rumah sakit, peralatan yang lengkap dan canggih</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Harga pelayanan yang terjangkau</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Dekat dengan lokasi tempa tinggal</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Menurut pendapat Anda, hal-hal apa yang seharusnya menjadi perhatian rumah
+                        sakit dan sedapat mungkin dikembangkan?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Penataan kamar</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Penataan parkir</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Penambahan kamar</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Kebersihan bangunan</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Pengadaan pelayanan umum seperti wartel, mini market, dll.</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="question-block">
+                    <legend class="question-text">Apakah yang anda inginkan untuk peningkatan kualitas pelayanan di rumah
+                        sakit ini?</legend>
+                    <div class="options-list">
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt1" name="question1">
+                            <label for="q1-opt1">Pelayanan yang cepat dengan harga terjangkau</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt2" name="question1">
+                            <label for="q1-opt2">Kebersihan bangunan</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt3" name="question1">
+                            <label for="q1-opt3">Keramahan, ketrampilan dan kemampuan petugas</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Adanya sarana pelayanan umum</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" id="q1-opt4" name="question1">
+                            <label for="q1-opt4">Peralatan kedokteran yang canggih</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="question-block">
+            <label for="feedback" class="question-text">Silahkan berikan kritik dan saran</label>
+            <textarea id="feedback" class="feedback-input" placeholder="Kamar mandi kurang bersih"></textarea>
+        </div>
+        </div>
+        </form>
+        <div class="form-navigation">
+            <button class="nav-button prev-button" onclick="window.location.href='/SKM/survei-2'">
+                <span>Sebelumnya</span>
+            </button>
+            <button class="nav-button next-button" onclick="window.location.href='/SKM/survei-done'">
+                <span>Kirim</span>
+            </button>
+        </div>
+    </main>
+@endsection

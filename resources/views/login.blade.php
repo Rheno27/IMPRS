@@ -46,7 +46,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 120px;
         }
 
         .login-box {
@@ -147,7 +147,7 @@
 
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="Masukkan password">
-                <button type="button" onclick="window.location.href='/dashboard/admin'">Login</button>
+                <button type="button" onclick="window.location.href='/admin/dashboard'">Login</button>
 
             </form>
             <div class="forgot-password">
