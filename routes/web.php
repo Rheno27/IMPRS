@@ -15,6 +15,19 @@ Route::get('/admin/input_indikator', function () {
     return view('admin.input_indikator');
 })->name('admin.input_indikator');
 
+// Superadmin Routes
+Route::get('/superadmin/dashboard', function () {
+    return view('superadmin.dashboard');
+})->name('superadmin.dashboard');
+Route::get('/superadmin/detail_indikator', function () {
+    return view('superadmin.detail_indikator');
+})->name('superadmin.detail_indikator');
+Route::get('/superadmin/edit_indikator', function () {
+    return view('superadmin.edit_indikator');
+})->name('superadmin.edit_indikator');
+Route::get('/superadmin/edit_survei', function () {
+    return view('superadmin.edit_survei');
+})->name('superadmin.data_user');
 
 
 // User Routes
