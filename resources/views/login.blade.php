@@ -133,6 +133,12 @@
         .forgot-password a:hover {
             text-decoration: underline;
         }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
     </style>
 @endsection
 
@@ -141,15 +147,18 @@
         <div class="login-box">
             <h2>Login</h2>
             <p>Silahkan masukkan username dan password yang sesuai</p>
-            <form>
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
                 <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Masukkan username">
+                <input type="text" id="username" name="username" placeholder="Masukkan username" required>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Masukkan password">
-                <button type="button" onclick="window.location.href='/admin/dashboard'">Login</button>
-
+                <input type="password" id="password" name="password" placeholder="Masukkan password" required>
+                <button type="submit">Login</button>
             </form>
+            @if($errors->has('login'))
+                <div class="error-message">{{ $errors->first('login') }}</div>
+            @endif
             <div class="forgot-password">
                 Lupa Password? <a href="#">Hubungi Admin</a>
             </div>
