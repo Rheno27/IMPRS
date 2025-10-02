@@ -294,6 +294,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid var(--border-color-dark);
+            margin: 60px 0;
         }
 
         .report-data th,
@@ -421,7 +422,7 @@
             <div class="report-title">
                 <p>Penilaian Indikator Mutu di Ruang Nifas</p>
                 <p>Bulan {{ $namaBulan[$bulan] ?? '' }}</p>
-                <p>RSD KALISAT</p>
+                <p>RSD KALISAT</p> 
             </div>
             <div class="table-container">
                 <table class="report-data">

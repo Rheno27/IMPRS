@@ -13,14 +13,13 @@ class MutuRuangan extends Model
 
     protected $fillable = [
         'tanggal',
-        'id_ruangan',
-        'id_indikator',
+        'id_indikator_ruangan', 
         'total_pasien',
         'pasien_sesuai'
     ];
 
-    public function indikator()
+    public function indikatorRuangan()
     {
-        return $this->belongsTo(IndikatorMutu::class, 'id_indikator', 'id_indikator');
+        return $this->belongsTo(IndikatorRuangan::class, 'id_indikator_ruangan', 'id_indikator_ruangan');
     }
 }

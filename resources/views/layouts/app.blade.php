@@ -11,9 +11,17 @@
 
 <body>
     <header class="site-header">
-        <div class="logo-container">
-            <img src="{{ asset('image/logo.png') }}" alt="Logo Ruang Nifas" class="logo-image">
-        </div>
+        <a href="
+                @if(Request::is('admin/*'))
+                    {{ route('admin.dashboard') }}
+                @elseif(Request::is('superadmin/*'))
+                    {{ route('superadmin.dashboard') }}
+                @else
+                    #
+                @endif
+            " class="logo-container">
+            <img src="{{ asset('image/logo.png') }}" alt="Logo RSD Kalisat" class="logo-image">
+        </a>
         @if (Session::has('user') && (Request::is('admin/*') || Request::is('superadmin/*')))
             <div class="user-info">
                 <svg width="10" height="10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"

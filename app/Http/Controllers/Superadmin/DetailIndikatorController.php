@@ -1,95 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
+use App\Models\Ruangan;
+use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
-use App\Models\IndikatorMutu;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class DetailIndikatorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $user = Session::get('user');
-        if (!$user)
-            return redirect('/login');
-
-        $id_ruangan = $user->id_ruangan;
-
-        $bulan = $request->input('bulan', date('n'));
-        $tahun = $request->input('tahun', date('Y'));
-
-        // 1. Query utama diperbaiki menggunakan whereHas dan eager loading
-        $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
-            ->whereHas('indikatorRuangan', function ($query) use ($id_ruangan) {
-                $query->where('id_ruangan', $id_ruangan);
-            })
-            ->whereMonth('tanggal', $bulan)
-            ->whereYear('tanggal', $tahun)
-            ->get();
-
-        // 2. Ambil indikator unik langsung dari hasil query, lebih efisien
-        $indikator = $mutu->map(function ($item) {
-            return $item->indikatorRuangan->indikatorMutu;
-        })->unique('id_indikator')->values();
-
-
-        $namaBulan = [
-            1 => 'Januari',
-            2 => 'Februari',
-            3 => 'Maret',
-            4 => 'April',
-            5 => 'Mei',
-            6 => 'Juni',
-            7 => 'Juli',
-            8 => 'Agustus',
-            9 => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember'
-        ];
-
-        $indikatorData = [];
-        foreach ($indikator as $i => $item) {
-            // 3. Logika filter di dalam loop disesuaikan
-            $dataMutu = $mutu->filter(function ($m) use ($item) {
-                return $m->indikatorRuangan->id_indikator == $item->id_indikator;
-            });
-
-            $byTanggal = $dataMutu->keyBy(function ($d) {
-                return Carbon::parse($d->tanggal)->format('j');
-            });
-
-            $jumlah_total = $dataMutu->sum('total_pasien');
-            $jumlah_sesuai = $dataMutu->sum('pasien_sesuai');
-            $persen = $jumlah_total > 0 ? round($jumlah_sesuai / $jumlah_total * 100, 2) : 0;
-
-            $indikatorData[] = [
-                'no' => $i + 1,
-                'variabel' => $item->variabel,
-                'byTanggal' => $byTanggal,
-                'jumlah_total' => $jumlah_total,
-                'jumlah_sesuai' => $jumlah_sesuai,
-                'persen' => $persen,
-            ];
-        }
-
-        $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-
-        return view('admin.dashboard', compact(
-            'indikatorData',
-            'bulan',
-            'tahun',
-            'namaBulan',
-            'jumlahHari'
-        ));
+        //
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -109,9 +38,81 @@ class DashboardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, Ruangan $ruangan)
     {
-        //
+        $bulan = $request->input('bulan', date('n'));
+        $tahun = $request->input('tahun', date('Y'));
+
+        // 1. Ambil SEMUA data mutu untuk ruangan dan periode yang dipilih
+        $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
+            ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
+                $query->where('id_ruangan', $ruangan->id_ruangan);
+            })
+            ->whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        // 2. Ambil DAFTAR indikator yang seharusnya ada di ruangan tersebut
+        $indikators = IndikatorRuangan::where('id_ruangan', $ruangan->id_ruangan)
+            ->where('active', true)
+            ->with('indikatorMutu')
+            ->get();
+
+        $namaBulan = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        // 3. Proses data seperti di controller admin
+        $indikatorData = [];
+        foreach ($indikators as $i => $item) {
+            // Filter data mutu yang relevan untuk indikator saat ini
+            $dataMutu = $mutu->filter(function ($m) use ($item) {
+                return $m->id_indikator_ruangan == $item->id_indikator_ruangan;
+            });
+
+            // Kelompokkan data berdasarkan tanggal
+            $byTanggal = $dataMutu->keyBy(function ($d) {
+                return Carbon::parse($d->tanggal)->format('j');
+            });
+
+            // Hitung total dan persentase
+            $jumlah_total = $dataMutu->sum('total_pasien');
+            $jumlah_sesuai = $dataMutu->sum('pasien_sesuai');
+            $persen = $jumlah_total > 0 ? round($jumlah_sesuai / $jumlah_total * 100, 2) : 0;
+
+            // Masukkan ke dalam array hasil
+            $indikatorData[] = [
+                'no' => $i + 1,
+                'variabel' => $item->indikatorMutu->variabel,
+                'byTanggal' => $byTanggal,
+                'jumlah_total' => $jumlah_total,
+                'jumlah_sesuai' => $jumlah_sesuai,
+                'persen' => $persen,
+            ];
+        }
+
+        $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+
+        // 4. Kirim data yang sudah diolah ke view
+        return view('superadmin.detail_indikator', [
+            'ruangan' => $ruangan,
+            'indikatorData' => $indikatorData, // Ganti 'indikators' menjadi 'indikatorData'
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'namaBulan' => $namaBulan,
+            'jumlahHari' => $jumlahHari
+        ]);
     }
 
     /**

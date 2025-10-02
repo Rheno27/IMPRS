@@ -544,7 +544,7 @@
     <section id="features" class="section-padding">
         <h1 class="main-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
         <div class="features-grid">
-            <a href="{{ route('superadmin.detail_indikator') }}" class="feature-card bg-color-1">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R01']) }}" class="feature-card bg-color-1">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M37.6716 15.1013C37.6716 15.3813 37.6717 15.6613 37.653 15.9226C34.797 14.8586 31.437 15.5119 29.197 17.5279C27.685 16.1653 25.725 15.3999 23.6343 15.3999C19.0423 15.3999 15.309 19.152 15.309 23.7813C15.309 29.064 17.9597 32.9279 20.4983 35.4293C20.293 35.4106 20.125 35.3733 19.9757 35.3173C15.141 33.6559 4.33301 26.7866 4.33301 15.1013C4.33301 9.94927 8.47699 5.78662 13.5917 5.78662C16.6343 5.78662 19.3223 7.2426 21.0023 9.50127C22.701 7.2426 25.389 5.78662 28.413 5.78662C33.5277 5.78662 37.6716 9.94927 37.6716 15.1013Z"
@@ -555,7 +555,7 @@
                 </svg>
                 <span>Ruang<br>Nifas</span>
             </a>
-            <a href="#" class="feature-card bg-color-2">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R02']) }}" class="feature-card bg-color-2">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path opacity="0.4"
                         d="M36.0669 16.8001C36.0669 19.5067 35.2643 21.9894 33.8829 24.0614C31.8669 27.0481 28.6749 29.1574 24.9603 29.6987C24.3256 29.8107 23.6723 29.8667 23.0003 29.8667C22.3283 29.8667 21.6749 29.8107 21.0403 29.6987C17.3256 29.1574 14.1336 27.0481 12.1176 24.0614C10.7363 21.9894 9.93359 19.5067 9.93359 16.8001C9.93359 9.57606 15.7763 3.7334 23.0003 3.7334C30.2243 3.7334 36.0669 9.57606 36.0669 16.8001Z"
@@ -569,7 +569,7 @@
                 </svg>
                 <span>Ruang<br>Perinatologi</span>
             </a>
-            <a href="#" class="feature-card bg-color-3">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R03']) }}" class="feature-card bg-color-3">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M34.1994 38.2667H32.3327V37.8C32.3327 35.7467 30.6527 34.0667 28.5994 34.0667H24.3994V29.792C23.9327 29.848 23.4661 29.8667 22.9994 29.8667C22.5327 29.8667 22.0661 29.848 21.5994 29.792V34.0667H17.3994C15.3461 34.0667 13.6661 35.7467 13.6661 37.8V38.2667H11.7994C11.0341 38.2667 10.3994 38.9013 10.3994 39.6667C10.3994 40.432 11.0341 41.0667 11.7994 41.0667H34.1994C34.9647 41.0667 35.5994 40.432 35.5994 39.6667C35.5994 38.9013 34.9647 38.2667 34.1994 38.2667Z"
@@ -589,7 +589,7 @@
                 </svg>
                 <span>Ruang<br>VK</span>
             </a>
-            <a href="#" class="feature-card bg-color-4">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R04']) }}" class="feature-card bg-color-4">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M13.1621 36.7734C14.6928 35.1307 17.0261 35.2614 18.3701 37.0534L20.2555 39.5734C21.7675 41.5707 24.2128 41.5707 25.7248 39.5734L27.6101 37.0534C28.9541 35.2614 31.2875 35.1307 32.8181 36.7734C36.1408 40.3201 38.8475 39.1441 38.8475 34.1787V13.1414C38.8661 5.61873 37.1115 3.7334 30.0555 3.7334H15.9435C8.88748 3.7334 7.13281 5.61873 7.13281 13.1414V34.1601C7.13281 39.1441 9.85815 40.3014 13.1621 36.7734Z"
@@ -603,7 +603,7 @@
                 </svg>
                 <span>Farmasi</span>
             </a>
-            <a href="#" class="feature-card bg-color-5">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R05']) }}" class="feature-card bg-color-5">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M30.168 41.0667H15.832C8.01066 41.0667 6.46132 36.344 8.99999 30.5947L11.688 24.4907C11.688 24.4907 17.4 24.2667 23 26.1334C28.6 28 33.8827 24.472 33.8827 24.472L34.2373 24.248L37.0187 30.6134C39.52 36.3627 37.8773 41.0667 30.168 41.0667Z"
@@ -614,7 +614,7 @@
                 </svg>
                 <span>Laboratorium</span>
             </a>
-            <a href="#" class="feature-card bg-color-6">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R06']) }}" class="feature-card bg-color-6">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M41.6663 20.6639V31.0799C41.6663 36.5866 37.1863 41.0666 31.6797 41.0666H14.3197C8.81301 41.0666 4.33301 36.5866 4.33301 31.0799V20.6639C4.33301 15.1572 8.81301 10.6772 14.3197 10.6772H31.6797C37.1863 10.6772 41.6663 15.1572 41.6663 20.6639Z"
@@ -641,7 +641,7 @@
 
                 <span>Ruang<br>Anak</span>
             </a>
-            <a href="#" class="feature-card bg-color-7">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R07']) }}" class="feature-card bg-color-7">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M38.6981 12.992V18.2934L14.4128 36.1014L9.50345 32.424C8.29011 31.5094 7.30078 29.5494 7.30078 28.0374V12.992C7.30078 10.9014 8.90611 8.5867 10.8661 7.8587L21.0768 4.03204C22.1408 3.64004 23.8581 3.64004 24.9221 4.03204L35.1328 7.8587C37.0928 8.5867 38.6981 10.9014 38.6981 12.992Z"
@@ -652,7 +652,7 @@
                 </svg>
                 <span>CSSD</span>
             </a>
-            <a href="#" class="feature-card bg-color-1">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R08']) }}" class="feature-card bg-color-1">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M31.568 13.8321L12.3786 33.0214C11.4826 33.9174 9.95198 33.7121 9.41065 32.5734C8.43998 30.5761 7.87998 28.3174 7.87998 25.9467C7.84265 15.6427 18.296 6.83207 21.8426 4.1254C22.5333 3.60273 23.4666 3.60273 24.1386 4.1254C25.7626 5.3574 28.8053 7.91473 31.6613 11.2747C32.296 12.0214 32.2586 13.1414 31.568 13.8321Z"
@@ -663,7 +663,7 @@
                 </svg>
                 <span>Ruang<br>Interna</span>
             </a>
-            <a href="#" class="feature-card bg-color-2">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R09']) }}" class="feature-card bg-color-2">
                 <div class="icon-wrapper">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -682,7 +682,7 @@
                 </div>
                 <span>Ruang<br>IBS</span>
             </a>
-            <a href="#" class="feature-card bg-color-3">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R10']) }}" class="feature-card bg-color-3">
                 <div class="icon-wrapper">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -698,7 +698,7 @@
                 </div>
                 <span>Ruang<br>ICU</span>
             </a>
-            <a href="#" class="feature-card bg-color-4">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R11']) }}" class="feature-card bg-color-4">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M22.9997 4.83472V25.4054L5.54634 37.6134C3.95967 35.728 3.86634 32.872 5.63967 29.68L11.4637 19.208L16.9517 9.33338C18.613 6.34672 20.797 4.83472 22.9997 4.83472Z"
@@ -712,7 +712,7 @@
                 </svg>
                 <span>IGD</span>
             </a>
-            <a href="#" class="feature-card bg-color-5">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R12']) }}"class="feature-card bg-color-5">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M38.3246 14.5974L23.9512 22.9227C23.3726 23.2587 22.6446 23.2587 22.0472 22.9227L7.6739 14.5974C6.64723 14 6.3859 12.6 7.1699 11.7227C7.71123 11.1067 8.32723 10.6027 8.98056 10.248L19.0979 4.64804C21.2632 3.4347 24.7726 3.4347 26.9379 4.64804L37.0552 10.248C37.7086 10.6027 38.3246 11.1254 38.8659 11.7227C39.6126 12.6 39.3512 14 38.3246 14.5974Z"
@@ -726,7 +726,7 @@
                 </svg>
                 <span>IPSRS</span>
             </a>
-            <a href="#" class="feature-card bg-color-6">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R13']) }}" class="feature-card bg-color-6">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M22.9993 35.4666C30.2158 35.4666 36.066 29.6164 36.066 22.3999C36.066 15.1834 30.2158 9.33325 22.9993 9.33325C15.7828 9.33325 9.93262 15.1834 9.93262 22.3999C9.93262 29.6164 15.7828 35.4666 22.9993 35.4666Z"
@@ -737,7 +737,7 @@
                 </svg>
                 <span>Laundry</span>
             </a>
-            <a href="#" class="feature-card bg-color-7">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R14']) }}" class="feature-card bg-color-7">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M29.0667 22.3627L42.5067 12.3201C43.1227 11.8534 43.2533 10.9761 42.7867 10.3601C42.32 9.74407 41.4426 9.6134 40.8266 10.0801L26.7333 20.6267L16.3734 12.8801C15.7574 12.4134 14.88 12.5441 14.4133 13.1601C13.9467 13.7761 14.0773 14.6534 14.6933 15.1201L24.4 22.3814L13.3867 30.6321C12.7707 31.0987 12.64 31.9761 13.1067 32.5921C13.3867 32.9654 13.7973 33.1521 14.2266 33.1521C14.5253 33.1521 14.8053 33.0587 15.0667 32.8721L26.752 24.1361L40.8453 34.6827C41.088 34.8694 41.3867 34.9627 41.6853 34.9627C42.1147 34.9627 42.5253 34.7761 42.8053 34.4027C43.272 33.7867 43.1413 32.9094 42.5253 32.4427L29.0667 22.3627Z"
@@ -751,7 +751,7 @@
                 </svg>
                 <span>Ruang<br>Bedah</span>
             </a>
-            <a href="#" class="feature-card bg-color-1">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R15']) }}" class="feature-card bg-color-1">
                 <div class="icon-wrapper">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -776,8 +776,8 @@
                 </div>
                 <span>Gizi</span>
             </a>
-            <a href="#" class="feature-card bg-color-2">
-                <img src="./image/reserve.svg" alt="Rawat Jalan Icon">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R16']) }}" class="feature-card bg-color-2">
+                <img src="{{ url('/./image/reserve.svg') }}" alt="Rawat Jalan Icon">
                 <span>Rawat<br>Jalan</span>
             </a>
             <a href="#" class="feature-card bg-color-3">
@@ -794,7 +794,7 @@
                 </svg>
                 <span>Ruang<br>VIP</span>
             </a>
-            <a href="#" class="feature-card bg-color-4">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R17']) }}" class="feature-card bg-color-4">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M39.9117 22.0641L39.613 21.6534C39.0904 21.0187 38.4744 20.5147 37.765 20.1414C36.813 19.6001 35.7304 19.3201 34.6104 19.3201H11.3704C10.2504 19.3201 9.18638 19.6001 8.21572 20.1414C7.48772 20.5334 6.83438 21.0747 6.29305 21.7467C5.22905 23.1094 4.72505 24.7894 4.89305 26.4694L5.58372 35.1867C5.82638 37.8187 6.14372 41.0667 12.061 41.0667H33.9384C39.8557 41.0667 40.1544 37.8187 40.4157 35.1681L41.1064 26.4881C41.2744 24.9201 40.8637 23.3521 39.9117 22.0641ZM27.4611 32.3681H18.5197C17.7917 32.3681 17.213 31.7707 17.213 31.0614C17.213 30.3521 17.7917 29.7547 18.5197 29.7547H27.4611C28.1891 29.7547 28.7677 30.3521 28.7677 31.0614C28.7677 31.7894 28.1891 32.3681 27.4611 32.3681Z"
@@ -805,7 +805,7 @@
                 </svg>
                 <span>Rekam<br>Medis</span>
             </a>
-            <a href="#" class="feature-card bg-color-5">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R18']) }}" class="feature-card bg-color-5">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M5.77034 18.6667C4.96767 18.6667 4.33301 18.0321 4.33301 17.2294V12.9174C4.33301 7.85873 8.45834 3.7334 13.517 3.7334H17.829C18.6317 3.7334 19.2663 4.36807 19.2663 5.17073C19.2663 5.9734 18.6317 6.60806 17.829 6.60806H13.517C10.0263 6.60806 7.20767 9.4454 7.20767 12.9174V17.2294C7.20767 18.0321 6.55434 18.6667 5.77034 18.6667Z"
@@ -831,7 +831,7 @@
                 </svg>
                 <span>Ruang<br>Radiologi</span>
             </a>
-            <a href="#" class="feature-card bg-color-6">
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R19']) }}" class="feature-card bg-color-6">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M24.9602 30.4534H21.451C18.9683 30.4534 16.9336 28.3628 16.9336 25.7868C16.9336 25.0214 17.5683 24.3868 18.3336 24.3868C19.0989 24.3868 19.7336 25.0214 19.7336 25.7868C19.7336 26.8134 20.499 27.6534 21.451 27.6534H24.9602C25.6882 27.6534 26.2669 27.0001 26.2669 26.1974C26.2669 25.1894 25.9869 25.0401 25.3523 24.8161L19.7336 22.8561C18.5389 22.4268 16.9336 21.5681 16.9336 18.8241C16.9336 16.4908 18.7816 14.5681 21.0403 14.5681H24.5496C27.0322 14.5681 29.0669 16.6588 29.0669 19.2348C29.0669 20.0001 28.4323 20.6348 27.6669 20.6348C26.9016 20.6348 26.2669 20.0001 26.2669 19.2348C26.2669 18.2081 25.5016 17.3681 24.5496 17.3681H21.0403C20.3123 17.3681 19.7336 18.0214 19.7336 18.8241C19.7336 19.8321 20.0136 19.9814 20.6482 20.2054L26.2669 22.1654C27.4616 22.5948 29.0669 23.4534 29.0669 26.1974C29.0669 28.5494 27.2189 30.4534 24.9602 30.4534Z"
@@ -851,7 +851,7 @@
                 </svg>
                 <span>Keuangan</span>
             </a>
-            <a href="{{ route('superadmin.edit_indikator') }}" class="feature-card bg-color-7">
+            <a href="{{ route('superadmin.data_user') }}" class="feature-card bg-color-7">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M20.6658 4.57331C21.9538 3.47198 24.0631 3.47198 25.3698 4.57331L28.3191 7.11195C28.8791 7.59729 29.9244 7.98935 30.6711 7.98935H33.8445C35.8231 7.98935 37.4471 9.61333 37.4471 11.592V14.7652C37.4471 15.4932 37.8391 16.5573 38.3244 17.1173L40.8631 20.0666C41.9645 21.3546 41.9645 23.464 40.8631 24.7707L38.3244 27.7199C37.8391 28.2799 37.4471 29.3253 37.4471 30.0719V33.2453C37.4471 35.224 35.8231 36.8479 33.8445 36.8479H30.6711C29.9431 36.8479 28.8791 37.24 28.3191 37.7253L25.3698 40.264C24.0818 41.3653 21.9725 41.3653 20.6658 40.264L17.7165 37.7253C17.1565 37.24 16.1111 36.8479 15.3645 36.8479H12.1351C10.1564 36.8479 8.53246 35.224 8.53246 33.2453V30.0532C8.53246 29.3252 8.14047 28.2799 7.67381 27.7199L5.1538 24.752C4.07113 23.464 4.07113 21.3733 5.1538 20.0853L7.67381 17.1173C8.14047 16.5573 8.53246 15.5119 8.53246 14.7839V11.592C8.53246 9.61333 10.1564 7.98935 12.1351 7.98935H15.3645C16.0925 7.98935 17.1565 7.59729 17.7165 7.11195L20.6658 4.57331Z"

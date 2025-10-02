@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InputIndikatorController;
+use App\Http\Controllers\Superadmin\DetailIndikatorController;
+use App\Http\Controllers\Superadmin\IndikatorRuanganController;
+
 
 Route::get('/', function () {
     return view('login');
@@ -19,12 +22,12 @@ Route::post('/admin/input_indikator', [InputIndikatorController::class, 'store']
 Route::get('/superadmin/dashboard', function () {
     return view('superadmin.dashboard');
 })->name('superadmin.dashboard');
-Route::get('/superadmin/detail_indikator', function () {
-    return view('superadmin.detail_indikator');
-})->name('superadmin.detail_indikator');
-Route::get('/superadmin/edit_indikator', function () {
-    return view('superadmin.edit_indikator');
-})->name('superadmin.edit_indikator');
+
+Route::get('/superadmin/ruangan/{ruangan}/detail', [DetailIndikatorController::class, 'show'])->name('superadmin.ruangan.detail');
+
+Route::get('/superadmin/ruangan/{ruangan}/edit-indikator', [IndikatorRuanganController::class, 'edit'])->name('superadmin.ruangan.edit_indikator');
+Route::post('/superadmin/ruangan/update-indikator', [IndikatorRuanganController::class, 'update'])->name('superadmin.ruangan.update_indikator');
+
 Route::get('/superadmin/edit_survei', function () {
     return view('superadmin.edit_survei');
 })->name('superadmin.data_user');

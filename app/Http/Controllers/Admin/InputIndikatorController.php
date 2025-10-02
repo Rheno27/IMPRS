@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
+use App\Models\IndikatorRuangan;
 use Illuminate\Support\Facades\Session;
 
 class InputIndikatorController extends Controller
@@ -19,7 +20,8 @@ class InputIndikatorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk membuat resource baru.
+     * Logika diubah total untuk mengambil data dari relasi yang benar.
      */
     public function create()
     {
@@ -27,27 +29,40 @@ class InputIndikatorController extends Controller
         if (!$user)
             return redirect('/login');
 
-        // Ambil semua id_indikator yang sudah pernah diinput di mutu_ruangan untuk ruangan ini
-        $indikatorIds = MutuRuangan::where('id_ruangan', $user->id_ruangan)
-            ->pluck('id_indikator')
-            ->unique();
-
-        // Ambil data indikator yang hanya ada di mutu_ruangan ruangan ini
-        $indikator = IndikatorMutu::whereIn('id_indikator', $indikatorIds)->get();
-
-        // Ambil data mutu_ruangan terakhir per indikator untuk ruangan ini (misal hari ini)
         $tanggal = date('Y-m-d');
-        $mutu = MutuRuangan::where('id_ruangan', $user->id_ruangan)
-            ->whereIn('id_indikator', $indikatorIds)
-            ->where('tanggal', $tanggal)
-            ->get()
-            ->keyBy('id_indikator');
+
+        // 1. Ambil semua indikator yang aktif untuk ruangan user saat ini
+        $indikatorRuanganAktif = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
+            ->where('active', true)
+            ->with('indikatorMutu') // Eager load relasi ke IndikatorMutu untuk efisiensi
+            ->get();
+
+        // 2. Ambil model IndikatorMutu dari koleksi di atas
+        $indikator = $indikatorRuanganAktif->pluck('indikatorMutu')->filter();
+
+        // 3. Ambil data mutu yang sudah diinput hari ini untuk indikator-indikator tersebut
+        $indikatorRuanganIds = $indikatorRuanganAktif->pluck('id_indikator_ruangan');
+
+        $mutuHariIni = MutuRuangan::where('tanggal', $tanggal)
+            ->whereIn('id_indikator_ruangan', $indikatorRuanganIds)
+            ->get();
+
+        // 4. Susun data mutu agar mudah diakses di view dengan key id_indikator
+        $mutu = [];
+        foreach ($indikatorRuanganAktif as $ir) {
+            $record = $mutuHariIni->firstWhere('id_indikator_ruangan', $ir->id_indikator_ruangan);
+            if ($record) {
+                // Gunakan id_indikator sebagai key agar view tidak perlu diubah
+                $mutu[$ir->id_indikator] = $record;
+            }
+        }
 
         return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan resource baru ke dalam storage.
+     * Logika diubah total untuk menyimpan dengan foreign key yang benar.
      */
     public function store(Request $request)
     {
@@ -56,42 +71,42 @@ class InputIndikatorController extends Controller
         $updated = 0;
 
         foreach ($request->pasien_sesuai as $id_indikator => $ps) {
-            $data = [
+
+            // 1. Cari record 'indikator_ruangan' untuk mendapatkan Primary Key
+            $indikatorRuangan = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
+                ->where('id_indikator', $id_indikator)
+                ->first();
+
+            // Lanjutkan hanya jika indikator tersebut memang milik ruangan ini
+            if (!$indikatorRuangan) {
+                continue;
+            }
+
+            $dataToStore = [
                 'total_pasien' => $request->total_pasien[$id_indikator] ?? 0,
                 'pasien_sesuai' => $ps ?? 0,
             ];
 
-            // Ambil data lama
-            $existing = MutuRuangan::where('tanggal', $tanggal)
-                ->where('id_ruangan', $user->id_ruangan)
-                ->where('id_indikator', $id_indikator)
-                ->first();
+            // 2. Lakukan update atau create menggunakan kunci yang benar
+            MutuRuangan::updateOrCreate(
+                [
+                    'tanggal' => $tanggal,
+                    'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan, // Kunci yang benar
+                ],
+                $dataToStore
+            );
 
-            // Cek apakah data berubah atau belum ada data
-            if (
-                !$existing ||
-                $existing->total_pasien != $data['total_pasien'] ||
-                $existing->pasien_sesuai != $data['pasien_sesuai']
-            ) {
-                MutuRuangan::updateOrCreate(
-                    [
-                        'tanggal' => $tanggal,
-                        'id_ruangan' => $user->id_ruangan,
-                        'id_indikator' => $id_indikator,
-                    ],
-                    $data
-                );
-                $updated++;
-            }
+            // (Opsional) Jika Anda ingin tetap menghitung perubahan, logikanya bisa disederhanakan
+            // atau disesuaikan seperti ini, namun updateOrCreate sudah cukup andal.
+            $updated++;
         }
 
         if ($updated > 0) {
             return redirect()->back()->with('success', 'Data berhasil disimpan!');
         } else {
-            return redirect()->back()->with('info', 'Tidak ada data yang diubah.');
+            return redirect()->back()->with('info', 'Tidak ada data yang diubah atau dikirim.');
         }
     }
-
     /**
      * Display the specified resource.
      */
