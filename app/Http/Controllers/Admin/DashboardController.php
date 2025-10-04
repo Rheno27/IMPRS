@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Models\MutuRuangan;
 use App\Models\IndikatorMutu;
+use App\Models\IndikatorRuangan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -17,28 +18,28 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = Session::get('user');
-        if (!$user)
+        if (!$user) {
             return redirect('/login');
+        }
 
         $id_ruangan = $user->id_ruangan;
 
         $bulan = $request->input('bulan', date('n'));
         $tahun = $request->input('tahun', date('Y'));
 
-        // 1. Query utama diperbaiki menggunakan whereHas dan eager loading
-        $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
-            ->whereHas('indikatorRuangan', function ($query) use ($id_ruangan) {
-                $query->where('id_ruangan', $id_ruangan);
-            })
+        // 1. LOGIKA BARU: Ambil dulu DAFTAR INDIKATOR yang aktif untuk ruangan ini
+        $indikators = IndikatorRuangan::where('id_ruangan', $id_ruangan)
+            ->where('active', true)
+            ->with('indikatorMutu')
+            ->get();
+
+        // 2. Setelah itu, baru ambil data mutu yang relevan untuk periode ini
+        $mutu = MutuRuangan::whereHas('indikatorRuangan', function ($query) use ($id_ruangan) {
+            $query->where('id_ruangan', $id_ruangan);
+        })
             ->whereMonth('tanggal', $bulan)
             ->whereYear('tanggal', $tahun)
             ->get();
-
-        // 2. Ambil indikator unik langsung dari hasil query, lebih efisien
-        $indikator = $mutu->map(function ($item) {
-            return $item->indikatorRuangan->indikatorMutu;
-        })->unique('id_indikator')->values();
-
 
         $namaBulan = [
             1 => 'Januari',
@@ -55,11 +56,12 @@ class DashboardController extends Controller
             12 => 'Desember'
         ];
 
+        // 3. Proses data dengan melakukan loop dari DAFTAR INDIKATOR (bukan dari data mutu)
         $indikatorData = [];
-        foreach ($indikator as $i => $item) {
-            // 3. Logika filter di dalam loop disesuaikan
+        foreach ($indikators as $i => $item) {
+            // Filter data mutu yang cocok untuk indikator ini
             $dataMutu = $mutu->filter(function ($m) use ($item) {
-                return $m->indikatorRuangan->id_indikator == $item->id_indikator;
+                return $m->id_indikator_ruangan == $item->id_indikator_ruangan;
             });
 
             $byTanggal = $dataMutu->keyBy(function ($d) {
@@ -72,7 +74,7 @@ class DashboardController extends Controller
 
             $indikatorData[] = [
                 'no' => $i + 1,
-                'variabel' => $item->variabel,
+                'variabel' => $item->indikatorMutu->variabel,
                 'byTanggal' => $byTanggal,
                 'jumlah_total' => $jumlah_total,
                 'jumlah_sesuai' => $jumlah_sesuai,

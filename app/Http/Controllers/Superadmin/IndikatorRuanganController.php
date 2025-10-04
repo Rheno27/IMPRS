@@ -33,7 +33,37 @@ class IndikatorRuanganController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_ruangan' => 'required|exists:ruangan,id_ruangan',
+            'id_indikator_baru' => 'required|exists:indikator_mutu,id_indikator',
+        ]);
+
+        // Cek dulu apakah indikator ini sudah pernah ditugaskan ke ruangan ini
+        $indikator = IndikatorRuangan::where('id_ruangan', $request->id_ruangan)
+            ->where('id_indikator', $request->id_indikator_baru)
+            ->first();
+
+        if ($indikator) {
+            // Jika sudah ada, cek apakah sudah aktif
+            if ($indikator->active) {
+                // Jika sudah aktif, kembalikan dengan pesan error
+                return redirect()->back()->withErrors(['id_indikator_baru' => 'Indikator ini sudah aktif di ruangan ini.']);
+            } else {
+                // Jika tidak aktif, aktifkan kembali
+                $indikator->active = true;
+                $indikator->save();
+            }
+        } else {
+            // Jika belum ada sama sekali, buat data baru
+            IndikatorRuangan::create([
+                'id_ruangan' => $request->id_ruangan,
+                'id_indikator' => $request->id_indikator_baru,
+                'active' => true,
+            ]);
+        }
+
+        return redirect()->route('superadmin.ruangan.edit_indikator', ['ruangan' => $request->id_ruangan])
+            ->with('success', 'Indikator baru berhasil ditambahkan ke ruangan.');
     }
 
     /**

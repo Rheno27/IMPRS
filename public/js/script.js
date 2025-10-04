@@ -45,73 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const prevBtn = document.querySelector(".arrow-btn.prev");
-    const nextBtn = document.querySelector(".arrow-btn.next");
-
-    if (prevBtn && nextBtn) {
-        prevBtn.addEventListener("click", () => {
-            currentIndex = (currentIndex - 1 + months.length) % months.length;
-            renderMonths();
-        });
-
-        nextBtn.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % months.length;
-            renderMonths();
-        });
-    }
-
     renderMonths();
-
-    // === Categories Picker ===
-    const categories = ["IMPU", "INM", "IMPRS"];
-
-    let currentIndexx = 1; // biar default "INM" di tengah
-    const categoryContainer = document.querySelector(".categories");
-
-    function renderCategories() {
-        if (!categoryContainer) return;
-        categoryContainer.innerHTML = "";
-
-        const prev =
-            (currentIndexx - 1 + categories.length) % categories.length;
-        const curr = currentIndexx;
-        const next = (currentIndexx + 1) % categories.length;
-
-        [prev, curr, next].forEach((idx, i) => {
-            const btn = document.createElement("button");
-            btn.classList.add("category-btn");
-            btn.textContent = categories[idx];
-
-            if (i === 1) {
-                btn.classList.add("active");
-            } else {
-                btn.addEventListener("click", () => {
-                    currentIndexx = idx;
-                    renderCategories();
-                });
-            }
-
-            categoryContainer.appendChild(btn);
-        });
-    }
-
-    const prevBtnn = document.querySelector(".arrow-btn.prev-cat");
-    const nextBtnn = document.querySelector(".arrow-btn.next-cat");
-
-    if (prevBtnn && nextBtnn) {
-        prevBtnn.addEventListener("click", () => {
-            currentIndexx =
-                (currentIndexx - 1 + categories.length) % categories.length;
-            renderCategories();
-        });
-
-        nextBtnn.addEventListener("click", () => {
-            currentIndexx = (currentIndexx + 1) % categories.length;
-            renderCategories();
-        });
-    }
-
-    renderCategories();
 
     const yearBtn = document.getElementById("yearBtn");
     const yearPanel = document.getElementById("yearPanel");
@@ -119,22 +53,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedYear = document.getElementById("selectedYear");
     const yearRange = document.getElementById("yearRange");
 
-    let currentYear = new Date().getFullYear();
+    let currentYear =
+        typeof selectedYearFromServer !== "undefined"
+            ? selectedYearFromServer
+            : new Date().getFullYear();
     let startYear = Math.floor(currentYear / 10) * 10;
 
     function renderYears() {
+        // Pastikan elemennya ada sebelum melanjutkan
+        if (!yearGrid || !yearRange || !selectedYear) return;
+
         yearGrid.innerHTML = "";
         yearRange.textContent = `${startYear} - ${startYear + 8}`;
+
         for (let y = startYear; y < startYear + 9; y++) {
             const btn = document.createElement("button");
             btn.textContent = y;
             if (y === currentYear) btn.classList.add("active");
+
+            // --- BAGIAN YANG DIPERBARUI ---
+            // Saat tombol tahun diklik:
             btn.onclick = () => {
-                currentYear = y;
-                selectedYear.textContent = y;
-                yearPanel.classList.remove("open");
-                renderYears();
+                // 1. Buat objek URL dari alamat halaman saat ini.
+                // Ini akan mempertahankan parameter yang sudah ada (seperti 'kategori').
+                const currentUrl = new URL(window.location.href);
+
+                // 2. Atur atau perbarui parameter 'tahun' dengan tahun yang baru dipilih.
+                currentUrl.searchParams.set("tahun", y);
+
+                // 3. Arahkan (reload) browser ke URL yang baru.
+                window.location.href = currentUrl.toString();
             };
+            // --- AKHIR BAGIAN YANG DIPERBARUI ---
+
             yearGrid.appendChild(btn);
         }
     }
@@ -157,6 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
             yearPanel.classList.remove("open");
         }
     });
+
+    const selectedYearSpan = document.getElementById("selectedYear");
+    if (selectedYearSpan) {
+        selectedYearSpan.textContent = currentYear;
+    }
 
     renderYears();
 });

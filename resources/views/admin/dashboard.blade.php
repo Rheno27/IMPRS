@@ -421,7 +421,7 @@
         <div class="table-wrapper">
             <div class="report-title">
                 <p>Penilaian Indikator Mutu di Ruang Nifas</p>
-                <p>Bulan {{ $namaBulan[$bulan] ?? '' }}</p>
+                <p>Bulan {{ $namaBulan[$bulan]  ?? '' }}</p>
                 <p>RSD KALISAT</p> 
             </div>
             <div class="table-container">

@@ -381,17 +381,148 @@
             }
         }
     </style>
+    <style>
+        :root {
+            --primary-green: #337354;
+            --dark-green: #2a7f54;
+            --light-green-bg: #d6e3dd;
+            --text-dark: #2d2d2d;
+            --text-light: #ffffff;
+            --border-color: #337354;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            padding-top: 80px;
+            background-color: #fcfcfc;
+        }
+
+        .main-content {
+            padding: 48px 52px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 36px;
+        }
+
+        .add-button {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
+            border: 1px solid var(--primary-green);
+            border-radius: 12px;
+            background-color: transparent;
+            font-size: 20px;
+            font-weight: 550;
+            color: var(--text-dark);
+        }
+
+        .table-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-title {
+            background-color: var(--primary-green);
+            color: var(--text-light);
+            font-size: 25px;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+            padding: 18px 10px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .indicator-table {
+            display: table;
+            width: 100%;
+            min-width: 1200px;
+            border-collapse: collapse;
+        }
+
+        .table-header,
+        .table-row {
+            display: table-row;
+        }
+
+        .table-cell {
+            display: table-cell;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table-header .table-cell {
+            background-color: var(--light-green-bg);
+            font-weight: 600;
+            font-size: 18px;
+            padding: 18px;
+        }
+
+        .table-row .table-cell {
+            background-color: var(--text-light);
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .col-variable {
+            text-align: left;
+        }
+
+        .col-no {
+            width: 4%;
+        }
+
+        .col-variable {
+            width: 45%;
+        }
+
+        .col-type {
+            width: 28%;
+        }
+
+        .col-actions {
+            width: 23%;
+        }
+
+        .action-btn {
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            border: none;
+            margin: 0 4px;
+            cursor: pointer;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+        }
+
+        .modal-header {
+            background-color: var(--primary-green);
+            color: white;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
     <main id="section-main" class="main-content">
-        
+
         @if (session('success'))
         <div class="alert alert-success mx-4"> {{ session('success') }} </div>
         @endif
         <div class="toolbar">
-            <button class="add-button">
+            <button class="add-button" type="button" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M14.6436 4.25H30.3564C33.6695 4.25004 36.2539 5.23607 38.0068 6.99121C39.7594 8.74627 40.7405 11.3301 40.7314 14.6426V30.3564C40.7314 33.6694 39.7456 36.2534 37.9902 38.0088C36.2349 39.7642 33.6508 40.7499 30.3379 40.75H14.6436C11.3306 40.75 8.74655 39.7644 6.99121 38.0068C5.23585 36.2493 4.25008 33.6605 4.25 30.3379V14.6436C4.25004 11.3306 5.23581 8.74661 6.99121 6.99121C8.63696 5.34547 11.011 4.37641 14.0312 4.26172L14.6436 4.25Z"
@@ -415,28 +546,30 @@
                         <div class="table-cell col-actions">Aksi</div>
                     </div>
 
-                    @forelse ($activeIndikators as $item)
-                        <div class="table-row">
-                            <div class="table-cell col-no">{{ $loop->iteration }}.</div>
-                            <div class="table-cell col-variable">{{ $item->indikatorMutu->variabel }}</div>
-                            <div class="table-cell col-type">
-                                {{ $item->indikatorMutu->kategori->kategori ?? 'N/A' }}
+                    @if ($activeIndikators->isNotEmpty())
+                        @foreach ($activeIndikators as $item)
+                            <div class="table-row">
+                                <div class="table-cell col-no">{{ $loop->iteration }}.</div>
+                                <div class="table-cell col-variable">{{ $item->indikatorMutu->variabel }}</div>
+                                <div class="table-cell col-type">
+                                    {{ $item->indikatorMutu->kategori->kategori ?? 'N/A' }}
+                                </div>
+                                <div class="table-cell col-actions">
+                                    <button type="button" class="action-btn btn-warning text-dark" data-bs-toggle="modal"
+                                        data-bs-target="#gantiModal-{{ $item->id_indikator_ruangan }}">
+                                        Ganti
+                                    </button>
+                                </div>
                             </div>
-                            <div class="table-cell col-actions">
-                                <button type="button" class="action-btn btn-warning text-dark" data-bs-toggle="modal"
-                                    data-bs-target="#gantiModal-{{ $item->id_indikator_ruangan }}">
-                                    Edit
-                                </button>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="table-row">
-                            <div class="table-cell" style="text-align: center; grid-column: 1 / 5; width:100%">Tidak ada
-                                indikator aktif untuk ruangan ini.</div>
-                        </div>
-                    @endforelse
+                        @endforeach
+                    @endif
                 </div>
             </div>
+            @if ($activeIndikators->isEmpty())
+                <div class="alert alert-danger mt-3" role="alert">
+                    Tidak ada indikator aktif untuk ruangan ini.
+                </div>
+            @endif
         </div>
     </main>
 
@@ -490,6 +623,47 @@
             </div>
         </div>
     @endforeach
+    {{-- MODAL BARU UNTUK TAMBAH INDIKATOR --}}
+    <div class="modal fade" id="addIndicatorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Indikator Baru ke Ruang {{ $ruangan->nama_ruangan }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('superadmin.ruangan.add_indikator') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id_ruangan" value="{{ $ruangan->id_ruangan }}">
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>1. Pilih Jenis Indikator (Kategori)</strong></label>
+                            <select class="form-select category-select" data-target-indicator-select="#new-indicator-select"
+                                required>
+                                <option value="" selected>-- Pilih Kategori --</option>
+                                @foreach ($allKategoris as $kategori)
+                                    <option value="{{ $kategori->id_kategori }}">{{ $kategori->kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="new-indicator-select" class="form-label"><strong>2. Pilih Indikator
+                                    Baru</strong></label>
+                            <select name="id_indikator_baru" id="new-indicator-select" class="form-select" required
+                                disabled>
+                                <option value="" selected>-- Pilih Kategori terlebih dahulu --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Tambahkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
