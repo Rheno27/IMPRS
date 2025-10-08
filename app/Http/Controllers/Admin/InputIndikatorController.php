@@ -23,13 +23,17 @@ class InputIndikatorController extends Controller
      * Menampilkan form untuk membuat resource baru.
      * Logika diubah total untuk mengambil data dari relasi yang benar.
      */
-    public function create()
+    public function create(Request $request) // Tambahkan Request $request di sini
     {
         $user = Session::get('user');
         if (!$user)
             return redirect('/login');
 
-        $tanggal = date('Y-m-d');
+        // --- BAGIAN YANG DIUBAH ---
+        // Ambil tanggal dari request URL, jika tidak ada, gunakan tanggal hari ini.
+        // Contoh URL: /admin/input-indikator/create?tanggal=2025-10-05
+        $tanggal = $request->input('tanggal', date('Y-m-d'));
+        // --- AKHIR BAGIAN YANG DIUBAH ---
 
         // 1. Ambil semua indikator yang aktif untuk ruangan user saat ini
         $indikatorRuanganAktif = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
@@ -40,9 +44,10 @@ class InputIndikatorController extends Controller
         // 2. Ambil model IndikatorMutu dari koleksi di atas
         $indikator = $indikatorRuanganAktif->pluck('indikatorMutu')->filter();
 
-        // 3. Ambil data mutu yang sudah diinput hari ini untuk indikator-indikator tersebut
+        // 3. Ambil data mutu yang sudah diinput untuk tanggal yang dipilih
         $indikatorRuanganIds = $indikatorRuanganAktif->pluck('id_indikator_ruangan');
 
+        // Gunakan variabel $tanggal yang sudah dinamis
         $mutuHariIni = MutuRuangan::where('tanggal', $tanggal)
             ->whereIn('id_indikator_ruangan', $indikatorRuanganIds)
             ->get();
@@ -57,6 +62,7 @@ class InputIndikatorController extends Controller
             }
         }
 
+        // Pastikan $tanggal dikirim ke view agar form tahu tanggal yang aktif
         return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal'));
     }
 

@@ -509,9 +509,11 @@
     <script>
         (function () {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const now = new Date();
-            let currentYear = now.getFullYear();
-            let currentMonth = now.getMonth();
+
+            // 1. Inisialisasi state dari data PHP yang dikirim controller, bukan tanggal hari ini
+            let currentYear = {{ $tahun }};
+            // Bulan dari PHP adalah 1-12, sedangkan di JavaScript index-nya 0-11
+            let currentMonthIndex = {{ $bulan }} - 1;
 
             const monthYearEl = document.getElementById('monthYear');
             const panel = document.getElementById('calendarPanel');
@@ -524,19 +526,29 @@
             function renderMonths() {
                 yearEl.textContent = currentYear;
                 monthsContainer.innerHTML = "";
-                monthNames.forEach((m, i) => {
+                monthNames.forEach((m, index) => {
                     const b = document.createElement('button');
                     b.textContent = m;
-                    if (i === currentMonth && currentYear === now.getFullYear()) b.classList.add('active');
+
+                    // Tandai bulan yang sedang aktif
+                    if (index === currentMonthIndex) {
+                        b.classList.add('active');
+                    }
+
+                    // 2. BAGIAN UTAMA YANG DIPERBAIKI:
+                    // Tambahkan event listener yang akan me-reload halaman dengan parameter baru.
                     b.addEventListener('click', () => {
-                        currentMonth = i;
-                        monthYearEl.textContent = monthNames[currentMonth] + " " + currentYear;
-                        panel.classList.remove('open');
+                        const selectedMonth = index + 1; // Konversi ke format 1-12 untuk URL
+                        const baseUrl = "{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan]) }}";
+
+                        // Arahkan browser ke URL baru dengan parameter bulan dan tahun yang dipilih
+                        window.location.href = `${baseUrl}?bulan=${selectedMonth}&tahun=${currentYear}`;
                     });
                     monthsContainer.appendChild(b);
                 });
             }
 
+            // Navigasi tahun hanya mengubah tampilan panel, tidak perlu me-reload halaman
             prevYearBtn.addEventListener('click', () => {
                 currentYear--;
                 renderMonths();
@@ -546,20 +558,25 @@
                 renderMonths();
             });
 
+            // Buka/tutup panel
             btn.addEventListener('click', (ev) => {
                 ev.stopPropagation();
                 panel.classList.toggle('open');
-                renderMonths();
+                // Render pilihan bulan hanya saat panel dibuka agar efisien
+                if (panel.classList.contains('open')) {
+                    renderMonths();
+                }
             });
 
+            // Tutup panel jika klik di area lain
             document.addEventListener('click', (e) => {
                 if (!panel.contains(e.target) && !btn.contains(e.target)) {
                     panel.classList.remove('open');
                 }
             });
 
-            // default init
-            monthYearEl.textContent = monthNames[currentMonth] + " " + currentYear;
+            // 3. Inisialisasi teks pada tombol utama saat halaman pertama kali dimuat
+            monthYearEl.textContent = monthNames[currentMonthIndex] + " " + currentYear;
         })();
 
     </script>

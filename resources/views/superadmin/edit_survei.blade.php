@@ -526,14 +526,14 @@
                 <div class="page-header">
                     <div class="page-title">
                         <input type="text" class="form-input-text-question" value="HALAMAN 1">
-                        <img src="image/arrow-circle-down.svg" alt="toggle" class="toggle-btn-down">
+                        <img src="{{ url('/image/arrow-circle-down.svg') }}" alt="toggle" class="toggle-btn-down">
                     </div>
                     <div class="page-actions">
-                        <button type="button" class="icon-button"><img src="image/arrow-up-round.svg" alt="Up"></button>
-                        <button type="button" class="icon-button"><img src="image/arrow-circle-down.svg"
+                        <button type="button" class="icon-button"><img src="{{ url('/image/arrow-up-round.svg') }}" alt="Up"></button>
+                        <button type="button" class="icon-button"><img src="{{ url('/image/arrow-circle-down.svg') }}"
                                 alt="Down"></button>
-                        <button type="button" class="icon-button"><img src="image/add-round.svg" alt="Add"></button>
-                        <button type="button" class="icon-button"><img src="image/copy-round.svg" alt="Copy"></button>
+                        <button type="button" class="icon-button"><img src="{{ url('image/add-round.svg') }}" alt="Add"></button>
+                        <button type="button" class="icon-button"><img src="{{ url('/image/copy-round.svg') }}" alt="Copy"></button>
                     </div>
                 </div>
 
@@ -541,17 +541,17 @@
                     <div class="question-card">
                         <div class="question-header">
                             <div class="question-title">Pertanyaan 1
-                                <img src="image/arrow-circle-down.svg" alt="toggle" class="toggle-btn-question">
+                                <img src="{{ url('/image/arrow-circle-down.svg') }}" alt="toggle" class="toggle-btn-question">
                             </div>
                             <div class="question-actions">
-                                <button type="button" class="icon-button"><img src="image/arrow-up-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/arrow-up-round.svg') }}"
                                         alt="Up"></button>
-                                <button type="button" class="icon-button"><img src="image/arrow-circle-down.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/arrow-circle-down.svg') }}"
                                         alt="Down"></button>
-                                <button type="button" class="icon-button"><img src="image/add-round.svg" alt="Add"></button>
-                                <button type="button" class="icon-button"><img src="image/copy-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}" alt="Add"></button>
+                                <button type="button" class="icon-button"><img src="{{ url('/image/copy-round.svg') }}"
                                         alt="Copy"></button>
-                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                         alt="Delete"></button>
                             </div>
                         </div>
@@ -563,7 +563,7 @@
                                         <select id="q1-type" class="form-select">
                                             <option>Pilihan Ganda</option>
                                         </select>
-                                        <img src="image/arrow-circle-down.svg" class="select-arrow" alt="dropdown arrow">
+                                        <img src="{{ url('/image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -581,9 +581,9 @@
                                             <div class="choice-label">A</div>
                                             <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
                                             <div class="choice-actions">
-                                                <button type="button" class="icon-button"><img src="image/add-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}"
                                                         alt="Add"></button>
-                                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                                         alt="Delete"></button>
                                             </div>
                                         </div>
@@ -591,9 +591,9 @@
                                             <div class="choice-label">A</div>
                                             <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
                                             <div class="choice-actions">
-                                                <button type="button" class="icon-button"><img src="image/add-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}"
                                                         alt="Add"></button>
-                                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                                         alt="Delete"></button>
                                             </div>
                                         </div>
@@ -601,9 +601,9 @@
                                             <div class="choice-label">A</div>
                                             <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
                                             <div class="choice-actions">
-                                                <button type="button" class="icon-button"><img src="image/add-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}"
                                                         alt="Add"></button>
-                                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                                         alt="Delete"></button>
                                             </div>
                                         </div>
@@ -611,9 +611,9 @@
                                             <div class="choice-label">A</div>
                                             <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
                                             <div class="choice-actions">
-                                                <button type="button" class="icon-button"><img src="image/add-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}"
                                                         alt="Add"></button>
-                                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                                         alt="Delete"></button>
                                             </div>
                                         </div>
@@ -627,17 +627,17 @@
                     <div class="question-card">
                         <div class="question-header">
                             <div class="question-title">Pertanyaan 2
-                                <img src="image/arrow-circle-down.svg" alt="toggle" class="toggle-btn-question">
+                                <img src="{{ url('/image/arrow-circle-down.svg') }}" alt="toggle" class="toggle-btn-question">
                             </div>
                             <div class="question-actions">
-                                <button type="button" class="icon-button"><img src="image/arrow-up-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/arrow-up-round.svg') }}"
                                         alt="Up"></button>
-                                <button type="button" class="icon-button"><img src="image/arrow-circle-down.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/arrow-circle-down.svg') }}"
                                         alt="Down"></button>
-                                <button type="button" class="icon-button"><img src="image/add-round.svg" alt="Add"></button>
-                                <button type="button" class="icon-button"><img src="image/copy-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/add-round.svg') }}" alt="Add"></button>
+                                <button type="button" class="icon-button"><img src="{{ url('/image/copy-round.svg') }}"
                                         alt="Copy"></button>
-                                <button type="button" class="icon-button"><img src="image/cancel-round.svg"
+                                <button type="button" class="icon-button"><img src="{{ url('/image/cancel-round.svg') }}"
                                         alt="Delete"></button>
                             </div>
                         </div>
@@ -649,7 +649,7 @@
                                         <select id="q2-type" class="form-select">
                                             <option>Isian Teks</option>
                                         </select>
-                                        <img src="image/arrow-circle-down.svg" class="select-arrow" alt="dropdown arrow">
+                                        <img src="{{ url('/image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
                                     </div>
                                 </div>
                                 <div class="form-row">

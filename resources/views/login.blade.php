@@ -25,8 +25,8 @@
             align-items: center;
             background-color: var(--white);
             border-bottom: 1px solid var(--border-color-semitransparent);
-            padding: 0 40px;
-            height: 80px;
+            padding: 0 32px;
+            height: 65px;
         }
 
         .logo-container {
@@ -35,7 +35,7 @@
         }
 
         .logo-image {
-            height: 70px;
+            height: 55px;
             width: auto;
             object-fit: contain;
         }
@@ -46,38 +46,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 120px;
+            padding: 60px;
         }
 
         .login-box {
             background: #fff;
-            border-radius: 16px;
-            padding: 50px 60px;
+            border-radius: 14px;
+            padding: 40px 45px;
             width: 100%;
-            max-width: 520px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         .login-box h2 {
-            margin-bottom: 8px;
-            font-size: 25px;
+            margin-bottom: 6px;
+            font-size: 21px;
             font-weight: 700;
             color: #333;
         }
 
         .login-box p {
-            margin-bottom: 28px;
-            font-size: 18px;
+            margin-bottom: 22px;
+            font-size: 15px;
             color: #555;
         }
 
         .login-box label {
             display: block;
             text-align: left;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 550;
-            font-size: 17px;
+            font-size: 15px;
             color: #333;
         }
 
@@ -87,13 +87,13 @@
             width: 100%;
             box-sizing: border-box;
             font-family: 'Roboto', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 6px;
         }
 
         .login-box input {
-            padding: 13px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 16px;
             border: 1px solid #ccc;
             outline: none;
             transition: border 0.2s;
@@ -104,12 +104,12 @@
         }
 
         .login-box button {
-            padding: 14px;
+            padding: 11px;
             background: var(--primary-color);
             border: none;
             color: #fff;
             font-weight: 600;
-            font-size: 19px;
+            font-size: 16px;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -119,8 +119,8 @@
         }
 
         .forgot-password {
-            margin-top: 14px;
-            font-size: 16px;
+            margin-top: 10px;
+            font-size: 14px;
             color: #555;
         }
 
@@ -136,11 +136,108 @@
 
         .error-message {
             color: red;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        /* === RESPONSIVE === */
+
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .site-header {
+                padding: 0 24px;
+                height: 60px;
+            }
+
+            .logo-image {
+                height: 48px;
+            }
+
+            .login-container {
+                padding: 40px;
+            }
+
+            .login-box {
+                max-width: 380px;
+                padding: 35px 40px;
+            }
+
+            .login-box h2 {
+                font-size: 20px;
+            }
+
+            .login-box p {
+                font-size: 14px;
+            }
+
+            .login-box label {
+                font-size: 14px;
+            }
+
+            .login-box input,
+            .login-box button {
+                font-size: 13px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            body {
+                background-size: cover;
+                background-attachment: scroll;
+            }
+
+            .site-header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 16px;
+                text-align: center;
+            }
+
+            .logo-image {
+                height: 45px;
+            }
+
+            .login-container {
+                padding: 20px;
+            }
+
+            .login-box {
+                padding: 30px 25px;
+                max-width: 95%;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            }
+
+            .login-box h2 {
+                font-size: 18px;
+            }
+
+            .login-box p {
+                font-size: 13px;
+            }
+
+            .login-box label {
+                font-size: 13px;
+            }
+
+            .login-box input {
+                padding: 9px;
+                font-size: 13px;
+            }
+
+            .login-box button {
+                padding: 10px;
+                font-size: 15px;
+            }
+
+            .forgot-password {
+                font-size: 13px;
+            }
         }
     </style>
 @endsection
+
+
 
 @section('content')
     <div class="login-container">

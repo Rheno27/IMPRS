@@ -22,39 +22,77 @@
             --border-color-strong: #337354;
             --border-color-header: rgba(51, 115, 84, 0.5);
             --accent-color: #99ce55;
+
+            /* UI scale: ubah angka di sini kalau mau 80% atau 70% */
+            --ui-scale: 0.75;
         }
-    
+
+        /* === GLOBAL SCALE TO 75% (desktop) ===
+                                                                           - gunakan `zoom` untuk Chrome/Edge/Safari (paling handal)
+                                                                           - fallback `transform: scale()` untuk browser yang tidak support zoom (Firefox)
+                                                                           - disable scaling pada layar kecil supaya mobile tetap usable
+                                                                        */
+        html {
+            /* Chrome, Edge, Safari */
+            zoom: var(--ui-scale);
+        }
+
+        /* Fallback untuk browser yang tidak mendukung zoom (contoh: Firefox) */
+        @supports not (zoom: 1) {
+            html {
+                transform: scale(var(--ui-scale));
+                transform-origin: 0 0;
+                /* agar lebar tetap penuh setelah scaling */
+                width: calc(100% / var(--ui-scale));
+            }
+
+            /* Karena transform tidak mengubah layout flow, kita koreksi margin-top
+                                                                               agar header tidak menutupi konten utama. Sesuaikan angka 70px kalau headermu berbeda. */
+            main {
+                margin-top: calc(70px / var(--ui-scale));
+            }
+        }
+
+        /* Non-aktifkan scaling pada layar kecil supaya UX mobile tetap normal */
+        @media (max-width: 900px) {
+            html {
+                zoom: 1;
+                transform: none;
+                width: 100%;
+            }
+        }
+
         * {
             box-sizing: border-box;
         }
-    
+
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
         }
-    
+
         .page-container {
             max-width: 1440px;
             margin: 0 auto;
             position: relative;
             overflow: hidden;
         }
-    
+
         img {
             max-width: 100%;
             height: auto;
             display: block;
         }
-    
+
         button,
         input,
         select,
         textarea {
             font-family: inherit;
         }
-    
+
         .icon-button {
             display: inline-flex;
             justify-content: center;
@@ -67,12 +105,12 @@
             cursor: pointer;
             padding: 0;
         }
-    
+
         .icon-button img {
             width: 24px;
             height: 24px;
         }
-    
+
         /* CSS from section:header */
         .site-header {
             display: flex;
@@ -92,39 +130,39 @@
             box-sizing: border-box;
             /* biar padding gak nambah tinggi */
         }
-    
+
         main {
             margin-top: 70px;
             /* samain dengan tinggi header */
         }
-    
+
         /* Logo */
         .logo-container {
             display: flex;
             align-items: center;
         }
-    
+
         .logo-image {
             height: 70px;
             /* hampir sama dengan tinggi avatar */
             width: auto;
             object-fit: contain;
         }
-    
+
         /* User info */
         .user-info {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-    
+
         .user-avatar {
             height: 30px;
             width: 30px;
             border-radius: 50%;
             object-fit: cover;
         }
-    
+
         .user-name {
             font-weight: 600;
             font-size: 18px;
@@ -132,7 +170,7 @@
             color: var(--primary-color);
             white-space: nowrap;
         }
-    
+
         .logout-link {
             display: flex;
             align-items: center;
@@ -142,16 +180,16 @@
             border-radius: 8px;
             transition: background 0.2s;
         }
-    
+
         .logout-link:hover {
             background: rgba(51, 115, 84, 0.1);
         }
-    
+
         .logout-icon {
             height: 28px;
             width: 28px;
         }
-    
+
         /* CSS from section:form */
         .form-section {
             display: flex;
@@ -160,7 +198,7 @@
             padding: 72px;
             background-color: var(--bg-color);
         }
-    
+
         .form-wrapper {
             display: flex;
             flex-direction: column;
@@ -169,7 +207,7 @@
             width: 100%;
             max-width: 1296px;
         }
-    
+
         .form-card {
             width: 100%;
             border: 1px solid var(--primary-color);
@@ -179,13 +217,13 @@
             flex-direction: column;
             gap: 30px;
         }
-    
+
         .form-header {
             background-color: var(--primary-color);
             border-radius: 10px;
             padding: 16px;
         }
-    
+
         .form-title {
             color: var(--text-white);
             font-family: 'Roboto', sans-serif;
@@ -195,32 +233,32 @@
             text-align: center;
             margin: 0;
         }
-    
+
         .respondent-form {
             border: 1px solid var(--primary-color);
             border-radius: 25px;
             padding: 36px;
         }
-    
+
         .form-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 36px;
             /* Adjusted from large gap */
         }
-    
+
         .form-column {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
-    
+
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-    
+
         .form-group label {
             font-family: 'Roboto', sans-serif;
             font-weight: 600;
@@ -230,12 +268,12 @@
             display: flex;
             align-items: center;
         }
-    
+
         .required-asterisk {
             color: var(--error-red);
             margin-left: 4px;
         }
-    
+
         .input-field,
         .select-field {
             border: 1px solid var(--primary-dark);
@@ -249,7 +287,7 @@
             display: flex;
             align-items: center;
         }
-    
+
         .select-arrow {
             position: absolute;
             right: 14px;
@@ -257,30 +295,30 @@
             transform: translateY(-50%);
             pointer-events: none;
         }
-    
+
         .select-wrapper {
             position: relative;
             width: 100%;
             max-width: 876px;
         }
-    
+
         .select-field {
             justify-content: space-between;
             cursor: pointer;
         }
-    
+
         .select-field img {
             width: 20px;
             height: 20px;
         }
-    
+
         .form-navigation {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-    
+
         .form-select {
             width: 100%;
             border: 1px solid var(--primary-color);
@@ -289,7 +327,7 @@
             font-size: 16px;
             background-color: var(--text-white);
         }
-    
+
         .form-select {
             color: var(--primary-light);
             -webkit-appearance: none;
@@ -297,7 +335,7 @@
             appearance: none;
             padding-right: 40px;
         }
-    
+
         .form-select:focus,
         .form-select:active {
             border: 1px solid var(--primary-color) !important;
@@ -307,94 +345,136 @@
             box-shadow: none;
             /* hilangin efek glow di browser tertentu */
         }
-    
+
         .nav-button {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 24px;
+            display: inline-block;
+            background-color: #337354;
+            color: #fff;
+            padding: 10px 20px;
             border-radius: 8px;
-            border: none;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 20px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
-    
+
         .nav-button:hover {
             background-color: rgba(0, 0, 0, 0.05);
             /* efek hover lembut */
         }
-    
+
         .nav-button:active {
             transform: scale(0.97);
             /* efek klik */
         }
-    
+
         .prev-button {
             background-color: var(--btn-disabled-bg);
             color: var(--btn-disabled-text);
         }
-    
+
         .prev-button img {
             transform: rotate(-90deg);
             width: 30px;
             height: 30px;
         }
-    
+
         .next-button {
             background-color: var(--btn-active-bg);
             color: var(--btn-active-text);
         }
-    
+
         .next-button img {
             transform: rotate(90deg);
             width: 30px;
             height: 30px;
         }
-    
+
         .nav-button:disabled {
             cursor: not-allowed;
         }
-    
+
         @media (max-width: 1200px) {
             .form-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-    
+
         @media (max-width: 768px) {
+            html {
+                zoom: 1;
+                transform: none;
+                width: 100%;
+            }
+
+            body {
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .form-title {
+                font-size: 20px;
+                line-height: 28px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .input-field,
+            .select-field {
+                font-size: 12px;
+                height: 36px;
+                padding: 8px;
+            }
+
+            .nav-button {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+
+            .prev-button img,
+            .next-button img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .user-name {
+                font-size: 14px;
+            }
+
+            .logo-image {
+                height: 50px;
+            }
+
             .form-section {
                 padding: 24px;
             }
-    
+
             .form-card {
                 padding: 24px;
             }
-    
+
             .respondent-form {
                 padding: 20px;
             }
-    
+
             .form-grid {
                 grid-template-columns: 1fr;
-                gap: 25px;
+                gap: 20px;
             }
-    
+
             .form-navigation {
                 flex-direction: column-reverse;
                 gap: 20px;
                 align-items: stretch;
             }
-    
+
             .nav-button {
                 justify-content: center;
             }
         }
     </style>
 @endsection
+
 
 @section('content')
     <main id="section-form" class="form-section">
@@ -422,7 +502,8 @@
                                     <select id="q1-type" class="form-select">
                                         <option>Pilihan Ganda</option>
                                     </select>
-                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
+                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow"
+                                        alt="dropdown arrow">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -431,7 +512,8 @@
                                     <select id="q1-type" class="form-select">
                                         <option>Pilihan Ganda</option>
                                     </select>
-                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
+                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow"
+                                        alt="dropdown arrow">
                                 </div>
                             </div>
                         </div>
@@ -443,7 +525,8 @@
                                         <option>Tidak Sekolah</option>
                                         <option>TK</option>
                                     </select>
-                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
+                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow"
+                                        alt="dropdown arrow">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -452,7 +535,8 @@
                                     <select id="q1-type" class="form-select">
                                         <option>Pilihan Ganda</option>
                                     </select>
-                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow" alt="dropdown arrow">
+                                    <img src="{{ asset('image/arrow-circle-down.svg') }}" class="select-arrow"
+                                        alt="dropdown arrow">
                                 </div>
                             </div>
                         </div>
@@ -460,12 +544,12 @@
                 </form>
             </div>
             <div class="form-navigation">
-                <button class="nav-button prev-button" onclick="window.Location.href='/SKM/data_responden'">
+                <a href="{{ route('guest.dashboard') }}" class="nav-button prev-button">
                     <span>Sebelumnya</span>
-                </button>
-                <button class="nav-button next-button" onclick="window.location.href='/SKM/survei-2'">
+                </a>
+                <a href="{{ route('guest.survei-2') }}" class="nav-button next-button">
                     <span>Selanjutnya</span>
-                </button>
+                </a>
             </div>
         </div>
     </main>

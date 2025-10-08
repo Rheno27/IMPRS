@@ -28,15 +28,13 @@
             align-items: center;
             background-color: var(--text-light);
             border-bottom: 1px solid var(--border-color-semitransparent);
-            padding: 0 40px;
-            height: 80px;
+            padding: 0 32px;
+            height: 65px;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            /* wajib biar full layar */
             z-index: 1000;
-            /* supaya selalu di atas */
         }
 
         /* Logo */
@@ -46,7 +44,7 @@
         }
 
         .logo-image {
-            height: 70px;
+            height: 55px;
             width: auto;
             object-fit: contain;
         }
@@ -58,13 +56,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 200px 40px 100px;
-            /* ditambah padding-top biar konten tidak ketutupan header */
+            padding: 150px 32px 80px;
             text-align: center;
             overflow: hidden;
-
-            min-height: 58vh;
-            background-image: url('./image/background.png');
+            min-height: 60vh;
+            background-image: url('{{ asset('image/background.png') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -76,48 +72,136 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 32px;
+            gap: 24px;
             color: var(--primary-color);
         }
 
         .hero-title {
-            font-weight: 790;
-            font-size: 65px;
-            line-height: 55px;
+            font-weight: 750;
+            font-size: 46px;
+            line-height: 54px;
             color: var(--primary-color);
             margin: 0;
-            max-width: 1500px;
+            max-width: 1000px;
         }
 
         .hero-subtitle {
             font-weight: 400;
-            font-size: 25px;
-            line-height: 36px;
+            font-size: 18px;
+            line-height: 30px;
             color: var(--primary-color);
             margin: 0;
-            max-width: 950px;
+            max-width: 800px;
         }
 
         .cta-button {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background-color: var(--secondary-color);
             color: var(--text-dark);
             font-weight: 600;
-            font-size: 24px;
-            line-height: 26px;
-            padding: 14px 60px;
-            border-radius: 40px;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 12px 40px;
+            border-radius: 35px;
             text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #e0a800;
         }
 
         .cta-button svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* === RESPONSIVE DESIGN === */
+
+        /* Tablet (≤1024px) */
+        @media (max-width: 1024px) {
+            .site-header {
+                padding: 0 24px;
+                height: 60px;
+            }
+
+            .logo-image {
+                height: 48px;
+            }
+
+            .hero-section {
+                padding: 130px 24px 60px;
+                min-height: 55vh;
+            }
+
+            .hero-title {
+                font-size: 38px;
+                line-height: 46px;
+                max-width: 800px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+                line-height: 26px;
+                max-width: 700px;
+            }
+
+            .cta-button {
+                font-size: 16px;
+                padding: 10px 32px;
+            }
+        }
+
+        /* Mobile (≤600px) */
+        @media (max-width: 600px) {
+            .site-header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 16px;
+                text-align: center;
+            }
+
+            .logo-image {
+                height: 45px;
+            }
+
+            .hero-section {
+                padding: 120px 20px 40px;
+                min-height: 50vh;
+            }
+
+            .hero-content {
+                gap: 18px;
+            }
+
+            .hero-title {
+                font-size: 30px;
+                line-height: 38px;
+                max-width: 90%;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+                line-height: 22px;
+                max-width: 90%;
+            }
+
+            .cta-button {
+                font-size: 15px;
+                padding: 10px 28px;
+                border-radius: 30px;
+            }
+
+            .cta-button svg {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 @endsection
+
 
 @section('content')
     <section id="hero" class="hero-section">
