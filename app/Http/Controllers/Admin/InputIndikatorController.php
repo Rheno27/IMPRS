@@ -28,17 +28,12 @@ class InputIndikatorController extends Controller
         $user = Session::get('user');
         if (!$user)
             return redirect('/login');
-
-        // --- BAGIAN YANG DIUBAH ---
-        // Ambil tanggal dari request URL, jika tidak ada, gunakan tanggal hari ini.
-        // Contoh URL: /admin/input-indikator/create?tanggal=2025-10-05
         $tanggal = $request->input('tanggal', date('Y-m-d'));
-        // --- AKHIR BAGIAN YANG DIUBAH ---
 
         // 1. Ambil semua indikator yang aktif untuk ruangan user saat ini
         $indikatorRuanganAktif = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
             ->where('active', true)
-            ->with('indikatorMutu') // Eager load relasi ke IndikatorMutu untuk efisiensi
+            ->with('indikatorMutu') 
             ->get();
 
         // 2. Ambil model IndikatorMutu dari koleksi di atas
@@ -46,8 +41,6 @@ class InputIndikatorController extends Controller
 
         // 3. Ambil data mutu yang sudah diinput untuk tanggal yang dipilih
         $indikatorRuanganIds = $indikatorRuanganAktif->pluck('id_indikator_ruangan');
-
-        // Gunakan variabel $tanggal yang sudah dinamis
         $mutuHariIni = MutuRuangan::where('tanggal', $tanggal)
             ->whereIn('id_indikator_ruangan', $indikatorRuanganIds)
             ->get();
@@ -57,12 +50,9 @@ class InputIndikatorController extends Controller
         foreach ($indikatorRuanganAktif as $ir) {
             $record = $mutuHariIni->firstWhere('id_indikator_ruangan', $ir->id_indikator_ruangan);
             if ($record) {
-                // Gunakan id_indikator sebagai key agar view tidak perlu diubah
                 $mutu[$ir->id_indikator] = $record;
             }
         }
-
-        // Pastikan $tanggal dikirim ke view agar form tahu tanggal yang aktif
         return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal'));
     }
 
@@ -82,8 +72,6 @@ class InputIndikatorController extends Controller
             $indikatorRuangan = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
                 ->where('id_indikator', $id_indikator)
                 ->first();
-
-            // Lanjutkan hanya jika indikator tersebut memang milik ruangan ini
             if (!$indikatorRuangan) {
                 continue;
             }
@@ -101,9 +89,6 @@ class InputIndikatorController extends Controller
                 ],
                 $dataToStore
             );
-
-            // (Opsional) Jika Anda ingin tetap menghitung perubahan, logikanya bisa disederhanakan
-            // atau disesuaikan seperti ini, namun updateOrCreate sudah cukup andal.
             $updated++;
         }
 

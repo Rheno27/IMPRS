@@ -282,7 +282,7 @@
 
         .report-controls-top {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
             box-sizing: border-box;
@@ -290,8 +290,24 @@
             gap: 28px;
         }
 
+        /* Grup tombol kiri (year + download) */
+        .report-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        /* Tombol kanan tetap */
+        .report-controls-right {
+            display: flex;
+            align-items: center;
+        }
+
+
+        /* Gaya tombol */
         .download-btn,
-        .year-selector {
+        .year-selector,
+        .newindicator-btn {
             border: 1px solid var(--border-color-dark);
             border-radius: 12px;
             padding: 9px 20px;
@@ -306,9 +322,15 @@
             cursor: pointer;
         }
 
+
+        .newindicator-btn {
+            background-color: var(--primary-green);
+            color: var(--text-light);
+        }
+
         .year-picker-wrapper {
             position: relative;
-            display: inline-block; 
+            display: inline-block;
         }
 
         .year-panel {
@@ -854,7 +876,7 @@
                 </svg>
                 <span>Keuangan</span>
             </a>
-            <a href="{{ route('superadmin.data_user') }}" class="feature-card bg-color-7">
+            <a href="{{ route('superadmin.skm_rekap') }}" class="feature-card bg-color-7">
                 <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M20.6658 4.57331C21.9538 3.47198 24.0631 3.47198 25.3698 4.57331L28.3191 7.11195C28.8791 7.59729 29.9244 7.98935 30.6711 7.98935H33.8445C35.8231 7.98935 37.4471 9.61333 37.4471 11.592V14.7652C37.4471 15.4932 37.8391 16.5573 38.3244 17.1173L40.8631 20.0666C41.9645 21.3546 41.9645 23.464 40.8631 24.7707L38.3244 27.7199C37.8391 28.2799 37.4471 29.3253 37.4471 30.0719V33.2453C37.4471 35.224 35.8231 36.8479 33.8445 36.8479H30.6711C29.9431 36.8479 28.8791 37.24 28.3191 37.7253L25.3698 40.264C24.0818 41.3653 21.9725 41.3653 20.6658 40.264L17.7165 37.7253C17.1565 37.24 16.1111 36.8479 15.3645 36.8479H12.1351C10.1564 36.8479 8.53246 35.224 8.53246 33.2453V30.0532C8.53246 29.3252 8.14047 28.2799 7.67381 27.7199L5.1538 24.752C4.07113 23.464 4.07113 21.3733 5.1538 20.0853L7.67381 17.1173C8.14047 16.5573 8.53246 15.5119 8.53246 14.7839V11.592C8.53246 9.61333 10.1564 7.98935 12.1351 7.98935H15.3645C16.0925 7.98935 17.1565 7.59729 17.7165 7.11195L20.6658 4.57331Z"
@@ -869,67 +891,102 @@
     </section>
     <section id="report" class="section-padding">
         <div class="report-controls-top">
-            <a href="#" class="download-btn">
-                <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="50" height="50" rx="10" fill="#FCFCFC" />
-                    <path
-                        d="M38 29.3333V35.1111C38 35.8773 37.6956 36.6121 37.1539 37.1539C36.6121 37.6956 35.8773 38 35.1111 38H14.8889C14.1227 38 13.3879 37.6956 12.8461 37.1539C12.3044 36.6121 12 35.8773 12 35.1111V29.3333M17.7778 22.1111L25 29.3333M25 29.3333L32.2222 22.1111M25 29.3333V12"
-                        stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span>Download File</span>
-            </a>
+            <div class="report-controls-left">
+                <!-- YEAR SELECTOR -->
+                <div class="year-picker-wrapper">
+                    <div class="year-selector" id="yearBtn">
+                        <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M37.5 18.45C38.5313 18.45 39.375 19.2937 39.375 20.325V31.875C39.375 37.5 36.5625 41.25 30 41.25H15C8.4375 41.25 5.625 37.5 5.625 31.875V20.325C5.625 19.2937 6.46875 18.45 7.5 18.45H37.5Z"
+                                fill="#337354" />
+                            <path
+                                d="M15.9375 28.1249C15.45 28.1249 14.9625 27.9186 14.6063 27.5811C14.2688 27.2249 14.0625 26.7374 14.0625 26.2499C14.0625 25.7624 14.2688 25.2749 14.6063 24.9187C15.1313 24.3937 15.9563 24.2249 16.65 24.5249C16.8938 24.6186 17.1 24.7499 17.2687 24.9187C17.6062 25.2749 17.8125 25.7624 17.8125 26.2499C17.8125 26.7374 17.6062 27.2249 17.2687 27.5811C16.9125 27.9186 16.425 28.1249 15.9375 28.1249Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M22.5 28.1249C22.0125 28.1249 21.525 27.9186 21.1688 27.5811C20.8313 27.2249 20.625 26.7374 20.625 26.2499C20.625 25.7624 20.8313 25.2749 21.1688 24.9187C21.3375 24.7499 21.5437 24.6186 21.7875 24.5249C22.4812 24.2249 23.3062 24.3937 23.8312 24.9187C24.1687 25.2749 24.375 25.7624 24.375 26.2499C24.375 26.7374 24.1687 27.2249 23.8312 27.5811C23.7375 27.6561 23.6438 27.7311 23.55 27.8061C23.4375 27.8811 23.325 27.9374 23.2125 27.9749C23.1 28.0312 22.9875 28.0687 22.875 28.0874C22.7438 28.1062 22.6313 28.1249 22.5 28.1249Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M29.0625 28.125C28.575 28.125 28.0875 27.9188 27.7313 27.5813C27.3938 27.225 27.1875 26.7375 27.1875 26.25C27.1875 25.7625 27.3938 25.275 27.7313 24.9188C27.9188 24.75 28.1062 24.6187 28.35 24.525C28.6875 24.375 29.0625 24.3375 29.4375 24.4125C29.55 24.4313 29.6625 24.4687 29.775 24.525C29.8875 24.5625 30 24.6188 30.1125 24.6938C30.2063 24.7688 30.3 24.8438 30.3937 24.9188C30.7312 25.275 30.9375 25.7625 30.9375 26.25C30.9375 26.7375 30.7312 27.225 30.3937 27.5813C30.3 27.6563 30.2063 27.7312 30.1125 27.8062C30 27.8812 29.8875 27.9375 29.775 27.975C29.6625 28.0313 29.55 28.0688 29.4375 28.0875C29.3063 28.1063 29.175 28.125 29.0625 28.125Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M15.9375 34.6875C15.6938 34.6875 15.45 34.6313 15.225 34.5375C14.9812 34.4438 14.7938 34.3125 14.6063 34.1438C14.2688 33.7875 14.0625 33.3 14.0625 32.8125C14.0625 32.325 14.2688 31.8375 14.6063 31.4813C14.7938 31.3125 14.9812 31.1812 15.225 31.0875C15.5625 30.9375 15.9375 30.9 16.3125 30.975C16.425 30.9938 16.5375 31.0312 16.65 31.0875C16.7625 31.125 16.875 31.1813 16.9875 31.2563C17.0813 31.3313 17.175 31.4063 17.2687 31.4813C17.6062 31.8375 17.8125 32.325 17.8125 32.8125C17.8125 33.3 17.6062 33.7875 17.2687 34.1438C17.175 34.2188 17.0813 34.3125 16.9875 34.3687C16.875 34.4437 16.7625 34.5 16.65 34.5375C16.5375 34.5938 16.425 34.6313 16.3125 34.65C16.1813 34.6688 16.0688 34.6875 15.9375 34.6875Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M22.5 34.6875C22.0125 34.6875 21.525 34.4812 21.1688 34.1437C20.8313 33.7875 20.625 33.3 20.625 32.8125C20.625 32.325 20.8313 31.8375 21.1688 31.4813C21.8625 30.7875 23.1375 30.7875 23.8312 31.4813C24.1687 31.8375 24.375 32.325 24.375 32.8125C24.375 33.3 24.1687 33.7875 23.8312 34.1437C23.475 34.4812 22.9875 34.6875 22.5 34.6875Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
+                                fill="#FFC107" />
+                        </svg>
 
-            <!-- YEAR SELECTOR -->
-            <div class="year-picker-wrapper">
-                <div class="year-selector" id="yearBtn">
-                    <svg width="35" height="36" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M31.4067 7.175V4.25C31.4067 3.48125 30.7692 2.84375 30.0004 2.84375C29.2317 2.84375 28.5942 3.48125 28.5942 4.25V7.0625H16.4067V4.25C16.4067 3.48125 15.7692 2.84375 15.0004 2.84375C14.2317 2.84375 13.5942 3.48125 13.5942 4.25V7.175C8.53168 7.64375 6.07543 10.6625 5.70043 15.1437C5.66293 15.6875 6.11293 16.1375 6.63793 16.1375H38.3629C38.9067 16.1375 39.3567 15.6687 39.3004 15.1437C38.9254 10.6625 36.4692 7.64375 31.4067 7.175Z"
-                            fill="#FFC107" />
-                        <path
-                            d="M37.5 18.95C38.5313 18.95 39.375 19.7937 39.375 20.825V32.375C39.375 38 36.5625 41.75 30 41.75H15C8.4375 41.75 5.625 38 5.625 32.375V20.825C5.625 19.7937 6.46875 18.95 7.5 18.95H37.5Z"
-                            fill="#337354" />
-                    </svg>
-                    <span id="selectedYear">{{ $tahun }}</span>
-                </div>
-
-                <div class="year-panel" id="yearPanel">
-                    <div class="year-header">
-                        <button id="prevYears">&lt;</button>
-                        <span id="yearRange">2020 - 2029</span>
-                        <button id="nextYears">&gt;</button>
+                        <span id="selectedYear">{{ $tahun }}</span>
                     </div>
-                    <div class="year-grid" id="yearGrid"></div>
+
+                    <div class="year-panel" id="yearPanel">
+                        <div class="year-header">
+                            <button id="prevYears">&lt;</button>
+                            <span id="yearRange">2020 - 2029</span>
+                            <button id="nextYears">&gt;</button>
+                        </div>
+                        <div class="year-grid" id="yearGrid"></div>
+                    </div>
                 </div>
+
+                <a href="#" class="download-btn">
+                    <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="50" height="50" rx="10" fill="#FCFCFC" />
+                        <path
+                            d="M38 29.3333V35.1111C38 35.8773 37.6956 36.6121 37.1539 37.1539C36.6121 37.6956 35.8773 38 35.1111 38H14.8889C14.1227 38 13.3879 37.6956 12.8461 37.1539C12.3044 36.6121 12 35.8773 12 35.1111V29.3333M17.7778 22.1111L25 29.3333M25 29.3333L32.2222 22.1111M25 29.3333V12"
+                            stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Download File</span>
+                </a>
             </div>
-        </div>  
+
+            <div class="report-controls-right">
+                <a href="{{ route('superadmin.indikator_mutu.create') }}" class="newindicator-btn">
+                    <svg width="45" height="46" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.6436 5.25H30.3564C33.5699 5.25004 36.0144 6.20395 37.6523 7.84375C39.2901 9.48351 40.2402 11.9278 40.2314 15.1406V30.8564C40.2314 34.0699 39.2772 36.5147 37.6367 38.1553C35.9962 39.7958 33.5513 40.7499 30.3379 40.75H14.6436C11.43 40.75 8.98513 39.7958 7.34473 38.1533C5.70437 36.5108 4.75008 34.0613 4.75 30.8379V15.1436C4.75004 11.93 5.7042 9.48526 7.34473 7.84473C8.88269 6.30677 11.1274 5.37163 14.0498 5.26074L14.6436 5.25Z"
+                            stroke="white" stroke-width="2" />
+                        <path
+                            d="M33.75 21.5938H23.9062V11.75C23.9062 10.9812 23.2688 10.3438 22.5 10.3438C21.7312 10.3438 21.0938 10.9812 21.0938 11.75V21.5938H11.25C10.4812 21.5938 9.84375 22.2312 9.84375 23C9.84375 23.7688 10.4812 24.4062 11.25 24.4062H21.0938V34.25C21.0938 35.0187 21.7312 35.6562 22.5 35.6562C23.2688 35.6562 23.9062 35.0187 23.9062 34.25V24.4062H33.75C34.5187 24.4062 35.1562 23.7688 35.1562 23C35.1562 22.2312 34.5187 21.5938 33.75 21.5938Z"
+                            fill="white" />
+                    </svg>
+                    <span>Tambah Indikator Baru</span>
+                </a>
+            </div>
+        </div>
 
 
         <!-- Category Selector -->
         <div class="category-selector">
             @php
-// Array mapping: Nama Lengkap => Singkatan
-$categoryMap = [
-'Indikator Mutu Prioritas Unit (IMPU)' => 'IMPU',
-'Indikator Nasional Mutu (INM)' => 'INM',
-'Indikator Mutu Prioritas RS (IMPRS)' => 'IMPRS'
-];
+                // Array mapping: Nama Lengkap => Singkatan
+                $categoryMap = [
+                    'Indikator Mutu Prioritas Unit (IMPU)' => 'IMPU',
+                    'Indikator Nasional Mutu (INM)' => 'INM',
+                    'Indikator Mutu Prioritas RS (IMPRS)' => 'IMPRS'
+                ];
 
-$categoryKeys = array_keys($categoryMap);
-$currentIndex = array_search($selectedKategori, $categoryKeys);
-if ($currentIndex === false)
-$currentIndex = 1;
+                $categoryKeys = array_keys($categoryMap);
+                $currentIndex = array_search($selectedKategori, $categoryKeys);
+                if ($currentIndex === false)
+                    $currentIndex = 1;
 
-$prevIndex = ($currentIndex - 1 + count($categoryKeys)) % count($categoryKeys);
-$nextIndex = ($currentIndex + 1) % count($categoryKeys);
+                $prevIndex = ($currentIndex - 1 + count($categoryKeys)) % count($categoryKeys);
+                $nextIndex = ($currentIndex + 1) % count($categoryKeys);
 
-// -- LOGIKA BARU UNTUK MENAMPILKAN 3 ITEM --
-// Buat array baru yang hanya berisi 3 kategori yang akan ditampilkan
-$displayCategories = [
-$categoryKeys[$prevIndex] => $categoryMap[$categoryKeys[$prevIndex]],
-$categoryKeys[$currentIndex] => $categoryMap[$categoryKeys[$currentIndex]],
-$categoryKeys[$nextIndex] => $categoryMap[$categoryKeys[$nextIndex]],
-];
+                // -- LOGIKA BARU UNTUK MENAMPILKAN 3 ITEM --
+                // Buat array baru yang hanya berisi 3 kategori yang akan ditampilkan
+                $displayCategories = [
+                    $categoryKeys[$prevIndex] => $categoryMap[$categoryKeys[$prevIndex]],
+                    $categoryKeys[$currentIndex] => $categoryMap[$categoryKeys[$currentIndex]],
+                    $categoryKeys[$nextIndex] => $categoryMap[$categoryKeys[$nextIndex]],
+                ];
             @endphp
 
             {{-- Link untuk panah kiri --}}

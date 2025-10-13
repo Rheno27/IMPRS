@@ -212,7 +212,7 @@
                 Dalam rangka survey kepuasan masyarakat terhadap pelayanan publik,
                 kami mohon partisipasi anda secara sukarela untuk menjawab pertanyaan berikut ini secara jujur.
             </p>
-            <a href="{{ route('guest.data_responden') }}" class="cta-button">
+            <a href="{{ route('guest.survei-1') }}" class="cta-button">
                 <span>Isi Survei</span>
                 <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
