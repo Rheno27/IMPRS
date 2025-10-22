@@ -356,6 +356,29 @@
             box-shadow: 0 0 0 2px rgba(51, 115, 84, 0.25);
         }
 
+        .alert-success {
+            color: var(--btn-save-bg);
+            /* Teks hijau tua */
+            background-color: var(--light-green-bg);
+            /* Latar hijau muda */
+            border-color: var(--primary-green);
+            /* Border hijau tua */
+        }
+
+        .alert-danger {
+            color: var(--btn-delete-bg);
+            /* Teks merah tua */
+            background-color: #fde2db;
+            /* Latar merah muda tipis */
+            border-color: #f5c2c7;
+            /* Border merah */
+        }
+
+        /* Ini untuk membuat tombol 'x' (close) di alert sukses jadi terlihat */
+        .alert-success .btn-close {
+            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 padding: 30px 15px;
@@ -519,7 +542,10 @@
     <main id="section-main" class="main-content">
 
         @if (session('success'))
-        <div class="alert alert-success mx-4"> {{ session('success') }} </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
         <div class="toolbar">
             <button class="add-button" type="button" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">

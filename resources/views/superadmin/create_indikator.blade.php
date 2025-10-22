@@ -361,6 +361,29 @@
             box-shadow: 0 0 0 2px rgba(51, 115, 84, 0.25);
         }
 
+        .alert-success {
+            color: var(--btn-save-bg);
+            /* Teks hijau tua */
+            background-color: var(--light-green-bg);
+            /* Latar hijau muda */
+            border-color: var(--primary-green);
+            /* Border hijau tua */
+        }
+
+        .alert-danger {
+            color: var(--btn-delete-bg);
+            /* Teks merah tua */
+            background-color: #fde2db;
+            /* Latar merah muda tipis */
+            border-color: #f5c2c7;
+            /* Border merah */
+        }
+
+        /* Ini untuk membuat tombol 'x' (close) di alert sukses jadi terlihat */
+        .alert-success .btn-close {
+            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 padding: 30px 15px;
@@ -521,19 +544,6 @@
 
 @section('content')
     <main id="section-main" class="main-content">
-        <div class="toolbar">
-            <button class="add-button" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
-                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M14.6436 4.25H30.3564C33.6695 4.25004 36.2539 5.23607 38.0068 6.99121C39.7594 8.74627 40.7405 11.3301 40.7314 14.6426V30.3564C40.7314 33.6694 39.7456 36.2534 37.9902 38.0088C36.2349 39.7642 33.6508 40.7499 30.3379 40.75H14.6436C11.3306 40.75 8.74655 39.7644 6.99121 38.0068C5.23585 36.2493 4.25008 33.6605 4.25 30.3379V14.6436C4.25004 11.3306 5.23581 8.74661 6.99121 6.99121C8.63696 5.34547 11.011 4.37641 14.0312 4.26172L14.6436 4.25Z"
-                        stroke="#337354" />
-                    <path
-                        d="M33.75 21.0938H23.9062V11.25C23.9062 10.4812 23.2688 9.84375 22.5 9.84375C21.7312 9.84375 21.0938 10.4812 21.0938 11.25V21.0938H11.25C10.4812 21.0938 9.84375 21.7312 9.84375 22.5C9.84375 23.2688 10.4812 23.9062 11.25 23.9062H21.0938V33.75C21.0938 34.5187 21.7312 35.1562 22.5 35.1562C23.2688 35.1562 23.9062 34.5187 23.9062 33.75V23.9062H33.75C34.5187 23.9062 35.1562 23.2688 35.1562 22.5C35.1562 21.7312 34.5187 21.0938 33.75 21.0938Z"
-                        fill="#337354" />
-                </svg>
-                <span>Tambah Indikator Baru</span>
-            </button>
-        </div>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -553,6 +563,19 @@
             </div>
         @endif
 
+        <div class="toolbar">
+            <button class="add-button" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
+                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M14.6436 4.25H30.3564C33.6695 4.25004 36.2539 5.23607 38.0068 6.99121C39.7594 8.74627 40.7405 11.3301 40.7314 14.6426V30.3564C40.7314 33.6694 39.7456 36.2534 37.9902 38.0088C36.2349 39.7642 33.6508 40.7499 30.3379 40.75H14.6436C11.3306 40.75 8.74655 39.7644 6.99121 38.0068C5.23585 36.2493 4.25008 33.6605 4.25 30.3379V14.6436C4.25004 11.3306 5.23581 8.74661 6.99121 6.99121C8.63696 5.34547 11.011 4.37641 14.0312 4.26172L14.6436 4.25Z"
+                        stroke="#337354" />
+                    <path
+                        d="M33.75 21.0938H23.9062V11.25C23.9062 10.4812 23.2688 9.84375 22.5 9.84375C21.7312 9.84375 21.0938 10.4812 21.0938 11.25V21.0938H11.25C10.4812 21.0938 9.84375 21.7312 9.84375 22.5C9.84375 23.2688 10.4812 23.9062 11.25 23.9062H21.0938V33.75C21.0938 34.5187 21.7312 35.1562 22.5 35.1562C23.2688 35.1562 23.9062 34.5187 23.9062 33.75V23.9062H33.75C34.5187 23.9062 35.1562 23.2688 35.1562 22.5C35.1562 21.7312 34.5187 21.0938 33.75 21.0938Z"
+                        fill="#337354" />
+                </svg>
+                <span>Tambah Indikator Baru</span>
+            </button>
+        </div>
         <div class="table-container">
             <h2 class="table-title">Penilaian Indikator Mutu di Ruang Nifas</h2>
             <div class="table-wrapper">
@@ -588,7 +611,8 @@
                                     <div class="table-cell col-standar">{{ $indikator->standar }}</div> {{-- DATA BARU --}}
                                     <div class="table-cell col-actions">
                                         <button class="action-btn btn-edit">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M18 18.3333H3C2.65833 18.3333 2.375 18.0499 2.375 17.7083C2.375 17.3666 2.65833 17.0833 3 17.0833H18C18.3417 17.0833 18.625 17.3666 18.625 17.7083C18.625 18.0499 18.3417 18.3333 18 18.3333Z"
                                                     fill="#DC5E3A" />
@@ -602,7 +626,8 @@
                                             Edit
                                         </button>
                                         <button class="action-btn btn-save">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M13.8327 7.49156V16.9582C13.8327 18.1666 12.966 18.6749 11.9077 18.0916L8.63269 16.2666C8.28269 16.0749 7.71601 16.0749 7.36601 16.2666L4.09101 18.0916C3.03268 18.6749 2.16602 18.1666 2.16602 16.9582V7.49156C2.16602 6.06656 3.33267 4.8999 4.75767 4.8999H11.241C12.666 4.8999 13.8327 6.06656 13.8327 7.49156Z"
                                                     fill="#FFC107" />
@@ -616,7 +641,8 @@
                                             Simpan
                                         </button>
                                         <button class="action-btn btn-delete">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M18.0574 4.35842C16.7157 4.22508 15.3741 4.12508 14.0241 4.05008V4.04175L13.8407 2.95841C13.7157 2.19175 13.5324 1.04175 11.5824 1.04175H9.39907C7.45741 1.04175 7.27407 2.14175 7.14074 2.95008L6.96574 4.01675C6.19074 4.06675 5.41574 4.11675 4.64074 4.19175L2.94074 4.35842C2.59074 4.39175 2.34074 4.70008 2.37407 5.04175C2.40741 5.38342 2.70741 5.63342 3.05741 5.60008L4.75741 5.43342C9.12407 5.00008 13.5241 5.16675 17.9407 5.60842C17.9657 5.60842 17.9824 5.60842 18.0074 5.60842C18.3241 5.60842 18.5991 5.36675 18.6324 5.04175C18.6574 4.70008 18.4074 4.39175 18.0574 4.35842Z"
                                                     fill="#FFC107" />

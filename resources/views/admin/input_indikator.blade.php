@@ -572,6 +572,9 @@
             background-color: #d1ecf1;
             border-color: #bee5eb;
         }
+        .alert-success .btn-close {
+            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
+        }
     </style>
 @endsection
 
