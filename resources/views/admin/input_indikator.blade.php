@@ -543,17 +543,47 @@
                 justify-content: flex-start;
             }
         }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 24px;
+            /* Samakan dengan 'gap' di main-content-section */
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            width: 100%;
+            /* Agar lebarnya sama dengan elemen lain */
+            box-sizing: border-box;
+            /* Penting agar padding tidak merusak layout */
+        }
+
+        .alert-success {
+            color: var(--save-btn-bg);
+            /* Pakai variabel warna 'save' kamu */
+            background-color: #d6e3dd;
+            /* Pakai variabel 'light-green-bg' */
+            border-color: var(--primary-green);
+            /* Pakai variabel 'primary-green' */
+        }
+
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
     </style>
 @endsection
 
 @section('content')
-    @if(session('info'))
-        <div class="alert alert-info">{{ session('info') }}</div>
-    @endif
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+
     <main id="main-content" class="main-content-section">
+        @if(session('info'))
+            <div class="alert alert-info">{{ session('info') }}</div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
         <div class="date-picker">
             <button type="button" id="calendarTrigger" class="calendar-btn" aria-label="Pilih tanggal">
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -759,7 +789,20 @@
 
         // Validasi sebelum submit (tidak ada perubahan di sini)
         document.querySelector('form').addEventListener('submit', function (e) {
-            // ... (logika validasi tetap sama)
+            let valid = true;
+            // Cek semua input indikator
+            document.querySelectorAll('.indicator-grid input[type="number"]').forEach(function (input) {
+                if (input.value === '' || input.value === null) {
+                    valid = false;
+                    input.style.borderColor = 'red';
+                } else {
+                    input.style.borderColor = '';
+                }
+            });
+            if (!valid) {
+                e.preventDefault();
+                alert('Semua indikator harus diisi!');
+            }
         });
     </script>
 @endpush
