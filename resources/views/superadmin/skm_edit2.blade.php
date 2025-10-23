@@ -563,7 +563,9 @@
                 </a>
             </div>
 
+
             <div class="survey-page-list">
+
                 {{-- LOOPING LANGSUNG KE PERTANYAAN --}}
                 @forelse ($surveyData as $pertanyaan)
                     <div class="question-block">
@@ -571,9 +573,12 @@
                             <div class="question-title-group">
                                 {{-- Menampilkan nomor urut pertanyaan --}}
                                 <h3 class="question-title">Pertanyaan {{ $loop->iteration }}</h3>
-                                <button class="toggle-btn icon" aria-label="Toggle Page">
-                                    <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <button class="icon">
+                                    <svg width="35" height="35" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
                                     </svg>
                                 </button>
                             </div>
@@ -656,11 +661,30 @@
                                         @foreach ($pertanyaan->pilihan as $pilihan)
                                             <div class="answer-option">
                                                 {{-- Generate huruf A, B, C, D --}}
-                                                <div class="option-letter">{{ chr(64 + $pilihan->nilai) }}</div>
-                                                {{-- Tampilkan teks pilihan --}}
+                                                <div class="option-letter">{{ chr(65 + $loop->index) }}</div> {{-- Tampilkan teks
+                                                pilihan --}}
                                                 <input type="text" class="form-input" value="{{ $pilihan->pilihan ?? '' }}">
                                                 <div class="action-icons">
-                                                    {{-- ... (Tombol Add & Delete untuk pilihan jawaban) ... --}}
+                                                    <button class="icon icon-btn">
+                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
+                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="icon icon-btn">
+                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
+                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
+                                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
+                                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -668,6 +692,7 @@
                                     </div>
                                 </div>
                             @endif
+                            {{-- Akhir dari if Pilihan Jawaban --}}
 
                         </div>
                     </div>
@@ -676,6 +701,7 @@
                         Belum ada pertanyaan survei yang dibuat di database.
                     </div>
                 @endforelse
+
             </div>
         </main>
 
@@ -707,9 +733,9 @@
                         menu = document.createElement('div');
                         menu.classList.add('custom-select-menu');
                         menu.innerHTML = `
-                    <div class="custom-select-option">Pilihan Ganda</div>
-                    <div class="custom-select-option">Isian Teks</div>
-                    `;
+                        <div class="custom-select-option">Pilihan Ganda</div>
+                        <div class="custom-select-option">Isian Teks</div>
+                        `;
                         this.appendChild(menu);
 
                         // Event klik untuk memilih opsi
