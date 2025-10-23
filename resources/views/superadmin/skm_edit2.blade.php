@@ -564,734 +564,118 @@
             </div>
 
             <div class="survey-page-list">
-                <!-- Page 1 -->
-                <article class="survey-page">
-                    <header class="page-header">
-                        <div class="page-title-group">
-                            <h2 class="page-title">Pelayanan Publik</h2>
-                            <button class="toggle-btn icon" aria-label="Toggle Page">
-                                <svg width="32" height="32" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="action-icons">
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                        transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                    <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path d="M10 20H30" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M20 30V10" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path
-                                        d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                        stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                        stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
-                    </header>
-                    <div class="page-content">
-                        <div class="question-list">
-                            <div class="question-block">
-                                <header class="question-header">
-                                    <div class="question-title-group">
-                                        <h3 class="question-title">Pertanyaan 1</h3>
-                                        <button class="icon">
-                                            <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="action-icons">
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                                    transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                                <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path
-                                                    d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </header>
-                                <div class="question-editor">
-                                    <div class="form-row">
-                                        <label class="form-label">Tipe Pertanyaan</label>
-                                        <div class="custom-select">
-                                            <span>Pilihan Ganda</span>
-                                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Isi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Deskripsi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row form-row-vertical">
-                                        <label class="form-label">Pilihan Jawaban</label>
-                                        <div class="answer-options-list">
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                {{-- LOOPING LANGSUNG KE PERTANYAAN --}}
+                @forelse ($surveyData as $pertanyaan)
+                    <div class="question-block">
+                        <header class="question-header">
+                            <div class="question-title-group">
+                                {{-- Menampilkan nomor urut pertanyaan --}}
+                                <h3 class="question-title">Pertanyaan {{ $loop->iteration }}</h3>
+                                <button class="toggle-btn icon" aria-label="Toggle Page">
+                                    <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="action-icons">
+                                <button class="icon icon-btn">
+                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
+                                            transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
+                                        <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="icon icon-btn">
+                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
+                                        <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="icon icon-btn">
+                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
+                                        <path d="M10 20H30" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path d="M20 30V10" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="icon icon-btn">
+                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
+                                        <path
+                                            d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
+                                            stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
+                                            stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </header>
+                        <div class="question-editor" style="display: block;"> {{-- Pastikan terbuka default --}}
+                            <div class="form-row">
+                                <label class="form-label">Tipe Pertanyaan</label>
+                                <div class="custom-select">
+                                    {{-- Tampilkan tipe dari controller --}}
+                                    <span>{{ $pertanyaan->tipe_pertanyaan }}</span>
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                             </div>
-                            <div class="question-block">
-                                <header class="question-header">
-                                    <div class="question-title-group">
-                                        <h3 class="question-title">Pertanyaan 2</h3>
-                                        <button class="icon">
-                                            <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="action-icons">
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                                    transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                                <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path
-                                                    d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </header>
-                                <div class="question-editor">
-                                    <div class="form-row">
-                                        <label class="form-label">Tipe Pertanyaan</label>
-                                        <div class="custom-select">
-                                            <span>Isian Teks</span>
-                                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Isi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Deskripsi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
+                            <div class="form-row">
+                                <label class="form-label">Isi Pertanyaan</label>
+                                {{-- Tampilkan teks pertanyaan --}}
+                                <input type="text" class="form-input" value="{{ $pertanyaan->pertanyaan ?? '' }}">
+                            </div>
+                            <div class="form-row">
+                                <label class="form-label">Deskripsi Pertanyaan</label>
+                                {{-- Kolom deskripsi sepertinya tidak ada di DB, kita kosongkan atau beri placeholder --}}
+                                <input type="text" class="form-input" value="{{-- $pertanyaan->deskripsi ?? '' --}}"
+                                    placeholder="(Opsional)">
+                            </div>
+
+                            {{-- Tampilkan pilihan HANYA jika tipenya bukan 'Isian Teks' --}}
+                            @if($pertanyaan->tipe_pertanyaan != 'Isian Teks' && $pertanyaan->pilihan->isNotEmpty())
+                                <div class="form-row form-row-vertical">
+                                    <label class="form-label">Pilihan Jawaban</label>
+                                    <div class="answer-options-list">
+
+                                        {{-- LOOPING PILIHAN JAWABAN --}}
+                                        @foreach ($pertanyaan->pilihan as $pilihan)
+                                            <div class="answer-option">
+                                                {{-- Generate huruf A, B, C, D --}}
+                                                <div class="option-letter">{{ chr(64 + $pilihan->nilai) }}</div>
+                                                {{-- Tampilkan teks pilihan --}}
+                                                <input type="text" class="form-input" value="{{ $pilihan->pilihan ?? '' }}">
+                                                <div class="action-icons">
+                                                    {{-- ... (Tombol Add & Delete untuk pilihan jawaban) ... --}}
+                                                </div>
+                                            </div>
+                                        @endforeach
+
                                     </div>
                                 </div>
-                            </div>
+                            @endif
+
                         </div>
                     </div>
-                </article>
-
-                <!-- Page 2 -->
-                <article class="survey-page">
-                    <header class="page-header">
-                        <div class="page-title-group">
-                            <h2 class="page-title">Keselamatan Pasien</h2>
-                            <button class="toggle-btn icon" aria-label="Toggle Page">
-                                <svg width="35" height="35" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="action-icons">
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                        transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                    <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path d="M10 20H30" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M20 30V10" stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <button class="icon icon-btn">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                    <path
-                                        d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                        stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                        stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
-                    </header>
-                    <div class="page-content">
-                        <div class="question-list">
-                            <div class="question-block">
-                                <header class="question-header">
-                                    <div class="question-title-group">
-                                        <h3 class="question-title">Pertanyaan 1</h3>
-                                        <button class="icon">
-                                            <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="action-icons">
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                                    transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                                <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path
-                                                    d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </header>
-                                <div class="question-editor">
-                                    <div class="form-row">
-                                        <label class="form-label">Tipe Pertanyaan</label>
-                                        <div class="custom-select">
-                                            <span>Pilihan Ganda</span>
-                                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Isi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Deskripsi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row form-row-vertical">
-                                        <label class="form-label">Pilihan Jawaban</label>
-                                        <div class="answer-options-list">
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="answer-option">
-                                                <div class="option-letter">A</div>
-                                                <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                                <div class="action-icons">
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="icon icon-btn">
-                                                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
-                                                                stroke="#337354" />
-                                                            <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="question-block">
-                                <header class="question-header">
-                                    <div class="question-title-group">
-                                        <h3 class="question-title">Pertanyaan 2</h3>
-                                        <button class="icon">
-                                            <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 15L20 25L30 15" stroke="#337354" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="action-icons">
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
-                                                    transform="matrix(1 0 0 -1 0 39)" stroke="#337354" />
-                                                <path d="M14.1172 22.1001L20.0005 16.2334L25.8839 22.1001" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M14.1172 17.8999L20.0005 23.7666L25.8839 17.8999" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M20 30V10" stroke="#337354" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path
-                                                    d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                                    stroke="#337354" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <button class="icon icon-btn">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                                <path d="M12.9277 27.071L27.0699 12.9289" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M27.0699 27.0711L12.9277 12.929" stroke="#337354"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </header>
-                                <div class="question-editor">
-                                    <div class="form-row">
-                                        <label class="form-label">Tipe Pertanyaan</label>
-                                        <div class="custom-select">
-                                            <span>Isian Teks</span>
-                                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Isi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                    <div class="form-row">
-                                        <label class="form-label">Deskripsi Pertanyaan</label>
-                                        <input type="text" class="form-input" value="SURVEI KEPUASAN MASYARAKAT">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                @empty
+                    <div class="alert alert-info" style="margin: 20px; text-align: center;">
+                        Belum ada pertanyaan survei yang dibuat di database.
                     </div>
-                </article>
-
+                @endforelse
             </div>
         </main>
 
@@ -1323,9 +707,9 @@
                         menu = document.createElement('div');
                         menu.classList.add('custom-select-menu');
                         menu.innerHTML = `
-            <div class="custom-select-option">Pilihan Ganda</div>
-            <div class="custom-select-option">Isian Teks</div>
-            `;
+                    <div class="custom-select-option">Pilihan Ganda</div>
+                    <div class="custom-select-option">Isian Teks</div>
+                    `;
                         this.appendChild(menu);
 
                         // Event klik untuk memilih opsi

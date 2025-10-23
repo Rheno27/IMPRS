@@ -38,9 +38,7 @@ Route::get('/superadmin/edit_survei', function () {
 })->name('superadmin.data_user');
 Route::get('/superadmin/skm/rekap', [SkmController::class, 'index'])->name('superadmin.skm_rekap');
 Route::get('/superadmin/skm/hasil', [SkmController::class, 'hasil'])->name('superadmin.skm_hasil');
-Route::get('/superadmin/skm/edit2', function () {
-    return view('superadmin.skm_edit2');
-})->name('superadmin.skm_edit2');
+Route::get('/superadmin/skm/edit2', [SkmController::class, 'editPertanyaan'])->name('superadmin.skm_edit2');
 
 // User Routes
 Route::get('/SKM/dashboard', function () {

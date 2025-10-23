@@ -124,6 +124,48 @@ class SkmController extends Controller
         //
     }
 
+    /**
+     * Show the form for editing the survey questions.
+     */
+    public function editPertanyaan()
+    {
+        // 1. Ambil semua pertanyaan survei (pertanyaan 1-15 + 16 untuk kritik/saran)
+        // Saya asumsikan tabelnya bernama 'pertanyaan'
+        $dataPertanyaan = DB::table('pertanyaan')
+            ->orderBy('id_pertanyaan') // Urutkan berdasarkan ID
+            ->get();
+
+        // 2. Ambil semua pilihan jawaban dan kelompokkan berdasarkan id_pertanyaan
+        // Saya asumsikan tabelnya bernama 'pilihan_jawaban'
+        $dataPilihan = DB::table('pilihan_jawaban')
+            ->orderBy('id_pertanyaan')
+            ->orderBy('nilai') // Urutkan pilihan berdasarkan nilai (A, B, C, D)
+            ->get()
+            ->groupBy('id_pertanyaan');
+
+        // 3. Gabungkan pertanyaan dengan pilihan jawabannya
+        $surveyData = $dataPertanyaan->map(function ($pertanyaan) use ($dataPilihan) {
+            // Lampirkan pilihan jawaban ke pertanyaan ini
+            // Jika tidak ada pilihan (misal: isian teks), akan jadi collection kosong
+            $pertanyaan->pilihan = $dataPilihan->get($pertanyaan->id_pertanyaan, collect());
+
+            // Tambahkan asumsi tipe pertanyaan berdasarkan ID (bisa disesuaikan)
+            if ($pertanyaan->id_pertanyaan == 16) { // ID 16 biasanya untuk Kritik/Saran
+                $pertanyaan->tipe_pertanyaan = 'Isian Teks';
+            } else {
+                $pertanyaan->tipe_pertanyaan = 'Pilihan Ganda'; // Asumsi default
+            }
+
+            return $pertanyaan;
+        });
+
+        // 4. Kirim data yang sudah tersusun ke view
+        return view('superadmin.skm_edit2', compact('surveyData'));
+    }
+
+    /**
+     * Display the survey results with charts and lists.
+     */
     public function hasil()
     {
         // === 1. DATA DASAR ===
