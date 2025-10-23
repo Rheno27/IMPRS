@@ -30,7 +30,8 @@ Route::post('/superadmin/ruangan/update-indikator', [IndikatorRuanganController:
 Route::post('/superadmin/ruangan/add-indikator', [IndikatorRuanganController::class, 'store'])->name('superadmin.ruangan.add_indikator');
 Route::get('/superadmin/indikator-mutu/create', [IndikatorMutuController::class, 'create'])->name('superadmin.indikator_mutu.create');
 Route::post('/superadmin/indikator-mutu', [IndikatorMutuController::class, 'store'])->name('superadmin.indikator_mutu.store');
-
+Route::delete('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'destroy'])->name('superadmin.indikator_mutu.destroy');
+Route::put('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'update'])->name('superadmin.indikator_mutu.update');
 
 Route::get('/superadmin/edit_survei', function () {
     return view('superadmin.edit_survei');

@@ -551,6 +551,13 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Terjadi Kesalahan!</strong>
@@ -610,9 +617,9 @@
                                     <div class="table-cell col-type">{{ $indikator->kategori }}</div>
                                     <div class="table-cell col-standar">{{ $indikator->standar }}</div> {{-- DATA BARU --}}
                                     <div class="table-cell col-actions">
-                                        <button class="action-btn btn-edit">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                        <button type="button" class="action-btn btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#editModal-{{ $indikator->id_indikator }}">
+                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M18 18.3333H3C2.65833 18.3333 2.375 18.0499 2.375 17.7083C2.375 17.3666 2.65833 17.0833 3 17.0833H18C18.3417 17.0833 18.625 17.3666 18.625 17.7083C18.625 18.0499 18.3417 18.3333 18 18.3333Z"
                                                     fill="#DC5E3A" />
@@ -625,7 +632,7 @@
                                             </svg>
                                             Edit
                                         </button>
-                                        <button class="action-btn btn-save">
+                                        <!-- <button class="action-btn btn-save">
                                             <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -639,8 +646,10 @@
                                                     fill="#337354" />
                                             </svg>
                                             Simpan
+                                        </button> -->
                                         </button>
-                                        <button class="action-btn btn-delete">
+                                        <button type="button" class="action-btn btn-delete" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal-{{ $indikator->id_indikator }}">
                                             <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -667,6 +676,8 @@
             </div>
         </div>
     </main>
+
+    {{-- Modal Tambah Indikator --}}
     <div class="modal fade" id="addIndicatorModal" tabindex="-1" aria-labelledby="addIndicatorModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -717,8 +728,137 @@
             </div>
         </div>
     </div>
+
+    @foreach ($indikators as $items)
+        @foreach ($items as $indikator)
+            {{-- Modal Hapus Indikator --}}
+            <div class="modal fade" id="deleteModal-{{ $indikator->id_indikator }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel-{{ $indikator->id_indikator }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ $indikator->id_indikator }}">Konfirmasi Hapus Indikator
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Anda yakin ingin menghapus indikator ini secara permanen?</p>
+                            <p><strong>Variabel:</strong> {{ $indikator->variabel }}</p>
+                            <p class="text-danger">Tindakan ini tidak dapat dibatalkan.</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{-- Form ini akan mengirim request DELETE ke controller --}}
+                            <form action="{{ route('superadmin.indikator_mutu.destroy', $indikator->id_indikator) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Modal Edit Indikator --}}
+            <div class="modal fade" id="editModal-{{ $indikator->id_indikator }}" tabindex="-1"
+            aria-labelledby="editModalLabel-{{ $indikator->id_indikator }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel-{{ $indikator->id_indikator }}">Formulir Edit Indikator Mutu
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        {{-- Form ini akan dikirim ke method 'update' --}}
+                        <form class="edit-indicator-form"
+                            action="{{ route('superadmin.indikator_mutu.update', $indikator->id_indikator) }}"
+                            method="POST"
+                            {{-- Simpan data asli di sini untuk validasi JS --}}
+                            data-original-kategori="{{ $indikator->id_kategori }}"
+                            data-original-variabel="{{ $indikator->variabel }}"
+                            data-original-standar="{{ $indikator->standar }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body">
+                                {{-- Dropdown Kategori (Pre-selected) --}}
+                                <div class="mb-3">
+                                    <label for="id_kategori_{{ $indikator->id_indikator }}"
+                                        class="form-label"><strong>Jenis Indikator (Kategori)</strong></label>
+                                    <select class="form-select" id="id_kategori_{{ $indikator->id_indikator }}"
+                                        name="id_kategori" required>
+                                        <option value="" disabled>-- Pilih Jenis Indikator --</option>
+                                        {{-- Loop semua kategori --}}
+                                        @foreach ($kategoris as $kategori)
+                                            <option value="{{ $kategori->id_kategori }}"
+                                                {{-- Pilih (selected) jika ID-nya cocok --}}
+                                                {{ $kategori->id_kategori == $indikator->id_kategori ? 'selected' : '' }}>
+                                                {{ $kategori->kategori }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                {{-- Input Variabel (Pre-filled) --}}
+                                <div class="mb-3">
+                                    <label for="variabel_{{ $indikator->id_indikator }}"
+                                        class="form-label"><strong>Variabel Penilaian</strong></label>
+                                    <input type="text" class="form-control" id="variabel_{{ $indikator->id_indikator }}"
+                                        name="variabel" value="{{ $indikator->variabel }}" required>
+                                </div>
+
+                                {{-- Textarea Standar (Pre-filled) --}}
+                                <div class="mb-3">
+                                    <label for="standar_{{ $indikator->id_indikator }}"
+                                        class="form-label"><strong>Standar</strong></label>
+                                    <textarea class="form-control" id="standar_{{ $indikator->id_indikator }}" name="standar" rows="3"
+                                        required>{{ $indikator->standar }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success"
+                                    style="background-color: var(--primary-green);">Simpan Perubahan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
 @endsection
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Ambil SEMUA form edit
+            const editForms = document.querySelectorAll('.edit-indicator-form');
+
+            // 2. Loop setiap form dan tambahkan event listener 'submit'
+            editForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    // Ambil data asli dari atribut data-*
+                    const originalKategori = form.dataset.originalKategori;
+                    const originalVariabel = form.dataset.originalVariabel;
+                    const originalStandar = form.dataset.originalStandar;
+
+                    // Ambil data baru dari input
+                    const currentKategori = form.querySelector('select[name="id_kategori"]').value;
+                    const currentVariabel = form.querySelector('input[name="variabel"]').value;
+                    const currentStandar = form.querySelector('textarea[name="standar"]').value;
+
+                    // 3. Bandingkan
+                    // .trim() untuk menghapus spasi di awal/akhir
+                    if (originalKategori === currentKategori &&
+                        originalVariabel.trim() === currentVariabel.trim() &&
+                        originalStandar.trim() === currentStandar.trim()) {
+                        // 4. Jika tidak ada perubahan, batalkan submit dan beri peringatan
+                        event.preventDefault();
+                        alert('Harus ada minimal 1 perubahan untuk menyimpan data.');
+                    }
+                    // 5. Jika ada perubahan, form akan tersubmit secara normal
+                });
+            });
+        });
+    </script>
 @endpush
