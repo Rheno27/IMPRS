@@ -562,15 +562,10 @@
                             <div id="calendarPanel" class="calendar-panel" role="dialog" aria-hidden="true">
                                 <div class="calendar-header">
                                     <button id="prevYear" aria-label="Tahun Sebelumnya">‹</button>
-                                    <span id="calendarYear">2025</span>
+                                    <span id="calendarYear"></span>
                                     <button id="nextYear" aria-label="Tahun Berikutnya">›</button>
                                 </div>
-                                <div class="calendar-months">
-                                    <button>Jan</button><button>Feb</button><button>Mar</button>
-                                    <button>Apr</button><button>Mei</button><button>Jun</button>
-                                    <button>Jul</button><button class="active">Agu</button><button>Sep</button>
-                                    <button>Okt</button><button>Nov</button><button>Des</button>
-                                </div>
+                                <div class="calendar-months"></div>
                             </div>
                         </div>
                     </div>
@@ -592,7 +587,7 @@
                 <div class="table-container">
                     <div class="table-header-group">
                         <div class="table-main-title">REKAPITULASI SURVEY KEPUASAN MASYARAKAT</div>
-                        <div class="table-sub-title">{{ \Carbon\Carbon::create()->month($selectedMonth)->isoFormat('MMMM') }}
+                        <div class="table-sub-title">{{ \Carbon\Carbon::create($selectedYear, $selectedMonth, 1)->isoFormat('MMMM') }}
                             {{ $selectedYear }}
                         </div>
                         <div class="table-sub-title">RSD KALISAT</div>
@@ -637,11 +632,11 @@
                                     <td style="font-weight: bold;">
                                         {{-- Hitung rata-rata dari total nilai IKM --}}
                                         @php
-$rataRataIKMTotal = 0;
-if (count($dataRekap) > 0) {
-    $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
-    $rataRataIKMTotal = $totalIKM / count($dataRekap);
-}
+                                            $rataRataIKMTotal = 0;
+                                            if (count($dataRekap) > 0) {
+                                                $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
+                                                $rataRataIKMTotal = $totalIKM / count($dataRekap);
+                                            }
                                         @endphp
                                         {{ number_format($rataRataIKMTotal, 2) }}
                                     </td>
@@ -658,9 +653,11 @@ if (count($dataRekap) > 0) {
     <script>
         (function () {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const now = new Date();
-            let currentYear = now.getFullYear();
-            let currentMonth = now.getMonth();
+
+            // 1. Inisialisasi state dari data PHP yang dikirim controller
+            let currentYear = {{ $selectedYear }};
+            // Bulan dari PHP adalah 1-12, di JS adalah 0-11
+            let currentMonthIndex = {{ $selectedMonth }} - 1; 
 
             const monthYearEl = document.getElementById('monthYear');
             const panel = document.getElementById('calendarPanel');
@@ -673,19 +670,31 @@ if (count($dataRekap) > 0) {
             function renderMonths() {
                 yearEl.textContent = currentYear;
                 monthsContainer.innerHTML = "";
-                monthNames.forEach((m, i) => {
+                monthNames.forEach((m, index) => {
                     const b = document.createElement('button');
                     b.textContent = m;
-                    if (i === currentMonth && currentYear === now.getFullYear()) b.classList.add('active');
+
+                    // Tandai bulan yang sedang aktif
+                    if (index === currentMonthIndex) {
+                        b.classList.add('active');
+                    }
+
+                    // 2. BAGIAN UTAMA YANG DIPERBAIKI:
+                    // Tambahkan event listener yang akan me-reload halaman
                     b.addEventListener('click', () => {
-                        currentMonth = i;
-                        monthYearEl.textContent = monthNames[currentMonth] + " " + currentYear;
-                        panel.classList.remove('open');
+                        const selectedMonth = index + 1; // Konversi ke format 1-12 untuk URL
+                        // Pastikan nama route-nya benar
+                        const baseUrl = "{{ route('superadmin.skm_rekap') }}"; 
+
+                        // Arahkan browser ke URL baru dengan parameter bulan dan tahun
+                        // Controller akan menangkap 'month' dan 'year' ini
+                        window.location.href = `${baseUrl}?month=${selectedMonth}&year=${currentYear}`;
                     });
                     monthsContainer.appendChild(b);
                 });
             }
 
+            // Navigasi tahun (ini hanya mengubah state, tidak reload)
             prevYearBtn.addEventListener('click', () => {
                 currentYear--;
                 renderMonths();
@@ -695,21 +704,26 @@ if (count($dataRekap) > 0) {
                 renderMonths();
             });
 
+            // Buka/tutup panel
             btn.addEventListener('click', (ev) => {
                 ev.stopPropagation();
                 panel.classList.toggle('open');
-                renderMonths();
+                // Render pilihan bulan hanya saat panel dibuka
+                if (panel.classList.contains('open')) {
+                    renderMonths();
+                }
             });
 
+            // Tutup panel jika klik di area lain
             document.addEventListener('click', (e) => {
                 if (!panel.contains(e.target) && !btn.contains(e.target)) {
                     panel.classList.remove('open');
                 }
             });
 
-            // default init
-            monthYearEl.textContent = monthNames[currentMonth] + " " + currentYear;
+            // 3. Inisialisasi teks pada tombol utama saat halaman dimuat
+            // Ini akan menampilkan "Agustus 2025" (atau bulan apa pun yang dipilih)
+            monthYearEl.textContent = monthNames[currentMonthIndex] + " " + currentYear;
         })();
-
     </script>
 @endpush
