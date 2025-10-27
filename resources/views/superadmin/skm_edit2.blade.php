@@ -559,7 +559,7 @@
                     </div>
                 @endif
                 <div class="view-survey-wrapper">
-                    <a href="#" class="view-survey-btn">
+                    <a href="{{ route('guest.survei-1') }}" target="_blank" rel="noopener noreferrer" class="view-survey-btn">
                         <svg width="30" height="30" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M32.4577 25.0001C32.4577 29.1251 29.1243 32.4584 24.9993 32.4584C20.8743 32.4584 17.541 29.1251 17.541 25.0001C17.541 20.8751 20.8743 17.5417 24.9993 17.5417C29.1243 17.5417 32.4577 20.8751 32.4577 25.0001Z"

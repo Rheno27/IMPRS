@@ -294,7 +294,7 @@ class SkmController extends Controller
             ->whereNotNull('hasil_nilai')
             ->pluck('hasil_nilai');
 
-        // === 3. DATA UNTUK CHARTS ===
+        // === 3. DATA UNTUK CHARTS DEMOGRAFI ===
 
         // Chart Nama Ruangan
         $ruanganData = DB::table('bio_pasien as bp')
@@ -330,33 +330,44 @@ class SkmController extends Controller
             'data' => $pekerjaanData->values()
         ];
 
-        // Chart Pertanyaan Pelayanan Publik (Asumsi id_pertanyaan = 10)
-        $pelayananData = DB::table('jawaban as j')
-            ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
-            ->where('j.id_pertanyaan', 10)
-            ->select('pj.pilihan', DB::raw('count(*) as total'))
-            ->groupBy('pj.pilihan')
-            ->pluck('total', 'pj.pilihan');
+        // === 4. DATA BARU UNTUK SEMUA PERTANYAAN SURVEI (1-15) ===
 
-        $pelayananChart = [
-            'labels' => $pelayananData->keys(),
-            'data' => $pelayananData->values()
-        ];
+        // Ambil semua pertanyaan (asumsi 1-15 adalah Pilihan Ganda SKM)
+        $pertanyaanSurvei = DB::table('pertanyaan')
+            ->where('id_pertanyaan', '<=', 15)
+            ->orderBy('id_pertanyaan')
+            ->get();
 
-        // Chart Pertanyaan Keselamatan Pasien (Asumsi id_pertanyaan = 11)
-        $keselamatanData = DB::table('jawaban as j')
-            ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
-            ->where('j.id_pertanyaan', 11)
-            ->select('pj.pilihan', DB::raw('count(*) as total'))
-            ->groupBy('pj.pilihan')
-            ->pluck('total', 'pj.pilihan');
+        $allSurveyCharts = [];
 
-        $keselamatanChart = [
-            'labels' => $keselamatanData->keys(),
-            'data' => $keselamatanData->values()
-        ];
+        foreach ($pertanyaanSurvei as $pertanyaan) {
+            // Query data jawaban untuk pertanyaan ini
+            $data = DB::table('jawaban as j')
+                ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
+                ->where('j.id_pertanyaan', $pertanyaan->id_pertanyaan)
+                ->whereIn('j.id_pasien', $respondenIds) // Jika $respondenIds kosong, ini akan jadi '0 = 1'
 
-        // === 4. KIRIM SEMUA DATA KE VIEW ===
+                // --- PERBAIKAN DI SINI ---
+                // Kita harus SELECT dan GROUP BY kedua kolom (pilihan dan nilai)
+                ->select('pj.pilihan', 'pj.nilai', DB::raw('count(*) as total'))
+                ->groupBy('pj.pilihan', 'pj.nilai')
+                // --- AKHIR PERBAIKAN ---
+
+                ->orderBy('pj.nilai') // Sekarang orderBy ini valid
+                ->pluck('total', 'pilihan');
+
+            // Simpan data untuk dikirim ke view
+            $allSurveyCharts[] = [
+                'id_pertanyaan' => $pertanyaan->id_pertanyaan,
+                'pertanyaan_text' => $pertanyaan->pertanyaan,
+                'chart' => [
+                    'labels' => $data->keys(),
+                    'data' => $data->values()
+                ]
+            ];
+        }
+
+        // === 5. KIRIM SEMUA DATA KE VIEW ===
         return view('superadmin.skm_hasil', compact(
             'totalResponden',
             'listNoRm',
@@ -366,8 +377,7 @@ class SkmController extends Controller
             'jenisKelaminChart',
             'pendidikanChart',
             'pekerjaanChart',
-            'pelayananChart',
-            'keselamatanChart'
+            'allSurveyCharts' // <-- Variabel baru yang berisi semua data chart
         ));
     }
 }

@@ -262,6 +262,7 @@
             flex-direction: column;
             gap: 6px;
             max-height: 180px;
+            /* Ini akan di-override oleh JS */
             overflow: hidden;
         }
 
@@ -443,7 +444,8 @@
                         @endforelse
                     </ul>
                     @if($listNoRm->count() > 10)
-                        <a class="view-more-link">Lihat Selengkapnya</a>
+                        {{-- Tambahkan data-limit untuk dibaca JS --}}
+                        <a class="view-more-link" data-limit="10">Lihat Selengkapnya</a>
                     @endif
                 </div>
             </article>
@@ -463,7 +465,8 @@
                         @endforelse
                     </ul>
                     @if($listUmur->count() > 5)
-                        <a class="view-more-link">Lihat Selengkapnya</a>
+                        {{-- Tambahkan data-limit untuk dibaca JS --}}
+                        <a class="view-more-link" data-limit="5">Lihat Selengkapnya</a>
                     @endif
                 </div>
             </article>
@@ -500,7 +503,8 @@
                     <div class="legend-column">
                         @foreach($jenisKelaminChart['labels'] as $label)
                             <div class="legend-item"><span class="legend-swatch"
-                                    style="background-color: var(--chart-color-{{$loop->iteration * 5}});"></span>{{ $label }}</div>
+                                    style="background-color: var(--chart-color-{{$loop->iteration * 5}});"></span>{{ $label }}
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -544,49 +548,41 @@
         </div>
     </section>
 
-    <section id="pelayanan-publik" class="survey-section">
-        <h2 class="section-title-banner">Pelayanan Publik</h2>
+    {{-- ======================================================= --}}
+    {{-- === BAGIAN INI BARU DAN MENGGANTIKAN 2 SECTION LAMA === --}}
+    {{-- ======================================================= --}}
+    <section id="hasil-survei" class="survey-section">
+        <h2 class="section-title-banner">Hasil Survei</h2>
         <div class="cards-wrapper">
-            <article class="data-card">
-                <header class="card-header">
-                    <h3 class="card-title">Pertanyaan 1 Pelayanan Publik</h3>
-                    <span class="card-answer-count">{{ $totalResponden }} Jawaban</span>
-                </header>
-                <div class="card-body chart-card-body">
-                    <div class="chart-container">
-                        <canvas id="pelayananPublik1Chart" class="pie-chart"></canvas>
-                    </div>
-                    <div class="legend-column">
-                        @foreach($pelayananChart['labels'] as $label)
-                            <div class="legend-item"><span class="legend-swatch"
-                                    style="background-color: var(--chart-color-{{$loop->iteration * 5}});"></span>{{ $label }}</div>
-                        @endforeach
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
 
-    <section id="keselamatan-pasien" class="survey-section">
-        <h2 class="section-title-banner">Keselamatan Pasien</h2>
-        <div class="cards-wrapper">
-            <article class="data-card">
-                <header class="card-header">
-                    <h3 class="card-title">Pertanyaan 1 Keselamatan Pasien </h3>
-                    <span class="card-answer-count">{{ $totalResponden }} Jawaban</span>
-                </header>
-                <div class="card-body chart-card-body">
-                    <div class="chart-container">
-                        <canvas id="keselamatanPasien1Chart" class="pie-chart"></canvas>
+            {{-- LOOPING SEMUA PERTANYAAN 1-15 --}}
+            @foreach($allSurveyCharts as $item)
+                <article class="data-card">
+                    <header class="card-header">
+                        {{-- Tampilkan Pertanyaan sebagai Judul --}}
+                        <h3 class="card-title">Pertanyaan {{ $loop->iteration }}: {{ $item['pertanyaan_text'] }}</h3>
+                        <span class="card-answer-count">{{ $totalResponden }} Jawaban</span>
+                    </header>
+                    <div class="card-body chart-card-body">
+                        <div class="chart-container">
+                            {{-- Buat ID Canvas unik berdasarkan ID Pertanyaan --}}
+                            <canvas id="surveyChart{{ $item['id_pertanyaan'] }}" class="pie-chart"></canvas>
+                        </div>
+                        <div class="legend-column">
+                            {{-- Loop Pilihan Jawaban (A, B, C, D) --}}
+                            @foreach($item['chart']['labels'] as $label)
+                                <div class="legend-item"><span class="legend-swatch"
+                                        style="background-color: var(--chart-color-{{$loop->iteration * 5}});"></span>{{ $label }}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                    <div class="legend-column">
-                        @foreach($keselamatanChart['labels'] as $label)
-                            <div class="legend-item"><span class="legend-swatch"
-                                    style="background-color: var(--chart-color-{{$loop->iteration * 5}});"></span>{{ $label }}</div>
-                        @endforeach
-                    </div>
-                </div>
-            </article>
+                </article>
+            @endforeach
+            {{-- AKHIR LOOPING --}}
+
+
+            {{-- Card Kritik dan Saran dipindah ke sini --}}
             <article class="data-card">
                 <header class="card-header">
                     <h3 class="card-title">Silahkan berikan kritik dan saran</h3>
@@ -601,12 +597,18 @@
                         @endforelse
                     </ul>
                     @if($listKritikSaran->count() > 10)
-                        <a class="view-more-link">Lihat Selengkapnya</a>
+                        {{-- Tambahkan data-limit untuk dibaca JS --}}
+                        <a class="view-more-link" data-limit="10">Lihat Selengkapnya</a>
                     @endif
                 </div>
             </article>
+
         </div>
     </section>
+    {{-- ============================= --}}
+    {{-- === AKHIR BAGIAN BARU === --}}
+    {{-- ============================= --}}
+
 @endsection
 
 @push('scripts')
@@ -621,32 +623,23 @@
         }
 
         const chartColors = [
-            getCSSVar('--chart-color-1'),
-            getCSSVar('--chart-color-2'),
-            getCSSVar('--chart-color-3'),
-            getCSSVar('--chart-color-4'),
-            getCSSVar('--chart-color-5'),
-            getCSSVar('--chart-color-6'),
-            getCSSVar('--chart-color-7'),
-            getCSSVar('--chart-color-8'),
-            getCSSVar('--chart-color-9'),
-            getCSSVar('--chart-color-10'),
-            getCSSVar('--chart-color-11'),
-            getCSSVar('--chart-color-12'),
-            getCSSVar('--chart-color-13'),
-            getCSSVar('--chart-color-14'),
-            getCSSVar('--chart-color-15'),
-            getCSSVar('--chart-color-16'),
-            getCSSVar('--chart-color-17'),
-            getCSSVar('--chart-color-18'),
-            getCSSVar('--chart-color-19'),
-            getCSSVar('--chart-color-20')
+            getCSSVar('--chart-color-1'), getCSSVar('--chart-color-2'),
+            getCSSVar('--chart-color-3'), getCSSVar('--chart-color-4'),
+            getCSSVar('--chart-color-5'), getCSSVar('--chart-color-6'),
+            getCSSVar('--chart-color-7'), getCSSVar('--chart-color-8'),
+            getCSSVar('--chart-color-9'), getCSSVar('--chart-color-10'),
+            getCSSVar('--chart-color-11'), getCSSVar('--chart-color-12'),
+            getCSSVar('--chart-color-13'), getCSSVar('--chart-color-14'),
+            getCSSVar('--chart-color-15'), getCSSVar('--chart-color-16'),
+            getCSSVar('--chart-color-17'), getCSSVar('--chart-color-18'),
+            getCSSVar('--chart-color-19'), getCSSVar('--chart-color-20')
         ];
 
         // ====================
         // === Nama Ruangan ===
         // ====================
         const namaRuanganCtx = document.getElementById('namaRuanganChart');
+        if (namaRuanganCtx) {
             new Chart(namaRuanganCtx, {
                 type: 'pie',
                 data: {
@@ -657,135 +650,102 @@
                         borderWidth: 1, borderColor: '#fff'
                     }]
                 },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
-                    }
-                }
-            }
-        });
+                options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed} pasien` } } } }
+            });
+        }
 
         // ======================
         // === Jenis Kelamin ====
         // ======================
         const jenisKelaminCtx = document.getElementById('jenisKelaminChart');
+        if (jenisKelaminCtx) {
             new Chart(jenisKelaminCtx, {
                 type: 'pie',
                 data: {
                     labels: @json($jenisKelaminChart['labels']),
                     datasets: [{
                         data: @json($jenisKelaminChart['data']),
-                        backgroundColor: [chartColors[4], chartColors[14]],
+                        backgroundColor: [chartColors[4], chartColors[9]], 
                         borderWidth: 1, borderColor: '#fff'
                     }]
                 },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
-                    }
-                }
-            }
-        });
+                options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed} pasien` } } } }
+            });
+        }
 
         // =============================
         // === Pendidikan Terakhir =====
         // =============================
         const pendidikanCtx = document.getElementById('pendidikanTerakhirChart');
-        new Chart(pendidikanCtx, {
-            type: 'pie',
-            data: {
-                labels: @json($pendidikanChart['labels']),
-                datasets: [{
-                    data: @json($pendidikanChart['data']),
-                    backgroundColor: chartColors.slice(0, {{ count($pendidikanChart['data']) }}),
-                    borderWidth: 1, borderColor: '#fff'
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
-                    }
-                }
-            }
-        });
+        if (pendidikanCtx) {
+            new Chart(pendidikanCtx, {
+                type: 'pie',
+                data: {
+                    labels: @json($pendidikanChart['labels']),
+                    datasets: [{
+                        data: @json($pendidikanChart['data']),
+                        backgroundColor: chartColors.slice(0, {{ count($pendidikanChart['data']) }}),
+                        borderWidth: 1, borderColor: '#fff'
+                    }]
+                },
+                options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed} pasien` } } } }
+            });
+        }
 
         // =================
         // === Pekerjaan ===
         // =================
         const pekerjaanCtx = document.getElementById('pekerjaanChart');
+        if (pekerjaanCtx) {
             new Chart(pekerjaanCtx, {
                 type: 'pie',
                 data: {
-                    labels: @json($pekerjaanChart['labels']),
+                    data: @json($pekerjaanChart['data']),
                     datasets: [{
                         data: @json($pekerjaanChart['data']),
-                        backgroundColor: chartColors.slice(8, 8 + {{ count($pekerjaanChart['data']) }}),
+                        backgroundColor: chartColors.slice(0, {{ count($pekerjaanChart['data']) }}), // <--- GANTI WARNANYA
                         borderWidth: 1, borderColor: '#fff'
                     }]
                 },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
+                options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed} pasien` } } } }
+            });
+        }
+
+        // ===================================
+        // === BARU: HASIL SURVEI (1-15) =====
+        // ===================================
+        const allSurveyChartsData = @json($allSurveyCharts);
+
+        allSurveyChartsData.forEach((chartData, index) => {
+            const ctx = document.getElementById(`surveyChart${chartData.id_pertanyaan}`);
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: chartData.chart.labels,
+                        datasets: [{
+                            data: chartData.chart.data,
+                            // Ambil 4 warna pertama (untuk A, B, C, D)
+                            backgroundColor: [chartColors[4], chartColors[9], chartColors[14], chartColors[19]].slice(0, chartData.chart.data.length),
+                            borderWidth: 1, borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: { label: ctx => `${ctx.parsed} responden` } 
+                            }
+                        }
                     }
-                }
+                });
             }
         });
 
-        // ============================
-        // === Pelayanan Publik 1 =====
-        // ============================
-        const pelayananPublik2Ctx = document.getElementById('pelayananPublik1Chart');
-            new Chart(pelayananPublik2Ctx, {
-                type: 'pie',
-                data: {
-                    labels: @json($pelayananChart['labels']),
-                    datasets: [{
-                        data: @json($pelayananChart['data']),
-                        backgroundColor: chartColors.slice(0, {{ count($pelayananChart['data']) }}),
-                        borderWidth: 1, borderColor: '#fff'
-                    }]
-                },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
-                    }
-                }
-            }
-        });
-        // ===============================
-        // === Keselamatan Pasien 1 ======
-        // ===============================
-        const keselamatanPasien1Ctx = document.getElementById('keselamatanPasien1Chart');
-            new Chart(keselamatanPasien1Ctx, {
-                type: 'pie',
-                data: {
-                    labels: @json($keselamatanChart['labels']),
-                    datasets: [{
-                        data: @json($keselamatanChart['data']),
-                        backgroundColor: [chartColors[5], chartColors[2]],
-                        borderWidth: 1, borderColor: '#fff'
-                    }]
-                },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => `${ctx.parsed} pasien` }
-                    }
-                }
-            }
-        });
 
+        // =================================
+        // === Script "Lihat Selengkapnya" ===
+        // =================================
         document.querySelectorAll('.data-card').forEach(card => {
             const list = card.querySelector('.data-list');
             const button = card.querySelector('.view-more-link');
@@ -793,16 +753,24 @@
             // Hanya jalankan jika card punya .data-list dan .view-more-link
             if (!list || !button) return;
 
+            // (PERBAIKAN) Baca limit dari data-limit di HTML
+            const visibleCount = parseInt(button.dataset.limit) || 3;
             const items = Array.from(list.querySelectorAll('.data-list-item'));
-            const visibleCount = 3;
-            let expanded = false;
 
-            // tampilkan hanya 3 item awal
-            items.forEach((item, index) => {
-                if (index >= visibleCount) {
-                    item.style.display = 'none';
-                }
-            });
+            // Sembunyikan item jika jumlahnya lebih dari visibleCount
+            if (items.length > visibleCount) {
+                items.forEach((item, index) => {
+                    if (index >= visibleCount) {
+                        item.style.display = 'none';
+                    }
+                });
+            } else {
+                // Jika item lebih sedikit, sembunyikan tombol
+                button.style.display = 'none';
+                return; // Hentikan script untuk card ini
+            }
+
+            let expanded = false;
 
             // pasang event listener
             button.addEventListener('click', () => {
@@ -815,7 +783,7 @@
                     list.style.overflowY = 'auto';
                     button.textContent = 'Sembunyikan';
                 } else {
-                    // sembunyikan lagi ke 3 item awal
+                    // sembunyikan lagi ke jumlah item awal
                     items.forEach((item, index) => {
                         item.style.display = index < visibleCount ? 'list-item' : 'none';
                     });

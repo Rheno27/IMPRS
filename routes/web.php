@@ -18,7 +18,6 @@ Route::get('/', function () {
 
 // Admin Routes
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-
 Route::get('/admin/input_indikator', [InputIndikatorController::class, 'create'])->name('admin.input_indikator');
 Route::post('/admin/input_indikator', [InputIndikatorController::class, 'store'])->name('admin.input_indikator.store');
 
