@@ -164,6 +164,116 @@ class SkmController extends Controller
     }
 
     /**
+     * Menyimpan perubahan pada struktur pertanyaan survei.
+     */
+    public function updatePertanyaan(Request $request)
+    {
+        $submittedQuestions = $request->input('questions', []);
+
+        // Array untuk melacak ID yang "aman" (disubmit oleh form)
+        $safePertanyaanIds = [];
+        $safePilihanIds = [];
+
+        try {
+            DB::transaction(function () use ($submittedQuestions, &$safePertanyaanIds, &$safePilihanIds) {
+
+                foreach ($submittedQuestions as $qData) {
+
+                    $pertanyaanId = null;
+                    $pertanyaanData = [
+                        'pertanyaan' => $qData['pertanyaan'] ?? 'Pertanyaan Kosong',
+                        // 'tipe_pertanyaan' => $qData['tipe'] // HANYA JIKA ADA KOLOMNYA DI DB
+                    ];
+
+                    // Cek apakah ini UPDATE (ada ID) atau INSERT (ID kosong)
+                    if (!empty($qData['id_pertanyaan'])) {
+                        // --- Ini adalah UPDATE Pertanyaan ---
+                        $pertanyaanId = $qData['id_pertanyaan'];
+                        DB::table('pertanyaan')
+                            ->where('id_pertanyaan', $pertanyaanId)
+                            ->update($pertanyaanData);
+                    } else {
+                        // --- Ini adalah INSERT Pertanyaan Baru ---
+                        $pertanyaanId = DB::table('pertanyaan')->insertGetId($pertanyaanData);
+                    }
+
+                    // Catat ID pertanyaan ini sebagai "aman"
+                    $safePertanyaanIds[] = $pertanyaanId;
+
+                    // --- Proses Pilihan Jawabannya ---
+                    if (($qData['tipe'] ?? 'Pilihan Ganda') != 'Isian Teks' && isset($qData['pilihan']) && is_array($qData['pilihan'])) {
+
+                        foreach ($qData['pilihan'] as $pData) {
+
+                            $pilihanId = null;
+                            $pilihanData = [
+                                'id_pertanyaan' => $pertanyaanId,
+                                'pilihan' => $pData['pilihan'] ?? 'Pilihan Kosong',
+                                'nilai' => $pData['nilai'] ?? 0
+                            ];
+
+                            // Cek apakah ini UPDATE Pilihan atau INSERT Pilihan Baru
+                            if (!empty($pData['id_pilihan'])) {
+                                // --- UPDATE Pilihan ---
+                                $pilihanId = $pData['id_pilihan'];
+                                DB::table('pilihan_jawaban')
+                                    ->where('id_pilihan', $pData['id_pilihan'])
+                                    ->update($pilihanData);
+                            } else {
+                                // --- INSERT Pilihan Baru ---
+                                $pilihanId = DB::table('pilihan_jawaban')->insertGetId($pilihanData);
+                            }
+                            // Catat ID pilihan ini sebagai "aman"
+                            $safePilihanIds[] = $pilihanId;
+                        }
+                    }
+                } // --- Akhir loop pertanyaan ---
+
+
+                // --- LOGIKA HAPUS PILIHAN JAWABAN (YANG AMAN) ---
+                // UI Anda tidak punya tombol hapus pertanyaan, jadi kita tidak hapus pertanyaan.
+                // Tapi UI Anda punya tombol hapus pilihan.
+
+                // 1. Ambil semua ID pilihan yang terkait dengan pertanyaan yang baru saja kita proses
+                $existingPilihanIds = DB::table('pilihan_jawaban')
+                    ->whereIn('id_pertanyaan', $safePertanyaanIds)
+                    ->pluck('id_pilihan');
+
+                // 2. Cari ID mana yang ada di DB tapi TIDAK disubmit (berarti dihapus di UI)
+                $pilihanIdsToDelete = $existingPilihanIds->diff($safePilihanIds);
+
+                if ($pilihanIdsToDelete->isNotEmpty()) {
+                    // 3. CEK KE TABEL JAWABAN. Ini adalah bagian PENTING.
+                    $checkJawaban = DB::table('jawaban')
+                        ->whereIn('id_pilihan', $pilihanIdsToDelete)
+                        ->count();
+
+                    if ($checkJawaban > 0) {
+                        // JIKA SUDAH ADA YANG JAWAB, GAGALKAN SEMUA PROSES
+                        throw new \Exception(
+                            "GAGAL: Anda mencoba menghapus pilihan jawaban yang sudah pernah dipilih oleh responden. " .
+                            "Data responden tidak akan dihapus. Perubahan tidak disimpan."
+                        );
+                    }
+
+                    // 4. Aman untuk dihapus (karena belum ada yg jawab)
+                    DB::table('pilihan_jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
+                }
+
+            }); // --- Akhir Transaction ---
+
+        } catch (\Exception $e) {
+            // Jika terjadi error (terutama error foreign key), kirim pesan error
+            return redirect()->route('superadmin.skm_edit2')
+                ->with('error', $e->getMessage());
+        }
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('superadmin.skm_edit2')
+            ->with('success', 'Struktur pertanyaan survei berhasil diperbarui.');
+    }
+
+    /**
      * Display the survey results with charts and lists.
      */
     public function hasil()

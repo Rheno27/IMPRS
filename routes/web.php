@@ -33,13 +33,10 @@ Route::post('/superadmin/indikator-mutu', [IndikatorMutuController::class, 'stor
 Route::delete('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'destroy'])->name('superadmin.indikator_mutu.destroy');
 Route::put('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'update'])->name('superadmin.indikator_mutu.update');
 
-Route::get('/superadmin/edit_survei', function () {
-    return view('superadmin.edit_survei');
-})->name('superadmin.data_user');
 Route::get('/superadmin/skm/rekap', [SkmController::class, 'index'])->name('superadmin.skm_rekap');
 Route::get('/superadmin/skm/hasil', [SkmController::class, 'hasil'])->name('superadmin.skm_hasil');
 Route::get('/superadmin/skm/edit2', [SkmController::class, 'editPertanyaan'])->name('superadmin.skm_edit2');
-
+Route::put('/superadmin/skm/update-pertanyaan', [SkmController::class, 'updatePertanyaan'])->name('superadmin.skm.update_pertanyaan');
 // User Routes
 Route::get('/SKM/dashboard', function () {
     return view('guest.dashboard');
