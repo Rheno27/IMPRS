@@ -360,54 +360,6 @@
             outline: none;
             box-shadow: 0 0 0 2px rgba(51, 115, 84, 0.25);
         }
-
-        .alert-success {
-            color: var(--btn-save-bg);
-            /* Teks hijau tua */
-            background-color: var(--light-green-bg);
-            /* Latar hijau muda */
-            border-color: var(--primary-green);
-            /* Border hijau tua */
-        }
-
-        .alert-danger {
-            color: var(--btn-delete-bg);
-            /* Teks merah tua */
-            background-color: #fde2db;
-            /* Latar merah muda tipis */
-            border-color: #f5c2c7;
-            /* Border merah */
-        }
-
-        /* Ini untuk membuat tombol 'x' (close) di alert sukses jadi terlihat */
-        .alert-success .btn-close {
-            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 30px 15px;
-            }
-
-            .toolbar {
-                margin-bottom: 20px;
-            }
-
-            .add-button {
-                font-size: 18px;
-                gap: 8px;
-            }
-
-            .add-button img {
-                width: 30px;
-                height: 30px;
-            }
-
-            .table-title {
-                font-size: 20px;
-                padding: 15px 10px;
-            }
-        }
     </style>
     <style>
         :root {
@@ -539,22 +491,123 @@
             background-color: var(--primary-green);
             color: white;
         }
+        .custom-alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(51, 115, 84, 0.15);
+            /* Bayangan halus hijau */
+            animation: slideDown 0.4s ease-out;
+            border: 1px solid transparent;
+        }
+
+        .custom-alert.success {
+            background-color: #eaf5f0;
+            /* Hijau sangat muda */
+            border-color: rgba(51, 115, 84, 0.2);
+            color: var(--primary-color);
+        }
+
+        .custom-alert.error {
+            background-color: #fdeaea;
+            /* Merah sangat muda */
+            border-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .alert-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 @endsection
 
 @section('content')
     <main id="section-main" class="main-content">
+        {{-- NOTIFIKASI SUKSES --}}
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="custom-alert success" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Centang Hijau --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
         @endif
 
+        {{-- NOTIFIKASI ERROR --}}
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="custom-alert error" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Tanda Seru Merah --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('error') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
         @endif
 
@@ -632,21 +685,6 @@
                                             </svg>
                                             Edit
                                         </button>
-                                        <!-- <button class="action-btn btn-save">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.8327 7.49156V16.9582C13.8327 18.1666 12.966 18.6749 11.9077 18.0916L8.63269 16.2666C8.28269 16.0749 7.71601 16.0749 7.36601 16.2666L4.09101 18.0916C3.03268 18.6749 2.16602 18.1666 2.16602 16.9582V7.49156C2.16602 6.06656 3.33267 4.8999 4.75767 4.8999H11.241C12.666 4.8999 13.8327 6.06656 13.8327 7.49156Z"
-                                                    fill="#FFC107" />
-                                                <path
-                                                    d="M18.8327 4.2584V13.7251C18.8327 14.9334 17.966 15.4417 16.9077 14.8584L13.8327 13.1417V7.49174C13.8327 6.06674 12.666 4.90009 11.241 4.90009H7.16602V4.2584C7.16602 2.8334 8.33267 1.66675 9.75767 1.66675H16.241C17.666 1.66675 18.8327 2.8334 18.8327 4.2584Z"
-                                                    fill="#337354" />
-                                                <path
-                                                    d="M9.66732 9.37492H8.62565V8.33325C8.62565 7.99159 8.34232 7.70825 8.00065 7.70825C7.65898 7.70825 7.37565 7.99159 7.37565 8.33325V9.37492H6.33398C5.99232 9.37492 5.70898 9.65825 5.70898 9.99992C5.70898 10.3416 5.99232 10.6249 6.33398 10.6249H7.37565V11.6666C7.37565 12.0083 7.65898 12.2916 8.00065 12.2916C8.34232 12.2916 8.62565 12.0083 8.62565 11.6666V10.6249H9.66732C10.009 10.6249 10.2923 10.3416 10.2923 9.99992C10.2923 9.65825 10.009 9.37492 9.66732 9.37492Z"
-                                                    fill="#337354" />
-                                            </svg>
-                                            Simpan
-                                        </button> -->
                                         </button>
                                         <button type="button" class="action-btn btn-delete" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal-{{ $indikator->id_indikator }}">

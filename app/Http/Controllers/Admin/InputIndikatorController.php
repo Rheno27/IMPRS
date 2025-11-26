@@ -53,7 +53,7 @@ class InputIndikatorController extends Controller
                 $mutu[$ir->id_indikator] = $record;
             }
         }
-        return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal'));
+        return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal', 'user'));
     }
 
     /**

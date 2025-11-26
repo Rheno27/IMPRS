@@ -5,7 +5,13 @@ namespace App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\IndikatorRuangan;
+use App\Models\IndikatorMutu;
+use App\Models\MutuRuangan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use App\Exports\RekapPerIndikatorExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class SDashboardController extends Controller
 {
@@ -14,76 +20,190 @@ class SDashboardController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil tahun dari request, default ke tahun saat ini jika tidak ada
+        // Ambil tahun dari request, default ke tahun saat ini
         $tahun = $request->input('tahun', date('Y'));
         // Ambil kategori, default ke INM
-        $selectedKategori = $request->input('kategori', 'Indikator Nasional Mutu (INM)');
+        $selectedKategori = $request->input('kategori', 'Indikator Nasional Mutu');
 
-        // LANGKAH 1: Ambil semua indikator yang punya data di tahun & kategori terpilih.
-        // Kita tidak lagi menggunakan where('active', true).
-        $relevantIndicators = IndikatorRuangan::query()
-            // Filter berdasarkan kategori yang dipilih
-            ->whereHas('indikatorMutu.kategori', function ($query) use ($selectedKategori) {
-                $query->where('kategori', $selectedKategori);
-            })
-            // PASTIKAN HANYA MENGAMBIL INDIKATOR YANG PUNYA DATA DI TAHUN TERPILIH
-            ->whereHas('mutuRuangan', function ($query) use ($tahun) {
-                $query->whereYear('tanggal', $tahun);
-            })
-            // Ambil relasi yang dibutuhkan
-            ->with([
-                'ruangan',
-                'indikatorMutu',
-                'mutuRuangan' => function ($query) use ($tahun) {
+        $results = collect();
+
+        // --- LOGIKA 1: JIKA KATEGORI ADALAH IMPU (Tampilkan per Ruangan) ---
+        if ($selectedKategori === 'Indikator Mutu Prioritas Unit') {
+
+            $relevantIndicators = IndikatorRuangan::query()
+                ->whereHas('indikatorMutu.kategori', function ($query) use ($selectedKategori) {
+                    $query->where('kategori', $selectedKategori);
+                })
+                ->whereHas('mutuRuangan', function ($query) use ($tahun) {
                     $query->whereYear('tanggal', $tahun);
-                }
-            ])
-            ->orderBy('id_ruangan', 'asc')
-            ->get();
+                })
+                ->with([
+                    'ruangan',
+                    'indikatorMutu',
+                    'mutuRuangan' => function ($query) use ($tahun) {
+                        $query->whereYear('tanggal', $tahun);
+                    }
+                ])
+                ->orderBy('id_ruangan', 'asc')
+                ->get();
 
-        // LANGKAH 2: Proses data untuk dihitung rata-rata bulanannya
-        $results = $relevantIndicators->map(function ($indicator) {
-            // Kelompokkan semua data harian berdasarkan bulan (kunci 1 untuk Jan, 2 untuk Feb, dst.)
-            $monthlyData = $indicator->mutuRuangan->groupBy(function ($mutu) {
-                return (int) date('n', strtotime($mutu->tanggal));
+            $results = $relevantIndicators->map(function ($indicator) {
+                $monthlyData = $indicator->mutuRuangan->groupBy(function ($mutu) {
+                    return (int) date('n', strtotime($mutu->tanggal));
+                });
+
+                $monthlyAverages = $this->calculateMonthlyStats($monthlyData);
+
+                return (object) [
+                    'ruangan' => $indicator->ruangan->nama_ruangan ?? 'N/A',
+                    'judul' => $indicator->indikatorMutu->variabel ?? 'N/A',
+                    'standar' => $indicator->indikatorMutu->standar ?? 'N/A',
+                    'data_bulan' => $monthlyAverages,
+                ];
             });
 
-            $monthlyAverages = [];
-            // Loop dari bulan 1 sampai 12
-            for ($bulan = 1; $bulan <= 12; $bulan++) {
-                // Cek apakah ada data untuk bulan ini
-                if (isset($monthlyData[$bulan])) {
-                    $dataBulanIni = $monthlyData[$bulan];
-                    $totalSesuai = $dataBulanIni->sum('pasien_sesuai');
-                    $totalPasien = $dataBulanIni->sum('total_pasien');
+        }
+        // --- LOGIKA 2: JIKA KATEGORI ADALAH INM ATAU IMPRS (Gabung/Agregat) ---
+        else {
+            // 1. Ambil semua Indikator Master sesuai kategori
+            $masterIndicators = IndikatorMutu::query()
+                ->whereHas('kategori', function ($q) use ($selectedKategori) {
+                    $q->where('kategori', $selectedKategori);
+                })
+                ->where('variabel', 'NOT LIKE', '%Kepuasan Masyarakat%')
+                ->get();
 
-                    // Hitung persentase, hindari pembagian dengan nol
-                    $persen = ($totalPasien > 0)
-                        ? round(($totalSesuai / $totalPasien) * 100, 2)
-                        : null; // Beri null jika tidak ada data pasien
+            $results = $masterIndicators->map(function ($indMaster) use ($tahun) {
 
-                    $monthlyAverages[$bulan] = $persen;
-                } else {
-                    // Jika tidak ada data sama sekali untuk bulan ini, beri nilai null
-                    $monthlyAverages[$bulan] = null;
+                $relatedIndikatorRuanganIds = IndikatorRuangan::where('id_indikator', $indMaster->id_indikator)
+                    ->pluck('id_indikator_ruangan');
+
+                $allMutuData = MutuRuangan::whereIn('id_indikator_ruangan', $relatedIndikatorRuanganIds)
+                    ->whereYear('tanggal', $tahun)
+                    ->get();
+
+                $monthlyData = $allMutuData->groupBy(function ($item) {
+                    return (int) date('n', strtotime($item->tanggal));
+                });
+
+                $monthlyAverages = $this->calculateMonthlyStats($monthlyData);
+
+                return (object) [
+                    'ruangan' => '-',
+                    'judul' => $indMaster->variabel,
+                    'standar' => $indMaster->standar,
+                    'data_bulan' => $monthlyAverages,
+                ];
+            });
+
+            // === TAMBAHAN: HITUNG SKM JIKA KATEGORI ADALAH INM ===
+            // Ini akan menambahkan baris "Kepuasan Masyarakat" di bawah tabel INM
+            if ($selectedKategori === 'Indikator Nasional Mutu') {
+                $skmObject = $this->calculateGlobalSkmYearly($tahun);
+                if ($skmObject) {
+                    $results->push($skmObject);
                 }
             }
+        }
 
-            return (object) [
-                'ruangan' => $indicator->ruangan->nama_ruangan ?? 'N/A',
-                'judul' => $indicator->indikatorMutu->variabel ?? 'N/A',
-                'standar' => $indicator->indikatorMutu->standar ?? 'N/A',
-                'data_bulan' => $monthlyAverages, // Array berisi 12 data bulanan
-            ];
-        });
-
-        // 3. Kirim data yang sudah diolah ke view.
         return view('superadmin.dashboard', [
-            'indikatorData' => $results, // Ganti nama variabel agar sesuai dengan view lama
+            'indikatorData' => $results,
             'selectedKategori' => $selectedKategori,
             'tahun' => $tahun,
         ]);
     }
+
+    private function calculateGlobalSkmYearly($year)
+    {
+        // 1. Cari Data Indikator di DB (Untuk Judul & Standar)
+        $skmIndicatorDB = DB::table('indikator_mutu')
+            ->where('variabel', 'LIKE', '%Kepuasan Masyarakat%')
+            ->first();
+
+        $judulSKM = $skmIndicatorDB ? $skmIndicatorDB->variabel : 'Kepuasan Masyarakat';
+        $standarSKM = $skmIndicatorDB ? $skmIndicatorDB->standar : '> 76.61';
+
+        // 2. Ambil Nilai Max per Pertanyaan (Denominator)
+        $maxScores = DB::table('pilihan_jawaban')
+            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
+            ->groupBy('id_pertanyaan')
+            ->pluck('max_nilai', 'id_pertanyaan');
+
+        // 3. Ambil Jawaban SKM Tahun Ini
+        $skmAnswers = DB::table('jawaban')
+            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
+            ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
+            ->whereYear('jawaban.tanggal', $year)
+            ->get();
+
+        if ($skmAnswers->isEmpty()) {
+            return (object) [
+                'ruangan' => '-',
+                'judul' => $judulSKM,
+                'standar' => $standarSKM,
+                'data_bulan' => array_fill(1, 12, null)
+            ];
+        }
+
+        // 4. Grouping Per Bulan
+        $answersByMonth = $skmAnswers->groupBy(function ($item) {
+            return (int) Carbon::parse($item->tanggal)->format('n');
+        });
+
+        $monthlyStats = [];
+
+        for ($m = 1; $m <= 12; $m++) {
+            if (isset($answersByMonth[$m])) {
+                $totalActual = 0;
+                $totalMax = 0;
+
+                foreach ($answersByMonth[$m] as $ans) {
+                    $totalActual += $ans->nilai;
+                    $totalMax += $maxScores[$ans->id_pertanyaan] ?? 0;
+                }
+
+                $monthlyStats[$m] = $totalMax > 0
+                    ? round(($totalActual / $totalMax) * 100, 2) . '%'
+                    : null;
+            } else {
+                $monthlyStats[$m] = null;
+            }
+        }
+
+        return (object) [
+            'ruangan' => '-',
+            'judul' => $judulSKM,
+            'standar' => $standarSKM,
+            'data_bulan' => $monthlyStats,
+        ];
+    }
+
+    /**
+     * Helper function untuk menghitung persentase bulanan
+     * Mencegah duplikasi kode hitungan
+     */
+    private function calculateMonthlyStats($groupedData)
+    {
+        $monthlyAverages = [];
+        for ($bulan = 1; $bulan <= 12; $bulan++) {
+            if (isset($groupedData[$bulan])) {
+                $dataBulanIni = $groupedData[$bulan];
+
+                $totalSesuai = $dataBulanIni->sum('pasien_sesuai');
+                $totalPasien = $dataBulanIni->sum('total_pasien');
+
+                $persen = ($totalPasien > 0)
+                    ? round(($totalSesuai / $totalPasien) * 100, 2) . '%'
+                    : null;
+
+                $monthlyAverages[$bulan] = $persen;
+            } else {
+                $monthlyAverages[$bulan] = null;
+            }
+        }
+        return $monthlyAverages;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -130,5 +250,24 @@ class SDashboardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Download Rekap Indikator Mutu per Kategori in Excel Format.
+     */
+    public function downloadRekapIndikator(Request $request)
+    {
+        if (!Session::has('user')) {
+            return redirect('/login');
+        }
+
+        $request->validate([
+            'tahun' => 'required',
+            'kategori' => 'required',
+        ]);
+
+        $namaFile = 'Rekap_' . $request->kategori . '_' . $request->tahun . '.xlsx';
+
+        return Excel::download(new RekapPerIndikatorExport($request->kategori, $request->tahun), $namaFile);
     }
 }

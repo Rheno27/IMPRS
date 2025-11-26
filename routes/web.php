@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/input_indikator', [InputIndikatorController::class, 'create'])->name('admin.input_indikator');
 Route::post('/admin/input_indikator', [InputIndikatorController::class, 'store'])->name('admin.input_indikator.store');
+Route::get('/admin/download-rekap', [DashboardController::class, 'downloadRekap'])->name('admin.download_rekap');
 
 // Superadmin Routes
 Route::get('/superadmin/dashboard', [SDashboardController::class, 'index'])->name('superadmin.dashboard');
@@ -27,6 +28,7 @@ Route::get('/superadmin/ruangan/{ruangan}/detail', [DetailIndikatorController::c
 Route::get('/superadmin/ruangan/{ruangan}/edit-indikator', [IndikatorRuanganController::class, 'edit'])->name('superadmin.ruangan.edit_indikator');
 Route::post('/superadmin/ruangan/update-indikator', [IndikatorRuanganController::class, 'update'])->name('superadmin.ruangan.update_indikator');
 Route::post('/superadmin/ruangan/add-indikator', [IndikatorRuanganController::class, 'store'])->name('superadmin.ruangan.add_indikator');
+Route::post('/superadmin/ruangan/deactivate-indikator', [IndikatorRuanganController::class, 'deactivate'])->name('superadmin.ruangan.deactivate_indikator');
 Route::get('/superadmin/indikator-mutu/create', [IndikatorMutuController::class, 'create'])->name('superadmin.indikator_mutu.create');
 Route::post('/superadmin/indikator-mutu', [IndikatorMutuController::class, 'store'])->name('superadmin.indikator_mutu.store');
 Route::delete('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'destroy'])->name('superadmin.indikator_mutu.destroy');
@@ -36,6 +38,12 @@ Route::get('/superadmin/skm/rekap', [SkmController::class, 'index'])->name('supe
 Route::get('/superadmin/skm/hasil', [SkmController::class, 'hasil'])->name('superadmin.skm_hasil');
 Route::get('/superadmin/skm/edit2', [SkmController::class, 'editPertanyaan'])->name('superadmin.skm_edit2');
 Route::put('/superadmin/skm/update-pertanyaan', [SkmController::class, 'updatePertanyaan'])->name('superadmin.skm.update_pertanyaan');
+Route::delete('/superadmin/skm/pertanyaan/{id}', [SkmController::class, 'destroyPertanyaan'])->name('superadmin.skm.destroy_pertanyaan');
+
+Route::get('/superadmin/download-rekap-indikator', [SDashboardController::class, 'downloadRekapIndikator'])->name('superadmin.download_rekap_indikator');
+Route::get('/superadmin/download-rekap', [DetailIndikatorController::class, 'downloadRekap'])->name('superadmin.download_rekap');
+Route::get('/superadmin/skm/download', [SkmController::class, 'downloadRekap'])->name('superadmin.skm.download');
+
 // User Routes
 Route::get('/SKM/dashboard', function () {
     return view('guest.dashboard');

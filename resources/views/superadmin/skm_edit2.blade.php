@@ -403,7 +403,24 @@
         .answer-option {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
+            /* Jarak antar elemen */
+        }
+
+        /* Tambahkan class baru ini agar input teks memenuhi ruang sisa */
+        .answer-option .input-text {
+            flex-grow: 1;
+            height: 36px;
+        }
+
+        /* Tambahkan class baru untuk kolom bobot agar ukurannya kecil fix */
+        .answer-option .input-score {
+            width: 80px;
+            /* Lebar kolom bobot */
+            flex-grow: 0;
+            flex-shrink: 0;
+            text-align: center;
+            height: 36px;
         }
 
         .option-letter {
@@ -524,6 +541,183 @@
                 font-size: 14px;
             }
         }
+
+        .custom-alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(51, 115, 84, 0.15);
+            /* Bayangan halus hijau */
+            animation: slideDown 0.4s ease-out;
+            border: 1px solid transparent;
+        }
+
+        .custom-alert.success {
+            background-color: #eaf5f0;
+            /* Hijau sangat muda */
+            border-color: rgba(51, 115, 84, 0.2);
+            color: var(--primary-color);
+        }
+
+        .custom-alert.error {
+            background-color: #fdeaea;
+            /* Merah sangat muda */
+            border-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .alert-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- CUSTOM MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Latar belakang gelap transparan */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+            /* Efek blur di belakang */
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: white;
+            width: 400px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-icon-wrapper.danger {
+            background-color: #fdeaea;
+            color: #dc3545;
+        }
+
+        .modal-icon-wrapper.success {
+            background-color: #eaf5f0;
+            color: #337354;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-modal {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-cancel {
+            background-color: #f1f3f5;
+            color: #495057;
+        }
+
+        .btn-modal-cancel:hover {
+            background-color: #e9ecef;
+        }
+
+        .btn-modal-confirm {
+            background-color: #dc3545;
+            /* Merah untuk hapus */
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+        }
+
+        .btn-modal-confirm:hover {
+            background-color: #c92a2a;
+            transform: translateY(-1px);
+        }
     </style>
 @endsection
 
@@ -552,14 +746,58 @@
             @csrf
             @method('PUT')
             <main id="survey-editor" class="survey-editor-container">
+                {{-- NOTIFIKASI SUKSES --}}
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="custom-alert success" role="alert">
+                        <div class="alert-content">
+                            {{-- Ikon Centang Hijau --}}
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                        <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
+                {{-- NOTIFIKASI ERROR --}}
+                @if (session('error'))
+                    <div class="custom-alert error" role="alert">
+                        <div class="alert-content">
+                            {{-- Ikon Tanda Seru Merah --}}
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span>{{ session('error') }}</span>
+                        </div>
+                        <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
                     </div>
                 @endif
                 <div class="view-survey-wrapper">
-                    <a href="{{ route('guest.survei-1') }}" target="_blank" rel="noopener noreferrer" class="view-survey-btn">
+                    <a href="{{ route('guest.survei-1') }}" target="_blank" rel="noopener noreferrer"
+                        class="view-survey-btn">
                         <svg width="30" height="30" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M32.4577 25.0001C32.4577 29.1251 29.1243 32.4584 24.9993 32.4584C20.8743 32.4584 17.541 29.1251 17.541 25.0001C17.541 20.8751 20.8743 17.5417 24.9993 17.5417C29.1243 17.5417 32.4577 20.8751 32.4577 25.0001Z"
@@ -593,7 +831,7 @@
                                     </button>
                                 </div>
                                 <div class="action-icons">
-                                    <button class="icon icon-btn">
+                                    <button class="icon icon-btn btn-move-up">
                                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <rect x="0.5" y="-0.5" width="39" height="39" rx="19.5"
@@ -602,7 +840,8 @@
                                                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </button>
-                                    <button class="icon icon-btn">
+
+                                    <button class="icon icon-btn btn-move-down">
                                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
@@ -620,17 +859,19 @@
                                                 stroke-linejoin="round" />
                                         </svg>
                                     </button>
-                                    <button class="icon icon-btn">
+                                    {{-- TOMBOL HAPUS PERTANYAAN (BARU) --}}
+                                    <button class="icon icon-btn btn-delete-question" style="border-color: #dc3545;">
                                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#337354" />
-                                            <path
-                                                d="M23.6673 20.4374V24.8124C23.6673 28.4583 22.209 29.9166 18.5632 29.9166H14.1882C10.5423 29.9166 9.08398 28.4583 9.08398 24.8124V20.4374C9.08398 16.7916 10.5423 15.3333 14.1882 15.3333H18.5632C22.209 15.3333 23.6673 16.7916 23.6673 20.4374Z"
-                                                stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                            <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#dc3545" />
+                                            <path d="M12 15H28" stroke="#dc3545" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M16 15V12C16 11.4477 16.4477 11 17 11H23C23.5523 11 24 11.4477 24 12V15"
+                                                stroke="#dc3545" stroke-width="1.5" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                             <path
-                                                d="M29.9173 14.1874V18.5624C29.9173 22.2083 28.459 23.6666 24.8132 23.6666H23.6673V20.4374C23.6673 16.7916 22.209 15.3333 18.5632 15.3333H15.334V14.1874C15.334 10.5416 16.7923 9.08325 20.4382 9.08325H24.8132C28.459 9.08325 29.9173 10.5416 29.9173 14.1874Z"
-                                                stroke="#337354" stroke-width="1.5" stroke-linecap="round"
+                                                d="M14 15L15.446 27.2885C15.5445 28.1257 16.2559 28.75 17.0988 28.75H22.9012C23.7441 28.75 24.4555 28.1257 24.554 27.2885L26 15"
+                                                stroke="#dc3545" stroke-width="1.5" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                         </svg>
                                     </button>
@@ -642,11 +883,6 @@
                                     <div class="custom-select">
                                         {{-- Tampilkan tipe dari controller --}}
                                         <span>{{ $pertanyaan->tipe_pertanyaan }}</span>
-                                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M5 8L10 13L15 8" stroke="#337354" stroke-width="1.66667"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -654,31 +890,33 @@
                                     {{-- Tampilkan teks pertanyaan --}}
                                     <input type="text" class="form-input" value="{{ $pertanyaan->pertanyaan ?? '' }}">
                                 </div>
-                                <div class="form-row">
-                                    <label class="form-label">Deskripsi Pertanyaan</label>
-                                    {{-- Kolom deskripsi sepertinya tidak ada di DB, kita kosongkan atau beri placeholder --}}
-                                    <input type="text" class="form-input" value="{{-- $pertanyaan->deskripsi ?? '' --}}"
-                                        placeholder="(Opsional)">
-                                </div>
 
                                 {{-- Tampilkan pilihan HANYA jika tipenya bukan 'Isian Teks' --}}
                                 @if($pertanyaan->tipe_pertanyaan != 'Isian Teks' && $pertanyaan->pilihan->isNotEmpty())
                                     <div class="form-row form-row-vertical">
                                         <label class="form-label">Pilihan Jawaban</label>
                                         <div class="answer-options-list">
-
                                             {{-- LOOPING PILIHAN JAWABAN --}}
                                             @foreach ($pertanyaan->pilihan as $pilihan)
                                                 <div class="answer-option">
                                                     <input type="hidden" class="hidden-id-pilihan"
                                                         value="{{ $pilihan->id_pilihan ?? '' }}">
-                                                    {{-- Generate huruf A, B, C, D --}}
-                                                    <div class="option-letter">{{ chr(65 + $loop->index) }}</div> {{-- Tampilkan teks
-                                                    pilihan --}}
-                                                    <input type="text" class="form-input" value="{{ $pilihan->pilihan ?? '' }}">
+
+                                                    {{-- Huruf A, B, C, D --}}
+                                                    <div class="option-letter">{{ chr(65 + $loop->index) }}</div>
+
+                                                    {{-- Input Teks Jawaban (Kasih class 'input-text') --}}
+                                                    <input type="text" class="form-input input-text" placeholder="Teks Jawaban"
+                                                        value="{{ $pilihan->pilihan ?? '' }}">
+
+                                                    {{-- Input Bobot/Nilai (BARU) --}}
+                                                    <input type="number" class="form-input input-score" placeholder="Nilai"
+                                                        value="{{ $pilihan->nilai ?? '' }}">
+
                                                     <div class="action-icons">
-                                                        <button class="icon icon-btn btn-add-answer"> <svg width="40" height="40"
-                                                                viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <button class="icon icon-btn btn-add-answer">
+                                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
                                                                 <rect x="0.5" y="0.5" width="39" height="39" rx="19.5"
                                                                     stroke="#337354" />
                                                                 <path d="M10 20H30" stroke="#337354" stroke-width="1.5"
@@ -701,7 +939,6 @@
                                                     </div>
                                                 </div>
                                             @endforeach
-
                                         </div>
                                     </div>
                                 @endif
@@ -722,13 +959,135 @@
                 <button type="submit" class="save-button">Simpan Perubahan</button>
             </section>
         </form>
+
+        {{-- CUSTOM MODAL COMPONENT --}}
+        <div id="customConfirmModal" class="modal-overlay">
+            <div class="modal-box">
+                {{-- Ikon Tong Sampah Besar --}}
+                <div class="modal-icon-wrapper danger">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <h3 class="modal-title">Hapus Pertanyaan?</h3>
+                <p class="modal-text">Pertanyaan ini akan dihapus permanen dari database. Tindakan ini tidak dapat
+                    dibatalkan.
+                </p>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal btn-modal-cancel" id="closeModalBtn">Batal</button>
+                    <button type="button" class="btn-modal btn-modal-confirm" id="confirmDeleteBtn">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+        {{-- CUSTOM ALERT MODAL (Untuk Error/Info) --}}
+        <div id="customAlertModal" class="modal-overlay">
+            <div class="modal-box">
+                {{-- Ikon Silang Merah (Error) --}}
+                <div class="modal-icon-wrapper danger">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M15 9L9 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 9L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <h3 class="modal-title" id="alertTitle">Gagal</h3>
+                <p class="modal-text" id="alertMessage">Terjadi kesalahan.</p>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal btn-modal-confirm"
+                        style="background-color: #337354; width: 100%;" id="btnAlertOk">OK, Mengerti</button>
+                </div>
+            </div>
+        </div>
 @endsection
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+
                 // ==========================================================
-                // === FUNGSI UTAMA (EVENT DELEGATION) ===
+                // 1. INISIALISASI VARIABEL MODAL (HANYA SEKALI)
+                // ==========================================================
+                const confirmModal = document.getElementById('customConfirmModal');
+                const alertModal = document.getElementById('customAlertModal');
+                const btnConfirm = document.getElementById('confirmDeleteBtn');
+                const btnCancel = document.getElementById('closeModalBtn');
+                const btnAlertOk = document.getElementById('btnAlertOk');
+
+                let deleteCallback = null; // Variabel global untuk menyimpan aksi hapus
+
+                // ==========================================================
+                // 2. FUNGSI-FUNGSI MODAL
+                // ==========================================================
+
+                // --- Modal Konfirmasi (Ya/Batal) ---
+                function openConfirmModal(callback) {
+                    if (!confirmModal) return;
+                    deleteCallback = callback; // Simpan fungsi hapus ke variabel global
+                    confirmModal.classList.add('active');
+                }
+
+                function closeConfirmModal() {
+                    if (!confirmModal) return;
+                    confirmModal.classList.remove('active');
+                    deleteCallback = null; // Reset callback
+                }
+
+                // --- Modal Alert (Info/Error) ---
+                function openAlertModal(title, message) {
+                    if (!alertModal) return;
+                    const titleEl = document.getElementById('alertTitle');
+                    const msgEl = document.getElementById('alertMessage');
+
+                    if (titleEl) titleEl.textContent = title;
+                    if (msgEl) msgEl.textContent = message;
+
+                    alertModal.classList.add('active');
+                }
+
+                function closeAlertModal() {
+                    if (!alertModal) return;
+                    alertModal.classList.remove('active');
+                }
+
+                // ==========================================================
+                // 3. EVENT LISTENER TOMBOL MODAL
+                // ==========================================================
+
+                // Tutup modal konfirmasi jika klik Batal
+                if (btnCancel) {
+                    btnCancel.addEventListener('click', closeConfirmModal);
+                }
+
+                // Jalankan aksi hapus jika klik Ya, Hapus
+                if (btnConfirm) {
+                    btnConfirm.addEventListener('click', function () {
+                        if (deleteCallback) {
+                            deleteCallback(); // Jalankan fungsi yang disimpan tadi
+                        }
+                        closeConfirmModal();
+                    });
+                }
+
+                // Tutup modal alert jika klik OK
+                if (btnAlertOk) {
+                    btnAlertOk.addEventListener('click', closeAlertModal);
+                }
+
+
+                // ==========================================================
+                // 4. LOGIKA UTAMA HALAMAN (Tombol Hapus, Tambah, dll)
                 // ==========================================================
                 const pageList = document.querySelector('.survey-page-list');
                 if (pageList) {
@@ -738,6 +1097,35 @@
                         const addAnswerButton = e.target.closest('.btn-add-answer');
                         const deleteAnswerButton = e.target.closest('.btn-delete-answer');
                         const toggleCollapseButton = e.target.closest('.question-title-group .icon');
+
+                        if (e.target.closest('.btn-move-up')) {
+                            e.preventDefault();
+                            const btn = e.target.closest('.btn-move-up');
+                            const currentBlock = btn.closest('.question-block');
+                            const prevBlock = currentBlock.previousElementSibling;
+
+                            // Cek apakah ada elemen sebelumnya dan apakah itu pertanyaan
+                            if (prevBlock && prevBlock.classList.contains('question-block')) {
+                                currentBlock.parentNode.insertBefore(currentBlock, prevBlock);
+                                currentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                renumberQuestions();
+                            }
+                        }
+
+                        // 2. LOGIKA GESER KE BAWAH (BARU)
+                        else if (e.target.closest('.btn-move-down')) {
+                            e.preventDefault();
+                            const btn = e.target.closest('.btn-move-down');
+                            const currentBlock = btn.closest('.question-block');
+                            const nextBlock = currentBlock.nextElementSibling;
+
+                            // Cek apakah ada elemen setelahnya
+                            if (nextBlock && nextBlock.classList.contains('question-block')) {
+                                nextBlock.after(currentBlock);
+                                currentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                renumberQuestions();
+                            }
+                        }
 
                         // --- Logika Tombol ---
                         if (addQuestionButton) {
@@ -752,21 +1140,76 @@
                             currentBlock.after(newQuestion); // Sisipkan setelah blok saat ini
                             renumberQuestions(); // Perbarui nomor
 
+                        } else if (e.target.closest('.btn-delete-question')) {
+                            e.preventDefault();
+                            const deleteBtn = e.target.closest('.btn-delete-question');
+                            const questionBlock = deleteBtn.closest('.question-block');
+                            const allQuestions = document.querySelectorAll('.question-block');
+
+                            // 1. Cek jumlah pertanyaan
+                            if (allQuestions.length <= 1) {
+                                openAlertModal("Perhatian", "Minimal harus ada satu pertanyaan survei."); // GANTI ALERT DISINI
+                                return;
+                            }
+
+                            const hiddenIdInput = questionBlock.querySelector('.hidden-id-pertanyaan');
+                            const idPertanyaan = hiddenIdInput ? hiddenIdInput.value : '';
+
+                            const runDeleteProcess = function () {
+                                // Hapus Pertanyaan Baru
+                                if (!idPertanyaan) {
+                                    questionBlock.remove();
+                                    renumberQuestions();
+                                    return;
+                                }
+
+                                // Hapus Pertanyaan Lama (AJAX)
+                                const csrfToken = document.querySelector('input[name="_token"]').value;
+                                document.body.style.cursor = 'wait';
+
+                                fetch(`/superadmin/skm/pertanyaan/${idPertanyaan}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrfToken,
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json'
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        document.body.style.cursor = 'default';
+                                        if (data.status === 'success') {
+                                            questionBlock.remove();
+                                            renumberQuestions();
+                                        } else {
+                                            // === DISINI KITA GANTI ALERT JADI MODAL KEREN ===
+                                            openAlertModal("Gagal Menghapus", data.message);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        document.body.style.cursor = 'default';
+                                        console.error(error);
+                                        openAlertModal("Error Sistem", "Terjadi kesalahan koneksi ke server.");
+                                    });
+                            };
+
+                            // Panggil Modal Konfirmasi
+                            openConfirmModal(runDeleteProcess);
                         } else if (addAnswerButton) {
                             e.preventDefault();
                             const currentOption = addAnswerButton.closest('.answer-option');
                             const newOption = currentOption.cloneNode(true);
 
-                            // Bersihkan kloningan
-                            newOption.querySelector('.form-input').value = '';
+                            // Bersihkan kloningan (Update bagian ini)
+                            newOption.querySelector('.input-text').value = ''; // Reset Teks
+                            newOption.querySelector('.input-score').value = ''; // Reset Nilai/Bobot
+
                             const hiddenPilihanId = newOption.querySelector('.hidden-id-pilihan');
-                            if (hiddenPilihanId) {
-                                hiddenPilihanId.value = ''; // KOSONGKAN ID
-                            }
+                            if (hiddenPilihanId) hiddenPilihanId.value = '';
 
                             currentOption.after(newOption);
                             const optionsList = currentOption.closest('.answer-options-list');
-                            renumberOptions(optionsList); // Perbarui huruf (A, B, C)
+                            renumberOptions(optionsList);
 
                         } else if (deleteAnswerButton) {
                             e.preventDefault();
@@ -794,23 +1237,6 @@
                         }
                     });
                 }
-
-                // ==========================================================
-                // === FUNGSI DROPDOWN TIPE PERTANYAAN ===
-                // ==========================================================
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    select.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        // ... (Sisakan kode dropdown Anda yang sudah ada di sini,
-                        //      saya potong agar ringkas, tapi JANGAN HAPUS KODE DROPDOWN)
-                        // ... (Kode dropdown Anda dari baris 570 - 612) ...
-                    });
-                });
-                window.addEventListener('click', () => {
-                    // ... (Sisakan kode window.click Anda) ...
-                });
-
-
                 // ==========================================================
                 // === FUNGSI HELPERS (CLEAN & RENUMBER) ===
                 // ==========================================================
@@ -847,14 +1273,14 @@
 
                             // Bersihkan pilihan pertama
                             newOption.querySelector('.option-letter').textContent = 'A';
-                            newOption.querySelector('.form-input').value = '';
-                            const hiddenPilihanId = newOption.querySelector('.hidden-id-pilihan');
-                            if (hiddenPilihanId) {
-                                hiddenPilihanId.value = ''; // KOSONGKAN ID PILIHAN
-                            }
+                            newOption.querySelector('.input-text').value = ''; // Reset teks
+                            newOption.querySelector('.input-score').value = ''; // Reset nilai
 
-                            optionsList.innerHTML = ''; // Hapus semua
-                            optionsList.appendChild(newOption); // Tambah satu yang bersih
+                            const hiddenPilihanId = newOption.querySelector('.hidden-id-pilihan');
+                            if (hiddenPilihanId) hiddenPilihanId.value = '';
+
+                            optionsList.innerHTML = '';
+                            optionsList.appendChild(newOption);
                         }
                     }
 
@@ -921,35 +1347,22 @@
                                 // --- Beri Nama Input Pilihan Jawaban ---
                                 const answerOptions = questionBlock.querySelectorAll('.answer-option');
                                 answerOptions.forEach((option, oIndex) => {
-                                    const optionInput = option.querySelector('.form-input');
-                                    if (optionInput) {
-                                        // Beri Nama ID Pilihan (BARU)
-                                        const hiddenIdPilihan = option.querySelector('.hidden-id-pilihan');
-                                        if (hiddenIdPilihan) {
-                                            hiddenIdPilihan.name = `questions[${qIndex}][pilihan][${oIndex}][id_pilihan]`;
-                                        }
+                                    // 1. Input Teks Jawaban
+                                    const textInput = option.querySelector('.input-text');
+                                    if (textInput) {
+                                        textInput.name = `questions[${qIndex}][pilihan][${oIndex}][pilihan]`;
+                                    }
 
-                                        // Beri Nama Teks Pilihan
-                                        optionInput.name = `questions[${qIndex}][pilihan][${oIndex}][pilihan]`;
+                                    // 2. Input Nilai / Bobot (MANUAL DARI USER)
+                                    const scoreInput = option.querySelector('.input-score');
+                                    if (scoreInput) {
+                                        scoreInput.name = `questions[${qIndex}][pilihan][${oIndex}][nilai]`;
+                                    }
 
-                                        // Beri Nama Nilai Pilihan
-                                        const optionLetter = option.querySelector('.option-letter');
-                                        if (optionLetter) {
-                                            let hiddenNilaiInput = option.querySelector('input[name$="][nilai]"]');
-                                            if (!hiddenNilaiInput) {
-                                                hiddenNilaiInput = document.createElement('input');
-                                                hiddenNilaiInput.type = 'hidden';
-                                                option.appendChild(hiddenNilaiInput);
-                                            }
-                                            hiddenNilaiInput.name = `questions[${qIndex}][pilihan][${oIndex}][nilai]`;
-
-                                            const questionNumber = qIndex + 1;
-                                            if (questionNumber >= 11 && questionNumber <= 15) {
-                                                hiddenNilaiInput.value = (oIndex === 0) ? '10' : '0';
-                                            } else {
-                                                hiddenNilaiInput.value = oIndex + 1;
-                                            }
-                                        }
+                                    // 3. ID Pilihan Hidden
+                                    const hiddenIdPilihan = option.querySelector('.hidden-id-pilihan');
+                                    if (hiddenIdPilihan) {
+                                        hiddenIdPilihan.name = `questions[${qIndex}][pilihan][${oIndex}][id_pilihan]`;
                                     }
                                 });
                             });

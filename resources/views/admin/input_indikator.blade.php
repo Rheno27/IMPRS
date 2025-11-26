@@ -558,22 +558,79 @@
             /* Penting agar padding tidak merusak layout */
         }
 
-        .alert-success {
-            color: var(--save-btn-bg);
-            /* Pakai variabel warna 'save' kamu */
-            background-color: #d6e3dd;
-            /* Pakai variabel 'light-green-bg' */
-            border-color: var(--primary-green);
-            /* Pakai variabel 'primary-green' */
-        }
-
         .alert-info {
             color: #0c5460;
             background-color: #d1ecf1;
             border-color: #bee5eb;
         }
-        .alert-success .btn-close {
-            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
+
+
+        .custom-alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(51, 115, 84, 0.15);
+            /* Bayangan halus hijau */
+            animation: slideDown 0.4s ease-out;
+            border: 1px solid transparent;
+            width: 100%;
+            box-sizing: border-box
+        }
+
+        .custom-alert.success {
+            background-color: #eaf5f0;
+            /* Hijau sangat muda */
+            border-color: rgba(51, 115, 84, 0.2);
+            color: var(--primary-color);
+        }
+
+        .custom-alert.error {
+            background-color: #fdeaea;
+            /* Merah sangat muda */
+            border-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .alert-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 @endsection
@@ -584,8 +641,54 @@
         @if(session('info'))
             <div class="alert alert-info">{{ session('info') }}</div>
         @endif
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+        {{-- NOTIFIKASI SUKSES --}}
+        @if (session('success'))
+            <div class="custom-alert success" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Centang Hijau --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+        {{-- NOTIFIKASI ERROR --}}
+        @if (session('error'))
+            <div class="custom-alert error" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Tanda Seru Merah --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('error') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
         @endif
         <div class="date-picker">
             <button type="button" id="calendarTrigger" class="calendar-btn" aria-label="Pilih tanggal">
@@ -636,7 +739,7 @@
         </div>
 
         <div class="indicator-table-container">
-            <h2 class="table-title">Penilaian Indikator Mutu di Ruang Nifas</h2>
+            <h2 class="table-title">Penilaian Indikator Mutu di Ruang {{ $user->nama_ruangan }}</h2>
             <form method="POST" action="{{ route('admin.input_indikator.store') }}">
                 @csrf
                 <input type="hidden" name="tanggal" value="{{ $tanggal }}">
@@ -654,12 +757,13 @@
                         <div class="grid-cell">
                             <input type="number" name="pasien_sesuai[{{ $item->id_indikator }}]" class="input-plain"
                                 placeholder="Isi jumlah pasien yang memenuhi indikator"
-                                value="{{ isset($mutu[$item->id_indikator]) && $mutu[$item->id_indikator]->pasien_sesuai > 0 ? $mutu[$item->id_indikator]->pasien_sesuai : '' }}">
+                                value="{{ isset($mutu[$item->id_indikator]) ? $mutu[$item->id_indikator]->pasien_sesuai : '' }}">
                         </div>
+
                         <div class="grid-cell">
                             <input type="number" name="total_pasien[{{ $item->id_indikator }}]" class="input-plain"
                                 placeholder="Isi total pasien hari ini"
-                                value="{{ isset($mutu[$item->id_indikator]) && $mutu[$item->id_indikator]->total_pasien > 0 ? $mutu[$item->id_indikator]->total_pasien : '' }}">
+                                value="{{ isset($mutu[$item->id_indikator]) ? $mutu[$item->id_indikator]->total_pasien : '' }}">
                         </div>
                     @endforeach
                 </div>

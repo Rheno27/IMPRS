@@ -145,4 +145,22 @@ class IndikatorRuanganController extends Controller
     {
         //
     }
+
+    public function deactivate(Request $request)
+    {
+        $request->validate([
+            'id_indikator_ruangan' => 'required|exists:indikator_ruangan,id_indikator_ruangan',
+        ]);
+
+        $indikatorRuangan = IndikatorRuangan::findOrFail($request->id_indikator_ruangan);
+
+        // Cek apakah indikator ini memang milik ruangan yang sedang diedit (optional tapi bagus untuk keamanan)
+        // if ($indikatorRuangan->id_ruangan != $request->id_ruangan) { ... }
+
+        $indikatorRuangan->active = false;
+        $indikatorRuangan->save();
+
+        return redirect()->back()
+            ->with('success', 'Indikator berhasil dinonaktifkan dari ruangan ini.');
+    }
 }

@@ -22,19 +22,27 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        // 1. Ambil semua pertanyaan, kecuali untuk kritik dan saran (ID 16)
-        $pertanyaan = DB::table('pertanyaan')->where('id_pertanyaan', '!=', 16)->get();
+        // 1. Ambil semua pertanyaan (kecuali ID 16/Kritik Saran) & URUTKAN BERDASARKAN 'urutan'
+        // TAMBAHAN: ->orderBy('urutan', 'asc')
+        $pertanyaan = DB::table('pertanyaan')
+            ->where('id_pertanyaan', '!=', 16)
+            ->orderBy('urutan', 'asc') // <--- INI KUNCINYA
+            ->get();
 
-        // 2. Ambil pertanyaan spesifik untuk kritik dan saran
+        // 2. Ambil pertanyaan spesifik untuk kritik dan saran (ID 16)
         $pertanyaanKritikSaran = DB::table('pertanyaan')->where('id_pertanyaan', 16)->first();
 
         // 3. Ambil semua pilihan jawaban dan kelompokkan berdasarkan id_pertanyaan
-        $pilihanJawaban = DB::table('pilihan_jawaban')->get()->groupBy('id_pertanyaan');
+        // (Opsional: Kita urutkan juga pilihan A, B, C, D nya biar rapi)
+        $pilihanJawaban = DB::table('pilihan_jawaban')
+            ->orderBy('id_pilihan', 'asc')
+            ->get()
+            ->groupBy('id_pertanyaan');
 
         // 4. Ambil daftar ruangan, kecuali Super Admin
         $ruangan = DB::table('ruangan')->where('id_ruangan', '!=', 'SP00')->get();
 
-        // 5. Kirim semua data ke view 'guest.skm2' sesuai nama file dari route-mu
+        // 5. Kirim semua data ke view
         return view('guest.skm1', compact('pertanyaan', 'pilihanJawaban', 'ruangan', 'pertanyaanKritikSaran'));
     }
 
@@ -46,7 +54,7 @@ class SurveyController extends Controller
         // Validasi data responden
         $request->validate([
             'id_ruangan' => 'required',
-            'no_rm' => 'required|string|max:100',
+            'no_rm' => 'required|numeric',
             'umur' => 'required|integer',
             'jenis_kelamin' => 'required|string|max:50',
             'pendidikan' => 'required|string|max:50',

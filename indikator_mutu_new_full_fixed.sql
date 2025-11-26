@@ -35,10 +35,10 @@ CREATE TABLE indikator_ruangan(
     CONSTRAINT fk_indikator_indikator FOREIGN KEY (id_indikator) REFERENCES indikator_mutu(id_indikator)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 3. Pertanyaan (induk dari pilihan_jawaban & jawaban)
 CREATE TABLE pertanyaan (
     id_pertanyaan INT AUTO_INCREMENT PRIMARY KEY,
-    pertanyaan VARCHAR(255) NOT NULL
+    pertanyaan VARCHAR(255) NOT NULL,
+    urutan INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 4. User (punya FK ke ruangan)
@@ -96,6 +96,19 @@ CREATE TABLE mutu_ruangan (
     CONSTRAINT fk_mutu_indikator FOREIGN KEY (id_indikator_ruangan) REFERENCES indikator_ruangan(id_indikator_ruangan)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 9. Sessions (Wajib untuk Laravel)
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- INSERT INTO
 
@@ -121,13 +134,14 @@ INSERT INTO ruangan (id_ruangan, nama_ruangan) VALUES
 ('R17', 'VIP'),
 ('R18', 'RM'),
 ('R19', 'Radiologi'),
-('R20', 'Keuangan');
+('R20', 'Keuangan'),
+('R21', 'SKM');
 
 -- kategori indikator
 INSERT INTO kategori (kategori) VALUES
-('Indikator Mutu Prioritas Unit (IMPU)'),
-('Indikator Nasional Mutu (INM)'),
-('Indikator Mutu Prioritas RS (IMPRS)');
+('Indikator Mutu Prioritas Unit'),
+('Indikator Nasional Mutu'),
+('Indikator Mutu Prioritas RS');
 
 -- indikator mutu
 INSERT INTO indikator_mutu (id_kategori, variabel, standar) VALUES
@@ -161,7 +175,6 @@ INSERT INTO indikator_mutu (id_kategori, variabel, standar) VALUES
 (2, 'Kepatuhan Terhadap Clinical Pathway',  '80'),
 (2, 'Kepatuhan Upaya Pencegahan Resiko Jatuh', '100'),
 (2, 'Tanggap Komplain','80'),
-(2, 'Kepuasan Masyarakat', '76.61'),
 (2, 'Waktu Tanggap SC', '80'),
 (2, 'Penundaan Operasi Elektif', '5'),
 (2, 'Penggunaan Obat Sesuai Formularium Nasional',  '80'),
@@ -242,7 +255,8 @@ INSERT INTO `user` (id_user, username, password, id_ruangan, nama_ruangan) VALUE
 ('U17', 'ruang_vip', 'vip123', 'R17', 'VIP'),
 ('U18', 'ruang_rm', 'rm123', 'R18', 'RM'),
 ('U19', 'ruang_radiologi', 'radiologi123', 'R19', 'Radiologi'),
-('U20', 'ruang_keuangan', 'keuangan123', 'R20', 'Keuangan');
+('U20', 'ruang_keuangan', 'keuangan123', 'R20', 'Keuangan'),
+('U21', 'ruang_skm', 'skm123', 'R21', 'SKM');
 
 -- biodata pasien
 
@@ -347,3 +361,6 @@ INSERT INTO mutu_ruangan (tanggal, id_indikator_ruangan, total_pasien, pasien_se
 (CURRENT_DATE, 14, 100, 89), -- Kepatuhan upaya pencegahan resiko jatuh
 (CURRENT_DATE, 15, 100, 82), -- Waktu respon penanganan gangguan sistem sysmed RS
 (CURRENT_DATE, 16, 100, 93); -- Ketepatan serah terima pasien post op dengan perawat recovery room
+
+SET @r=0;
+UPDATE pertanyaan SET urutan = (@r:=@r+1) ORDER BY id_pertanyaan ASC;

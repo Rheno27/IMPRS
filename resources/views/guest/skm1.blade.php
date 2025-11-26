@@ -390,6 +390,18 @@
 @section('content')
     <main>
         <section class="form-section">
+            {{-- TAMBAHKAN BLOK ERROR INI --}}
+            @if ($errors->any())
+                <div
+                    style="background-color: #fdeaea; color: #f90606; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f90606;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            {{-- AKHIR BLOK ERROR --}}
             {{-- Sesuaikan action dengan nama route yang baru --}}
             <form class="form-wrapper" method="POST" action="{{ route('guest.survei-1.store') }}">
                 @csrf
@@ -405,7 +417,7 @@
                                 <div class="form-group">
                                     <label for="no_rm">Nomor Responden (No. RM)<span
                                             class="required-asterisk">*</span></label>
-                                    <input type="text" id="no_rm" name="no_rm" class="input-field" required
+                                    <input type="number" id="no_rm" name="no_rm" class="input-field" required
                                         value="{{ old('no_rm') }}">
                                 </div>
                                 <div class="form-group">

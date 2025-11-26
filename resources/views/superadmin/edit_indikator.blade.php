@@ -356,29 +356,6 @@
             box-shadow: 0 0 0 2px rgba(51, 115, 84, 0.25);
         }
 
-        .alert-success {
-            color: var(--btn-save-bg);
-            /* Teks hijau tua */
-            background-color: var(--light-green-bg);
-            /* Latar hijau muda */
-            border-color: var(--primary-green);
-            /* Border hijau tua */
-        }
-
-        .alert-danger {
-            color: var(--btn-delete-bg);
-            /* Teks merah tua */
-            background-color: #fde2db;
-            /* Latar merah muda tipis */
-            border-color: #f5c2c7;
-            /* Border merah */
-        }
-
-        /* Ini untuk membuat tombol 'x' (close) di alert sukses jadi terlihat */
-        .alert-success .btn-close {
-            filter: invert(20%) sepia(20%) saturate(1000%) hue-rotate(100deg);
-        }
-
         @media (max-width: 768px) {
             .main-content {
                 padding: 30px 15px;
@@ -534,6 +511,73 @@
             background-color: var(--primary-green);
             color: white;
         }
+
+        .custom-alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(51, 115, 84, 0.15);
+            /* Bayangan halus hijau */
+            animation: slideDown 0.4s ease-out;
+            border: 1px solid transparent;
+        }
+
+        .custom-alert.success {
+            background-color: #eaf5f0;
+            /* Hijau sangat muda */
+            border-color: rgba(51, 115, 84, 0.2);
+            color: var(--primary-color);
+        }
+
+        .custom-alert.error {
+            background-color: #fdeaea;
+            /* Merah sangat muda */
+            border-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .alert-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
@@ -541,10 +585,53 @@
 @section('content')
     <main id="section-main" class="main-content">
 
+        {{-- NOTIFIKASI SUKSES --}}
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="custom-alert success" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Centang Hijau --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+        {{-- NOTIFIKASI ERROR --}}
+        @if (session('error'))
+            <div class="custom-alert error" role="alert">
+                <div class="alert-content">
+                    {{-- Ikon Tanda Seru Merah --}}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ session('error') }}</span>
+                </div>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
         @endif
         <div class="toolbar">
@@ -581,9 +668,41 @@
                                     {{ $item->indikatorMutu->kategori->kategori ?? 'N/A' }}
                                 </div>
                                 <div class="table-cell col-actions">
-                                    <button type="button" class="action-btn btn-warning text-dark" data-bs-toggle="modal"
-                                        data-bs-target="#gantiModal-{{ $item->id_indikator_ruangan }}">
-                                        Ganti
+                                    {{-- TOMBOL EDIT --}}
+                                    <button type="button" class="action-btn btn-edit" data-bs-toggle="modal"
+                                        data-bs-target="#editModal-{{ $item->id_indikator_ruangan }}">
+                                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M18 18.3333H3C2.65833 18.3333 2.375 18.0499 2.375 17.7083C2.375 17.3666 2.65833 17.0833 3 17.0833H18C18.3417 17.0833 18.625 17.3666 18.625 17.7083C18.625 18.0499 18.3417 18.3333 18 18.3333Z"
+                                                fill="#DC5E3A" />
+                                            <path
+                                                d="M16.3495 2.90005C14.7328 1.28338 13.1495 1.24172 11.4912 2.90005L10.4828 3.90838C10.3995 3.99172 10.3662 4.12505 10.3995 4.24172C11.0328 6.45005 12.7995 8.21672 15.0078 8.85005C15.0412 8.85838 15.0745 8.86672 15.1078 8.86672C15.1995 8.86672 15.2828 8.83338 15.3495 8.76672L16.3495 7.75838C17.1745 6.94172 17.5745 6.15005 17.5745 5.35005C17.5828 4.52505 17.1828 3.72505 16.3495 2.90005Z"
+                                                fill="#DC5E3A" />
+                                            <path
+                                                d="M13.5089 9.60841C13.2673 9.49175 13.0339 9.37508 12.8089 9.24175C12.6256 9.13341 12.4506 9.01675 12.2756 8.89175C12.1339 8.80008 11.9673 8.66675 11.8089 8.53341C11.7923 8.52508 11.7339 8.47508 11.6673 8.40841C11.3923 8.17508 11.0839 7.87508 10.8089 7.54175C10.7839 7.52508 10.7423 7.46675 10.6839 7.39175C10.6006 7.29175 10.4589 7.12508 10.3339 6.93341C10.2339 6.80841 10.1173 6.62508 10.0089 6.44175C9.87559 6.21675 9.75892 5.99175 9.64226 5.75841C9.52559 5.50841 9.43392 5.26675 9.35059 5.04175L4.11726 10.2751C4.00892 10.3834 3.90892 10.5917 3.88392 10.7334L3.43392 13.9251C3.35059 14.4917 3.50892 15.0251 3.85892 15.3834C4.15892 15.6751 4.57559 15.8334 5.02559 15.8334C5.12559 15.8334 5.22559 15.8251 5.32559 15.8084L8.52559 15.3584C8.67559 15.3334 8.88392 15.2334 8.98392 15.1251L14.2173 9.89175C13.9839 9.80841 13.7589 9.71675 13.5089 9.60841Z"
+                                                fill="#FFC107" />
+                                        </svg>
+                                        Edit
+                                    </button>
+
+                                    {{-- TOMBOL HAPUS (Baru) --}}
+                                    <button type="button" class="action-btn btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal-{{ $item->id_indikator_ruangan }}">
+                                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M18.0574 4.35842C16.7157 4.22508 15.3741 4.12508 14.0241 4.05008V4.04175L13.8407 2.95841C13.7157 2.19175 13.5324 1.04175 11.5824 1.04175H9.39907C7.45741 1.04175 7.27407 2.14175 7.14074 2.95008L6.96574 4.01675C6.19074 4.06675 5.41574 4.11675 4.64074 4.19175L2.94074 4.35842C2.59074 4.39175 2.34074 4.70008 2.37407 5.04175C2.40741 5.38342 2.70741 5.63342 3.05741 5.60008L4.75741 5.43342C9.12407 5.00008 13.5241 5.16675 17.9407 5.60842C17.9657 5.60842 17.9824 5.60842 18.0074 5.60842C18.3241 5.60842 18.5991 5.36675 18.6324 5.04175C18.6574 4.70008 18.4074 4.39175 18.0574 4.35842Z"
+                                                fill="#FFC107" />
+                                            <path
+                                                d="M16.5245 6.78325C16.3245 6.57492 16.0495 6.45825 15.7661 6.45825H5.2328C4.94947 6.45825 4.66613 6.57492 4.47447 6.78325C4.2828 6.99159 4.17447 7.27492 4.19113 7.56659L4.7078 16.1166C4.79947 17.3833 4.91613 18.9666 7.82447 18.9666H13.1745C16.0828 18.9666 16.1995 17.3916 16.2911 16.1166L16.8078 7.57492C16.8245 7.27492 16.7161 6.99159 16.5245 6.78325Z"
+                                                fill="#DC5E3A" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M8.48242 14.1667C8.48242 13.8216 8.76224 13.5417 9.10742 13.5417H11.8824C12.2276 13.5417 12.5074 13.8216 12.5074 14.1667C12.5074 14.5119 12.2276 14.7917 11.8824 14.7917H9.10742C8.76224 14.7917 8.48242 14.5119 8.48242 14.1667Z"
+                                                fill="#FFC107" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M7.79102 10.8333C7.79102 10.4881 8.07084 10.2083 8.41602 10.2083H12.5827C12.9279 10.2083 13.2077 10.4881 13.2077 10.8333C13.2077 11.1784 12.9279 11.4583 12.5827 11.4583H8.41602C8.07084 11.4583 7.79102 11.1784 7.79102 10.8333Z"
+                                                fill="#FFC107" />
+                                        </svg>
+                                        Hapus
                                     </button>
                                 </div>
                             </div>
@@ -601,14 +720,14 @@
 
     {{-- PERULANGAN KEDUA: UNTUK MODAL --}}
     @foreach ($activeIndikators as $item)
-        <div class="modal fade" id="gantiModal-{{ $item->id_indikator_ruangan }}" tabindex="-1">
+        {{-- MODAL 1: GANTI / EDIT (ID disesuaikan jadi editModal-...) --}}
+        <div class="modal fade" id="editModal-{{ $item->id_indikator_ruangan }}" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Ganti Indikator</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    {{-- Form untuk mengganti indikator --}}
                     <form action="{{ route('superadmin.ruangan.update_indikator') }}" method="POST">
                         @csrf
                         <div class="modal-body">
@@ -617,10 +736,8 @@
                             <input type="hidden" name="id_ruangan" value="{{ $ruangan->id_ruangan }}">
                             <input type="hidden" name="id_indikator_ruangan_lama" value="{{ $item->id_indikator_ruangan }}">
 
-                            {{-- DROPDOWN PERTAMA: KATEGORI --}}
                             <div class="mb-3">
                                 <label class="form-label"><strong>1. Pilih Jenis Indikator (Kategori)</strong></label>
-                                {{-- Class 'category-select' digunakan oleh JavaScript --}}
                                 <select class="form-select category-select"
                                     data-target-indicator-select="#indicator-select-{{ $item->id_indikator_ruangan }}" required>
                                     <option value="" selected>-- Pilih Kategori --</option>
@@ -630,7 +747,6 @@
                                 </select>
                             </div>
 
-                            {{-- DROPDOWN KEDUA: INDIKATOR BARU --}}
                             <div class="mb-3">
                                 <label for="indicator-select-{{ $item->id_indikator_ruangan }}" class="form-label"><strong>2.
                                         Pilih Indikator Baru</strong></label>
@@ -643,6 +759,37 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan Penggantian</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- MODAL 2: HAPUS / NONAKTIFKAN (BARU) --}}
+        <div class="modal fade" id="deleteModal-{{ $item->id_indikator_ruangan }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {{-- Form mengarah ke route deactivate yang sudah ada di Controller --}}
+                    <form action="{{ route('superadmin.ruangan.deactivate_indikator') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus indikator berikut dari ruangan ini?</p>
+                            <div class="alert alert-warning">
+                                <strong>{{ $item->indikatorMutu->variabel }}</strong>
+                            </div>
+                            <small class="text-muted">Indikator akan dinonaktifkan dari ruangan, tidak dihapus permanen dari
+                                sistem.</small>
+
+                            {{-- ID yang dikirim untuk dinonaktifkan --}}
+                            <input type="hidden" name="id_indikator_ruangan" value="{{ $item->id_indikator_ruangan }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
                         </div>
                     </form>
                 </div>

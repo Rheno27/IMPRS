@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Models\MutuRuangan;
-use App\Models\IndikatorMutu;
 use App\Models\IndikatorRuangan;
+use App\Exports\RekapMutuRuanganExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -84,7 +85,8 @@ class DashboardController extends Controller
 
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
-        return view('admin.dashboard', compact(
+        return view('admin.dashboard',  compact(
+            'user',
             'indikatorData',
             'bulan',
             'tahun',
@@ -138,5 +140,29 @@ class DashboardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Download Rekap Mutu Ruangan in Excel Format.
+     */
+    public function downloadRekap(Request $request)
+    {
+        // 1. Cek apakah user ada di session (Login manual check)
+        if (!Session::has('user')) {
+            return redirect('/login')->withErrors(['login' => 'Silakan login terlebih dahulu']);
+        }
+
+        $request->validate([
+            'bulan' => 'required',
+            'tahun' => 'required',
+        ]);
+
+        // 2. AMBIL DARI SESSION, BUKAN AUTH::USER()
+        $user = Session::get('user');
+        $ruanganId = $user->id_ruangan;
+
+        $namaFile = 'Rekap_Mutu_' . $ruanganId . '_' . $request->bulan . '-' . $request->tahun . '.xlsx';
+
+        return Excel::download(new RekapMutuRuanganExport($ruanganId, $request->bulan, $request->tahun), $namaFile);
     }
 }

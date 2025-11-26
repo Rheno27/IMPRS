@@ -420,7 +420,8 @@
                 </div>
 
             </div>
-            <button id="downloadBtn" class="btn btn-download" title="Download file">
+            <button id="downloadBtn" type="button" class="btn btn-download" title="Download file"
+                onclick="document.getElementById('downloadModalSuper').style.display='flex'">
                 <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M27 18.3333V24.1111C27 24.8773 26.6956 25.6121 26.1539 26.1539C25.6121 26.6956 24.8773 27 24.1111 27H3.88889C3.12271 27 2.38791 26.6956 1.84614 26.1539C1.30436 25.6121 1 24.8773 1 24.1111V18.3333M6.77778 11.1111L14 18.3333M14 18.3333L21.2222 11.1111M14 18.3333V1"
@@ -428,6 +429,49 @@
                 </svg>
                 <span>Download File</span>
             </button>
+
+            <div id="downloadModalSuper"
+                style="display:none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+                <div
+                    style="background-color: #fff; padding: 25px; width: 320px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+
+                    <h3 style="color: #337354; margin-top: 0;">Download Rekap Ruangan</h3>
+
+                    <form action="{{ route('superadmin.download_rekap') }}" method="GET">
+
+                        <input type="hidden" name="ruangan_id" value="{{ $ruangan->id_ruangan }}">
+
+                        <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Bulan:</div>
+                        <select name="bulan"
+                            style="margin-bottom: 15px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+                            @foreach(range(1, 12) as $m)
+                                <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Tahun:</div>
+                        <select name="tahun"
+                            style="margin-bottom: 25px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+                            @foreach(range(date('Y') - 2, date('Y') + 2) as $y)
+                                <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endforeach
+                        </select>
+
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button type="button" onclick="document.getElementById('downloadModalSuper').style.display='none'"
+                                style="padding: 10px 20px; background: #f1f1f1; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; color: #333;">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                style="padding: 10px 20px; background: #337354; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                Download Excel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="toolbar-right">

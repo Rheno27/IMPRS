@@ -572,14 +572,20 @@
 
                     <!-- Toolbar kanan -->
                     <div class="toolbar-right">
-                        <button id="downloadBtn" class="btn btn-download" title="Download file">
-                            <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M27 18.3333V24.1111C27 24.8773 26.6956 25.6121 26.1539 26.1539C25.6121 26.6956 24.8773 27 24.1111 27H3.88889C3.12271 27 2.38791 26.6956 1.84614 26.1539C1.30436 25.6121 1 24.8773 1 24.1111V18.3333M6.77778 11.1111L14 18.3333M14 18.3333L21.2222 11.1111M14 18.3333V1"
-                                    stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <span>Download File</span>
-                        </button>
+                        <form action="{{ route('superadmin.skm.download') }}" method="GET" style="display: inline;">
+
+                            <input type="hidden" name="month" value="{{ $selectedMonth }}">
+                            <input type="hidden" name="year" value="{{ $selectedYear }}">
+
+                            <button type="submit" class="btn btn-download" title="Download file">
+                                <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M27 18.3333V24.1111C27 24.8773 26.6956 25.6121 26.1539 26.1539C25.6121 26.6956 24.8773 27 24.1111 27H3.88889C3.12271 27 2.38791 26.6956 1.84614 26.1539C1.30436 25.6121 1 24.8773 1 24.1111V18.3333M6.77778 11.1111L14 18.3333M14 18.3333L21.2222 11.1111M14 18.3333V1"
+                                        stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <span>Download File</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -596,47 +602,49 @@
                         <table class="survey-table">
                             <thead>
                                 <tr>
-                                    {{-- PERBAIKAN 1: Gunakan rowspan="2" agar sel otomatis ke bawah --}}
                                     <th class="no-col" rowspan="2">No.</th>
-                                    <th colspan="15" class="question-col">Nomor Pertanyaan</th>
+                                    {{-- Hitung colspan otomatis berdasarkan jumlah pertanyaan --}}
+                                    <th colspan="{{ count($listPertanyaan) }}" class="question-col">Nomor Pertanyaan</th>
                                     <th class="total-col" rowspan="2">Rata-rata IKM</th>
                                 </tr>
                                 <tr>
-                                    {{-- Baris ini sekarang hanya berisi nomor pertanyaan dan sudah sejajar --}}
-                                    @for ($i = 1; $i <= 15; $i++)
-                                        <th style="width: 50px;">{{ $i }}</th>
-                                    @endfor
+                                    {{-- LOOP HEADER: Tampilkan nomor urut (1, 2, 3...) --}}
+                                    @foreach ($listPertanyaan as $id)
+                                        <th style="width: 50px;">{{ $loop->iteration }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($dataRekap as $pasien)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        @for ($i = 1; $i <= 15; $i++)
-                                            <td>{{ $pasien['jawaban'][$i] ?? '-' }}</td>
-                                        @endfor
+
+                                        {{-- LOOP DATA: Tampilkan nilai jawaban berdasarkan ID pertanyaan --}}
+                                        @foreach ($listPertanyaan as $idPertanyaan)
+                                            <td>{{ $pasien['jawaban'][$idPertanyaan] ?? '-' }}</td>
+                                        @endforeach
+
                                         <td><strong>{{ $pasien['total_nilai_ikm'] }}</strong></td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="17">Tidak ada data survei untuk periode ini.</td>
+                                        {{-- Colspan otomatis menyesuaikan lebar tabel --}}
+                                        <td colspan="{{ count($listPertanyaan) + 2 }}">Tidak ada data survei untuk periode ini.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    {{-- PERBAIKAN 2: Gabungkan sel label "Rata-Rata" dengan sel kosong di akhir --}}
-                                    <td style="font-weight: bold;" colspan="16">Rata-Rata Per Pertanyaan</td>
+                                    {{-- Colspan untuk label Rata-rata --}}
+                                    <td style="font-weight: bold;" colspan="{{ count($listPertanyaan) + 1 }}">Rata-Rata Per Pertanyaan</td>
 
-                                    {{-- Kolom terakhir untuk rata-rata dari "Rata-rata IKM" --}}
                                     <td style="font-weight: bold;">
-                                        {{-- Hitung rata-rata dari total nilai IKM --}}
                                         @php
-                                            $rataRataIKMTotal = 0;
-                                            if (count($dataRekap) > 0) {
-                                                $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
-                                                $rataRataIKMTotal = $totalIKM / count($dataRekap);
-                                            }
+    $rataRataIKMTotal = 0;
+    if (count($dataRekap) > 0) {
+        $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
+        $rataRataIKMTotal = $totalIKM / count($dataRekap);
+    }
                                         @endphp
                                         {{ number_format($rataRataIKMTotal, 2) }}
                                     </td>

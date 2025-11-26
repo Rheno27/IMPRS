@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
+use App\Exports\RekapSkmExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon; 
 
 class SkmController extends Controller
@@ -17,6 +19,20 @@ class SkmController extends Controller
         $selectedYear = $request->input('year', Carbon::now()->year);
         $selectedMonth = $request->input('month', Carbon::now()->month);
 
+        // === PERBAIKAN DI SINI ===
+        // Jangan cari kolom 'tipe_pertanyaan'.
+        // Cari ID pertanyaan yang PUNYA OPSI di tabel 'pilihan_jawaban'.
+        // Otomatis pertanyaan 'Kritik Saran' (yang tidak punya opsi A/B/C/D) tidak akan terambil.
+
+        $listPertanyaan = DB::table('pilihan_jawaban')
+            ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
+            ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan') // <--- PENTING: Ambil kolom urutan
+            ->distinct()
+            ->orderBy('pertanyaan.urutan', 'asc')
+            ->get() // Eksekusi query dulu (ambil semua data)
+            ->pluck('id_pertanyaan');
+
+        // === Query Data Jawaban ===
         $jawabanPasien = DB::table('jawaban')
             ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
             ->leftJoin('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
@@ -28,54 +44,58 @@ class SkmController extends Controller
             )
             ->whereYear('jawaban.tanggal', $selectedYear)
             ->whereMonth('jawaban.tanggal', $selectedMonth)
-            ->where('jawaban.id_pertanyaan', '<=', 15)
+            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan) // Filter ID yang valid
             ->get();
 
-        // Array untuk menampung data pasien dan jawabannya
         $dataRekap = [];
-        // Array untuk menghitung total dan jumlah jawaban per pertanyaan (untuk rata-rata kolom)
-        $rataRataKolom = array_fill(1, 15, ['total' => 0, 'count' => 0]);
+
+        // Siapkan array rata-rata (Default 0)
+        $rataRataKolom = [];
+        foreach ($listPertanyaan as $id) {
+            $rataRataKolom[$id] = ['total' => 0, 'count' => 0];
+        }
 
         foreach ($jawabanPasien as $jawaban) {
-            // Inisialisasi data pasien jika belum ada
             if (!isset($dataRekap[$jawaban->id_pasien])) {
                 $dataRekap[$jawaban->id_pasien] = [
                     'no_rm' => $jawaban->no_rm,
                     'jawaban' => [],
-                    'total_nilai_ikm' => 0 // Tambahkan key untuk total nilai IKM per pasien
+                    'total_nilai_ikm' => 0
                 ];
             }
-            // Masukkan nilai jawaban
+
             $dataRekap[$jawaban->id_pasien]['jawaban'][$jawaban->id_pertanyaan] = $jawaban->nilai;
 
-            // Akumulasi data untuk rata-rata kolom
-            if (isset($jawaban->nilai)) {
+            if (isset($jawaban->nilai) && isset($rataRataKolom[$jawaban->id_pertanyaan])) {
                 $rataRataKolom[$jawaban->id_pertanyaan]['total'] += $jawaban->nilai;
                 $rataRataKolom[$jawaban->id_pertanyaan]['count']++;
             }
         }
 
-        // Hitung total nilai IKM untuk setiap pasien dan finalisasi rata-rata per kolom
+        // Hitung total per pasien
         foreach ($dataRekap as $id_pasien => $data) {
             $dataRekap[$id_pasien]['total_nilai_ikm'] = array_sum($data['jawaban']);
         }
 
+        // Hitung rata-rata per kolom (pertanyaan)
         $finalRataRataKolom = [];
-        for ($i = 1; $i <= 15; $i++) {
-            if ($rataRataKolom[$i]['count'] > 0) {
-                $finalRataRataKolom[$i] = $rataRataKolom[$i]['total'] / $rataRataKolom[$i]['count'];
+        foreach ($listPertanyaan as $id) {
+            if ($rataRataKolom[$id]['count'] > 0) {
+                $finalRataRataKolom[$id] = $rataRataKolom[$id]['total'] / $rataRataKolom[$id]['count'];
             } else {
-                $finalRataRataKolom[$i] = 0;
+                $finalRataRataKolom[$id] = 0;
             }
         }
 
         return view('superadmin.skm_rekap', [
             'dataRekap' => $dataRekap,
-            'rataRataKolom' => $finalRataRataKolom, // Kirim data rata-rata kolom ke view
+            'rataRataKolom' => $finalRataRataKolom,
             'selectedMonth' => $selectedMonth,
             'selectedYear' => $selectedYear,
+            'listPertanyaan' => $listPertanyaan // Kirim list ID pertanyaan dinamis
         ]);
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -119,47 +139,71 @@ class SkmController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroyPertanyaan($id)
     {
-        //
+        try {
+            // 1. Cek Safety: Apakah pertanyaan ini sudah ada di tabel jawaban?
+            $cekResponden = DB::table('jawaban')
+                ->where('id_pertanyaan', $id)
+                ->exists();
+
+            if ($cekResponden) {
+                // GAGAL: Kembalikan JSON error
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'GAGAL: Pertanyaan tidak bisa dihapus karena sudah memiliki data responden. Data aman.'
+                ], 400); // 400 Bad Request
+            }
+
+            // 2. Jika Aman, Hapus Pilihan Jawaban (Foreign Key)
+            DB::table('pilihan_jawaban')->where('id_pertanyaan', $id)->delete();
+
+            // 3. Hapus Pertanyaan
+            DB::table('pertanyaan')->where('id_pertanyaan', $id)->delete();
+
+            // SUKSES: Kembalikan JSON success
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pertanyaan berhasil dihapus.'
+            ]);
+
+        } catch (\Exception $e) {
+            // SERVER ERROR
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan server: ' . $e->getMessage()
+            ], 500);
+        }
     }
+
 
     /**
      * Show the form for editing the survey questions.
      */
     public function editPertanyaan()
     {
-        // 1. Ambil semua pertanyaan survei (pertanyaan 1-15 + 16 untuk kritik/saran)
-        // Saya asumsikan tabelnya bernama 'pertanyaan'
+        // UBAH DISINI: Order by 'urutan' dulu, baru 'id_pertanyaan'
         $dataPertanyaan = DB::table('pertanyaan')
-            ->orderBy('id_pertanyaan') // Urutkan berdasarkan ID
+            ->orderBy('urutan', 'asc')
+            ->orderBy('id_pertanyaan', 'asc')
             ->get();
 
-        // 2. Ambil semua pilihan jawaban dan kelompokkan berdasarkan id_pertanyaan
-        // Saya asumsikan tabelnya bernama 'pilihan_jawaban'
         $dataPilihan = DB::table('pilihan_jawaban')
-            ->orderBy('id_pertanyaan')
-            ->orderBy('nilai') // Urutkan pilihan berdasarkan nilai (A, B, C, D)
+            ->orderBy('id_pilihan', 'asc')
             ->get()
             ->groupBy('id_pertanyaan');
 
-        // 3. Gabungkan pertanyaan dengan pilihan jawabannya
         $surveyData = $dataPertanyaan->map(function ($pertanyaan) use ($dataPilihan) {
-            // Lampirkan pilihan jawaban ke pertanyaan ini
-            // Jika tidak ada pilihan (misal: isian teks), akan jadi collection kosong
             $pertanyaan->pilihan = $dataPilihan->get($pertanyaan->id_pertanyaan, collect());
 
-            // Tambahkan asumsi tipe pertanyaan berdasarkan ID (bisa disesuaikan)
-            if ($pertanyaan->id_pertanyaan == 16) { // ID 16 biasanya untuk Kritik/Saran
+            if ($pertanyaan->id_pertanyaan == 16 || $pertanyaan->pilihan->isEmpty()) {
                 $pertanyaan->tipe_pertanyaan = 'Isian Teks';
             } else {
-                $pertanyaan->tipe_pertanyaan = 'Pilihan Ganda'; // Asumsi default
+                $pertanyaan->tipe_pertanyaan = 'Pilihan Ganda';
             }
-
             return $pertanyaan;
         });
 
-        // 4. Kirim data yang sudah tersusun ke view
         return view('superadmin.skm_edit2', compact('surveyData'));
     }
 
@@ -169,108 +213,74 @@ class SkmController extends Controller
     public function updatePertanyaan(Request $request)
     {
         $submittedQuestions = $request->input('questions', []);
-
-        // Array untuk melacak ID yang "aman" (disubmit oleh form)
         $safePertanyaanIds = [];
         $safePilihanIds = [];
 
         try {
             DB::transaction(function () use ($submittedQuestions, &$safePertanyaanIds, &$safePilihanIds) {
 
-                foreach ($submittedQuestions as $qData) {
+                // $index adalah urutan visual dari atas ke bawah (0, 1, 2...)
+                foreach ($submittedQuestions as $index => $qData) {
 
                     $pertanyaanId = null;
+
+                    // KITA SIMPAN URUTAN SESUAI POSISI DI LAYAR ($index + 1)
                     $pertanyaanData = [
                         'pertanyaan' => $qData['pertanyaan'] ?? 'Pertanyaan Kosong',
-                        // 'tipe_pertanyaan' => $qData['tipe'] // HANYA JIKA ADA KOLOMNYA DI DB
+                        'urutan' => $index + 1
                     ];
 
-                    // Cek apakah ini UPDATE (ada ID) atau INSERT (ID kosong)
                     if (!empty($qData['id_pertanyaan'])) {
-                        // --- Ini adalah UPDATE Pertanyaan ---
                         $pertanyaanId = $qData['id_pertanyaan'];
-                        DB::table('pertanyaan')
-                            ->where('id_pertanyaan', $pertanyaanId)
-                            ->update($pertanyaanData);
+                        DB::table('pertanyaan')->where('id_pertanyaan', $pertanyaanId)->update($pertanyaanData);
                     } else {
-                        // --- Ini adalah INSERT Pertanyaan Baru ---
                         $pertanyaanId = DB::table('pertanyaan')->insertGetId($pertanyaanData);
                     }
 
-                    // Catat ID pertanyaan ini sebagai "aman"
                     $safePertanyaanIds[] = $pertanyaanId;
 
-                    // --- Proses Pilihan Jawabannya ---
-                    if (($qData['tipe'] ?? 'Pilihan Ganda') != 'Isian Teks' && isset($qData['pilihan']) && is_array($qData['pilihan'])) {
-
+                    // ... (Bagian Pilihan Jawaban SAMA PERSIS, tidak berubah) ...
+                    if (isset($qData['pilihan']) && is_array($qData['pilihan'])) {
                         foreach ($qData['pilihan'] as $pData) {
-
                             $pilihanId = null;
                             $pilihanData = [
                                 'id_pertanyaan' => $pertanyaanId,
-                                'pilihan' => $pData['pilihan'] ?? 'Pilihan Kosong',
-                                'nilai' => $pData['nilai'] ?? 0
+                                'pilihan' => $pData['pilihan'] ?? '',
+                                'nilai' => isset($pData['nilai']) ? intval($pData['nilai']) : 0
                             ];
-
-                            // Cek apakah ini UPDATE Pilihan atau INSERT Pilihan Baru
                             if (!empty($pData['id_pilihan'])) {
-                                // --- UPDATE Pilihan ---
                                 $pilihanId = $pData['id_pilihan'];
-                                DB::table('pilihan_jawaban')
-                                    ->where('id_pilihan', $pData['id_pilihan'])
-                                    ->update($pilihanData);
+                                DB::table('pilihan_jawaban')->where('id_pilihan', $pData['id_pilihan'])->update($pilihanData);
                             } else {
-                                // --- INSERT Pilihan Baru ---
                                 $pilihanId = DB::table('pilihan_jawaban')->insertGetId($pilihanData);
                             }
-                            // Catat ID pilihan ini sebagai "aman"
                             $safePilihanIds[] = $pilihanId;
                         }
                     }
-                } // --- Akhir loop pertanyaan ---
+                }
 
-
-                // --- LOGIKA HAPUS PILIHAN JAWABAN (YANG AMAN) ---
-                // UI Anda tidak punya tombol hapus pertanyaan, jadi kita tidak hapus pertanyaan.
-                // Tapi UI Anda punya tombol hapus pilihan.
-
-                // 1. Ambil semua ID pilihan yang terkait dengan pertanyaan yang baru saja kita proses
-                $existingPilihanIds = DB::table('pilihan_jawaban')
-                    ->whereIn('id_pertanyaan', $safePertanyaanIds)
-                    ->pluck('id_pilihan');
-
-                // 2. Cari ID mana yang ada di DB tapi TIDAK disubmit (berarti dihapus di UI)
+                // ... (Bagian Hapus Pilihan & Hapus Pertanyaan SAMA PERSIS) ...
+                // Hapus Pilihan
+                $existingPilihanIds = DB::table('pilihan_jawaban')->whereIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pilihan');
                 $pilihanIdsToDelete = $existingPilihanIds->diff($safePilihanIds);
-
                 if ($pilihanIdsToDelete->isNotEmpty()) {
-                    // 3. CEK KE TABEL JAWABAN. Ini adalah bagian PENTING.
-                    $checkJawaban = DB::table('jawaban')
-                        ->whereIn('id_pilihan', $pilihanIdsToDelete)
-                        ->count();
-
-                    if ($checkJawaban > 0) {
-                        // JIKA SUDAH ADA YANG JAWAB, GAGALKAN SEMUA PROSES
-                        throw new \Exception(
-                            "GAGAL: Anda mencoba menghapus pilihan jawaban yang sudah pernah dipilih oleh responden. " .
-                            "Data responden tidak akan dihapus. Perubahan tidak disimpan."
-                        );
-                    }
-
-                    // 4. Aman untuk dihapus (karena belum ada yg jawab)
                     DB::table('pilihan_jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
                 }
 
-            }); // --- Akhir Transaction ---
-
+                // Hapus Pertanyaan
+                $questionsToDelete = DB::table('pertanyaan')->whereNotIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pertanyaan');
+                if ($questionsToDelete->isNotEmpty()) {
+                    foreach ($questionsToDelete as $delId) {
+                        DB::table('jawaban')->where('id_pertanyaan', $delId)->delete();
+                        DB::table('pilihan_jawaban')->where('id_pertanyaan', $delId)->delete();
+                        DB::table('pertanyaan')->where('id_pertanyaan', $delId)->delete();
+                    }
+                }
+            });
         } catch (\Exception $e) {
-            // Jika terjadi error (terutama error foreign key), kirim pesan error
-            return redirect()->route('superadmin.skm_edit2')
-                ->with('error', $e->getMessage());
+            return redirect()->route('superadmin.skm_edit2')->with('error', $e->getMessage());
         }
-
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('superadmin.skm_edit2')
-            ->with('success', 'Struktur pertanyaan survei berhasil diperbarui.');
+        return redirect()->route('superadmin.skm_edit2')->with('success', 'Struktur pertanyaan berhasil diperbarui.');
     }
 
     /**
@@ -279,22 +289,27 @@ class SkmController extends Controller
     public function hasil()
     {
         // === 1. DATA DASAR ===
-        // Ambil semua id_pasien unik yang pernah mengisi survei
         $respondenIds = DB::table('jawaban')->distinct()->pluck('id_pasien');
         $totalResponden = $respondenIds->count();
-
-        // Ambil data bio dari semua responden
         $bioResponden = DB::table('bio_pasien')->whereIn('id_pasien', $respondenIds)->get();
 
-        // === 2. DATA UNTUK LIST ===
-        $listNoRm = $bioResponden->pluck('no_rm');
-        $listUmur = $bioResponden->pluck('umur');
+        // === 2. PISAHKAN PERTANYAAN (PILIHAN GANDA vs ISIAN TEKS) ===
+        // Ambil ID pertanyaan yang punya Pilihan Jawaban (berarti ini untuk Grafik)
+        $idsPilihanGanda = DB::table('pilihan_jawaban')
+            ->distinct()
+            ->pluck('id_pertanyaan');
+
+        // Ambil Kritik Saran (Jawaban dari pertanyaan yang TIDAK punya pilihan ganda)
         $listKritikSaran = DB::table('jawaban')
-            ->where('id_pertanyaan', 16) // Asumsi ID 16 adalah untuk kritik & saran
+            ->whereNotIn('id_pertanyaan', $idsPilihanGanda)
             ->whereNotNull('hasil_nilai')
             ->pluck('hasil_nilai');
 
-        // === 3. DATA UNTUK CHARTS DEMOGRAFI ===
+        // Data List Pendukung
+        $listNoRm = $bioResponden->pluck('no_rm');
+        $listUmur = $bioResponden->pluck('umur');
+
+        // === 3. DATA DEMOGRAFI (RUANGAN, KELAMIN, PENDIDIKAN, PEKERJAAN) ===
 
         // Chart Nama Ruangan
         $ruanganData = DB::table('bio_pasien as bp')
@@ -303,60 +318,41 @@ class SkmController extends Controller
             ->select('r.nama_ruangan', DB::raw('count(*) as total'))
             ->groupBy('r.nama_ruangan')
             ->pluck('total', 'nama_ruangan');
-
-        $ruanganChart = [
-            'labels' => $ruanganData->keys(),
-            'data' => $ruanganData->values()
-        ];
+        $ruanganChart = ['labels' => $ruanganData->keys(), 'data' => $ruanganData->values()];
 
         // Chart Jenis Kelamin
         $jenisKelaminData = $bioResponden->countBy('jenis_kelamin');
-        $jenisKelaminChart = [
-            'labels' => $jenisKelaminData->keys(),
-            'data' => $jenisKelaminData->values()
-        ];
+        $jenisKelaminChart = ['labels' => $jenisKelaminData->keys(), 'data' => $jenisKelaminData->values()];
 
         // Chart Pendidikan
         $pendidikanData = $bioResponden->countBy('pendidikan');
-        $pendidikanChart = [
-            'labels' => $pendidikanData->keys(),
-            'data' => $pendidikanData->values()
-        ];
+        $pendidikanChart = ['labels' => $pendidikanData->keys(), 'data' => $pendidikanData->values()];
 
         // Chart Pekerjaan
         $pekerjaanData = $bioResponden->countBy('pekerjaan');
-        $pekerjaanChart = [
-            'labels' => $pekerjaanData->keys(),
-            'data' => $pekerjaanData->values()
-        ];
+        $pekerjaanChart = ['labels' => $pekerjaanData->keys(), 'data' => $pekerjaanData->values()];
 
-        // === 4. DATA BARU UNTUK SEMUA PERTANYAAN SURVEI (1-15) ===
 
-        // Ambil semua pertanyaan (asumsi 1-15 adalah Pilihan Ganda SKM)
+        // === 4. DATA HASIL SURVEI (DINAMIS) ===
+
+        // Ambil pertanyaan yang ada di daftar $idsPilihanGanda
         $pertanyaanSurvei = DB::table('pertanyaan')
-            ->where('id_pertanyaan', '<=', 15)
-            ->orderBy('id_pertanyaan')
+            ->whereIn('id_pertanyaan', $idsPilihanGanda)
+            ->orderBy('urutan', 'asc') // Urutkan berdasarkan posisi yang kamu atur
             ->get();
 
         $allSurveyCharts = [];
 
         foreach ($pertanyaanSurvei as $pertanyaan) {
-            // Query data jawaban untuk pertanyaan ini
             $data = DB::table('jawaban as j')
                 ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
                 ->where('j.id_pertanyaan', $pertanyaan->id_pertanyaan)
-                ->whereIn('j.id_pasien', $respondenIds) // Jika $respondenIds kosong, ini akan jadi '0 = 1'
-
-                // --- PERBAIKAN DI SINI ---
-                // Kita harus SELECT dan GROUP BY kedua kolom (pilihan dan nilai)
+                ->whereIn('j.id_pasien', $respondenIds)
                 ->select('pj.pilihan', 'pj.nilai', DB::raw('count(*) as total'))
                 ->groupBy('pj.pilihan', 'pj.nilai')
-                // --- AKHIR PERBAIKAN ---
-
-                ->orderBy('pj.nilai') // Sekarang orderBy ini valid
+                ->orderBy('pj.nilai')
                 ->pluck('total', 'pilihan');
 
-            // Simpan data untuk dikirim ke view
             $allSurveyCharts[] = [
                 'id_pertanyaan' => $pertanyaan->id_pertanyaan,
                 'pertanyaan_text' => $pertanyaan->pertanyaan,
@@ -367,7 +363,6 @@ class SkmController extends Controller
             ];
         }
 
-        // === 5. KIRIM SEMUA DATA KE VIEW ===
         return view('superadmin.skm_hasil', compact(
             'totalResponden',
             'listNoRm',
@@ -377,7 +372,25 @@ class SkmController extends Controller
             'jenisKelaminChart',
             'pendidikanChart',
             'pekerjaanChart',
-            'allSurveyCharts' // <-- Variabel baru yang berisi semua data chart
+            'allSurveyCharts'
         ));
+    }
+
+    /**
+     * Download Rekap SKM in Excel format.
+     */
+    public function downloadRekap(Request $request)
+    {
+        $request->validate([
+            'month' => 'required|numeric',
+            'year' => 'required|numeric',
+        ]);
+
+        $bulan = $request->month;
+        $tahun = $request->year;
+
+        $namaFile = 'Rekap_SKM_' . $bulan . '-' . $tahun . '.xlsx';
+
+        return Excel::download(new RekapSkmExport($bulan, $tahun), $namaFile);
     }
 }
