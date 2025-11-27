@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ruangan;
 use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use App\Exports\RekapMutuRuanganExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
@@ -165,15 +165,13 @@ class DetailIndikatorController extends Controller
 
         // E. Masukkan ke dalam array utama sebagai baris terakhir
         $indikatorData[] = [
-            'no' => count($indikatorData) + 1, // Nomor urut terakhir
+            'no' => count($indikatorData) + 1,
             'variabel' => 'Kepuasan Masyarakat',
             'byTanggal' => $skmByTanggal,
-            'jumlah_total' => $skmTotalMax,    // Ini akan jadi kolom "Total Pasien/Kejadian" (Denominator)
-            'jumlah_sesuai' => $skmTotalActual, // Ini akan jadi kolom "Jumlah Sesuai" (Numerator)
+            'jumlah_total' => $skmTotalMax, 
+            'jumlah_sesuai' => $skmTotalActual,
             'persen' => $skmPersen
         ];
-
-        // =========================================================================
 
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
@@ -216,20 +214,16 @@ class DetailIndikatorController extends Controller
      */
     public function downloadRekap(Request $request)
     {
-        // 1. Cek Security: Apakah user sudah login (via Session manual)?
-        if (!Session::has('user')) {
-            return redirect('/login')->withErrors(['login' => 'Silakan login terlebih dahulu']);
+        if (!Auth::check()) {
+            return redirect('/login');
         }
 
-        // 2. Validasi
         $request->validate([
             'bulan' => 'required',
             'tahun' => 'required',
-            'ruangan_id' => 'required' // Wajib ada untuk Superadmin
+            'ruangan_id' => 'required' 
         ]);
 
-        // 3. Proses Download
-        // Kita ambil ID Ruangan dari Form, bukan dari Session User
         $ruanganId = $request->ruangan_id;
         $bulan = $request->bulan;
         $tahun = $request->tahun;

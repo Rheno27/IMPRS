@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return Auth::user()->isSuperadmin()
+                ? redirect()->route('superadmin.dashboard')
+                : redirect()->route('admin.dashboard');
+        }
         return view('login');
     }
 
@@ -21,29 +26,28 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // Cari user berdasarkan username
         $user = User::where('username', $request->username)->first();
 
-        // Cek password (plain, karena di SQL tidak di-hash)
         if ($user && $user->password === $request->password) {
-            Session::put('user', $user);
 
-            // Cek id_ruangan untuk redirect
-            if ($user->id_ruangan === 'SP00') {
-                // Superadmin
-                return redirect()->route('superadmin.dashboard');
-            } else {
-                // Admin ruangan lain
-                return redirect()->route('admin.dashboard');
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            if ($user->isSuperadmin()) {
+                return redirect()->intended(route('superadmin.dashboard'));
             }
+
+            return redirect()->intended(route('admin.dashboard'));
         }
 
         return back()->withErrors(['login' => 'Username atau password salah']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Session::forget('user');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/login');
     }
 }

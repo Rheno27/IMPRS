@@ -12,52 +12,65 @@ use App\Http\Controllers\Guest\SurveyController;
 use App\Http\Controllers\Superadmin\IndikatorMutuController;
 
 
-Route::get('/', function () {
-    return view('login');
-});
-
-// Admin Routes
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-Route::get('/admin/input_indikator', [InputIndikatorController::class, 'create'])->name('admin.input_indikator');
-Route::post('/admin/input_indikator', [InputIndikatorController::class, 'store'])->name('admin.input_indikator.store');
-Route::get('/admin/download-rekap', [DashboardController::class, 'downloadRekap'])->name('admin.download_rekap');
-
-// Superadmin Routes
-Route::get('/superadmin/dashboard', [SDashboardController::class, 'index'])->name('superadmin.dashboard');
-Route::get('/superadmin/ruangan/{ruangan}/detail', [DetailIndikatorController::class, 'show'])->name('superadmin.ruangan.detail');
-Route::get('/superadmin/ruangan/{ruangan}/edit-indikator', [IndikatorRuanganController::class, 'edit'])->name('superadmin.ruangan.edit_indikator');
-Route::post('/superadmin/ruangan/update-indikator', [IndikatorRuanganController::class, 'update'])->name('superadmin.ruangan.update_indikator');
-Route::post('/superadmin/ruangan/add-indikator', [IndikatorRuanganController::class, 'store'])->name('superadmin.ruangan.add_indikator');
-Route::post('/superadmin/ruangan/deactivate-indikator', [IndikatorRuanganController::class, 'deactivate'])->name('superadmin.ruangan.deactivate_indikator');
-Route::get('/superadmin/indikator-mutu/create', [IndikatorMutuController::class, 'create'])->name('superadmin.indikator_mutu.create');
-Route::post('/superadmin/indikator-mutu', [IndikatorMutuController::class, 'store'])->name('superadmin.indikator_mutu.store');
-Route::delete('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'destroy'])->name('superadmin.indikator_mutu.destroy');
-Route::put('/superadmin/indikator-mutu/{id}', [IndikatorMutuController::class, 'update'])->name('superadmin.indikator_mutu.update');
-
-Route::get('/superadmin/skm/rekap', [SkmController::class, 'index'])->name('superadmin.skm_rekap');
-Route::get('/superadmin/skm/hasil', [SkmController::class, 'hasil'])->name('superadmin.skm_hasil');
-Route::get('/superadmin/skm/edit2', [SkmController::class, 'editPertanyaan'])->name('superadmin.skm_edit2');
-Route::put('/superadmin/skm/update-pertanyaan', [SkmController::class, 'updatePertanyaan'])->name('superadmin.skm.update_pertanyaan');
-Route::delete('/superadmin/skm/pertanyaan/{id}', [SkmController::class, 'destroyPertanyaan'])->name('superadmin.skm.destroy_pertanyaan');
-
-Route::get('/superadmin/download-rekap-indikator', [SDashboardController::class, 'downloadRekapIndikator'])->name('superadmin.download_rekap_indikator');
-Route::get('/superadmin/download-rekap', [DetailIndikatorController::class, 'downloadRekap'])->name('superadmin.download_rekap');
-Route::get('/superadmin/skm/download', [SkmController::class, 'downloadRekap'])->name('superadmin.skm.download');
-
-// User Routes
-Route::get('/SKM/dashboard', function () {
-    return view('guest.dashboard');
-})->name('guest.dashboard');
-Route::get('/SKM/survei-1', [SurveyController::class, 'create'])->name('guest.survei-1');
-Route::post('/SKM/survei-1', [SurveyController::class, 'store'])->name('guest.survei-1.store');
-Route::get('/SKM/survei-done', function () {
-    return view('guest.skm_done');
-})->name('guest.survei-done');
-
-// Authentication Routes
+// --- PUBLIC ---
+Route::get('/', function () { return redirect()->route('login'); });
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// --- SKM (GUEST / TANPA LOGIN) ---
+Route::prefix('SKM')->name('guest.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('guest.dashboard'); })->name('dashboard');
+    Route::get('/survei-1', [App\Http\Controllers\Guest\SurveyController::class, 'create'])->name('survei-1');
+    Route::post('/survei-1', [App\Http\Controllers\Guest\SurveyController::class, 'store'])->name('survei-1.store');
+    Route::get('/survei-done', function () {
+        return view('guest.skm_done'); })->name('survei-done');
+});
 
+// --- HALAMAN ADMIN RUANGAN ---
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/input_indikator', [App\Http\Controllers\Admin\InputIndikatorController::class, 'create'])->name('input_indikator');
+        Route::post('/input_indikator', [App\Http\Controllers\Admin\InputIndikatorController::class, 'store'])->name('input_indikator.store');
+        Route::get('/download-rekap', [App\Http\Controllers\Admin\DashboardController::class, 'downloadRekap'])->name('download_rekap');
+    });
+});
 
+// --- HALAMAN SUPERADMIN ---
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+
+    Route::prefix('superadmin')->name('superadmin.')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [App\Http\Controllers\Superadmin\SDashboardController::class, 'index'])->name('dashboard');
+
+        // Fitur Ruangan
+        Route::get('/ruangan/{ruangan}/detail', [App\Http\Controllers\Superadmin\DetailIndikatorController::class, 'show'])->name('ruangan.detail');
+        Route::get('/ruangan/{ruangan}/edit-indikator', [App\Http\Controllers\Superadmin\IndikatorRuanganController::class, 'edit'])->name('ruangan.edit_indikator');
+        Route::post('/ruangan/update-indikator', [App\Http\Controllers\Superadmin\IndikatorRuanganController::class, 'update'])->name('ruangan.update_indikator');
+        Route::post('/ruangan/add-indikator', [App\Http\Controllers\Superadmin\IndikatorRuanganController::class, 'store'])->name('ruangan.add_indikator');
+        Route::post('/ruangan/deactivate-indikator', [App\Http\Controllers\Superadmin\IndikatorRuanganController::class, 'deactivate'])->name('ruangan.deactivate_indikator');
+
+        // Master Indikator
+        Route::get('/indikator-mutu/create', [App\Http\Controllers\Superadmin\IndikatorMutuController::class, 'create'])->name('indikator_mutu.create');
+        Route::post('/indikator-mutu', [App\Http\Controllers\Superadmin\IndikatorMutuController::class, 'store'])->name('indikator_mutu.store');
+        Route::delete('/indikator-mutu/{id}', [App\Http\Controllers\Superadmin\IndikatorMutuController::class, 'destroy'])->name('indikator_mutu.destroy');
+        Route::put('/indikator-mutu/{id}', [App\Http\Controllers\Superadmin\IndikatorMutuController::class, 'update'])->name('indikator_mutu.update');
+
+        // SKM Management
+        Route::prefix('skm')->name('skm.')->group(function () {
+            Route::get('/rekap', [App\Http\Controllers\Superadmin\SkmController::class, 'index'])->name('rekap');
+            Route::get('/hasil', [App\Http\Controllers\Superadmin\SkmController::class, 'hasil'])->name('hasil');
+            Route::get('/edit2', [App\Http\Controllers\Superadmin\SkmController::class, 'editPertanyaan'])->name('edit2');
+            Route::put('/update-pertanyaan', [App\Http\Controllers\Superadmin\SkmController::class, 'updatePertanyaan'])->name('update_pertanyaan');
+            Route::delete('/pertanyaan/{id}', [App\Http\Controllers\Superadmin\SkmController::class, 'destroyPertanyaan'])->name('destroy_pertanyaan');
+            Route::get('/download', [App\Http\Controllers\Superadmin\SkmController::class, 'downloadRekap'])->name('download');
+        });
+
+        // Downloads
+        Route::get('/download-rekap-indikator', [App\Http\Controllers\Superadmin\SDashboardController::class, 'downloadRekapIndikator'])->name('download_rekap_indikator');
+        Route::get('/download-rekap', [App\Http\Controllers\Superadmin\DetailIndikatorController::class, 'downloadRekap'])->name('download_rekap');
+    });
+
+});

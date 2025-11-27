@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
 use App\Models\IndikatorRuangan;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class InputIndikatorController extends Controller
 {
@@ -25,9 +25,7 @@ class InputIndikatorController extends Controller
      */
     public function create(Request $request) // Tambahkan Request $request di sini
     {
-        $user = Session::get('user');
-        if (!$user)
-            return redirect('/login');
+        $user = Auth::user();
         $tanggal = $request->input('tanggal', date('Y-m-d'));
 
         // 1. Ambil semua indikator yang aktif untuk ruangan user saat ini
@@ -62,7 +60,7 @@ class InputIndikatorController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Session::get('user');
+        $user = Auth::user();
         $tanggal = $request->input('tanggal', date('Y-m-d'));
         $updated = 0;
 

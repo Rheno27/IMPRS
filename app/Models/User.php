@@ -10,7 +10,6 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $table = 'user';
-
     protected $primaryKey = 'id_user';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -28,5 +27,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public $timestamps = false; 
+    public $timestamps = false;
+
+    public function isSuperadmin()
+    {
+        return $this->id_ruangan === 'SP00';
+    }
+
+    public function isAdminRuangan()
+    {
+        return $this->id_ruangan !== 'SP00';
+    }
 }

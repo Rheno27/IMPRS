@@ -80,6 +80,7 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 ->whereHas('kategori', function ($q) {
                     $q->where('kategori', $this->kategori);
                 })
+                ->where('variabel', 'NOT LIKE', '%Kepuasan Masyarakat%')
                 ->get();
 
             $data = $masterIndicators->map(function ($indMaster) {

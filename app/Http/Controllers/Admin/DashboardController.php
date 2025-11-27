@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use App\Models\MutuRuangan;
 use App\Models\IndikatorRuangan;
 use App\Exports\RekapMutuRuanganExport;
@@ -18,11 +18,7 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Session::get('user');
-        if (!$user) {
-            return redirect('/login');
-        }
-
+        $user = Auth::user();
         $id_ruangan = $user->id_ruangan;
 
         $bulan = $request->input('bulan', date('n'));
@@ -147,18 +143,11 @@ class DashboardController extends Controller
      */
     public function downloadRekap(Request $request)
     {
-        // 1. Cek apakah user ada di session (Login manual check)
-        if (!Session::has('user')) {
-            return redirect('/login')->withErrors(['login' => 'Silakan login terlebih dahulu']);
-        }
-
+        $user = Auth::user();
         $request->validate([
             'bulan' => 'required',
             'tahun' => 'required',
         ]);
-
-        // 2. AMBIL DARI SESSION, BUKAN AUTH::USER()
-        $user = Session::get('user');
         $ruanganId = $user->id_ruangan;
 
         $namaFile = 'Rekap_Mutu_' . $ruanganId . '_' . $request->bulan . '-' . $request->tahun . '.xlsx';

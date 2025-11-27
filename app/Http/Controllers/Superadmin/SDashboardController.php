@@ -8,7 +8,7 @@ use App\Models\IndikatorRuangan;
 use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use App\Exports\RekapPerIndikatorExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
@@ -257,7 +257,7 @@ class SDashboardController extends Controller
      */
     public function downloadRekapIndikator(Request $request)
     {
-        if (!Session::has('user')) {
+        if (!Auth::check()) {
             return redirect('/login');
         }
 
