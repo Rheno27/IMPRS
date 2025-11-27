@@ -1,179 +1,179 @@
 @extends('layouts.app')
 
 @section('styles')
-            <style>
-                :root {
-                    --primary-green: #337354;
-                    --dark-green: #004e28;
-                    --light-green: #d6e3dd;
-                    --text-dark: #2d2d2d;
-                    --text-light: #ffffff;
-                    --bg-main: #fcfcfc;
-                    --border-color: rgba(51, 115, 84, 0.5);
-                    --font-roboto: 'Roboto', sans-serif;
-                    --font-open-sans: 'Open Sans', sans-serif;
-                    --font-inter: 'Inter', sans-serif;
-                    --border-color-semitransparent: rgba(51, 115, 84, 0.5);
-                    --border-color-dark: #337354;
-                    --primary-color: #337354;
-                }
+    <style>
+        :root {
+            --primary-green: #337354;
+            --dark-green: #004e28;
+            --light-green: #d6e3dd;
+            --text-dark: #2d2d2d;
+            --text-light: #ffffff;
+            --bg-main: #fcfcfc;
+            --border-color: rgba(51, 115, 84, 0.5);
+            --font-roboto: 'Roboto', sans-serif;
+            --font-open-sans: 'Open Sans', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
+            --border-color-dark: #337354;
+            --primary-color: #337354;
+        }
 
-                * {
-                    box-sizing: border-box;
-                }
+        * {
+            box-sizing: border-box;
+        }
 
-                body {
-                    margin: 0;
-                    padding: 0;
-                    font-family: var(--font-roboto);
-                    background-color: var(--bg-main);
-                    color: var(--text-dark);
-                }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-roboto);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+        }
 
-                .page-container {
-                    max-width: 1440px;
-                    margin: 0 auto;
-                    background-color: var(--text-light);
-                }
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            background-color: var(--text-light);
+        }
 
-                .section-padding {
-                    padding: 54px 72px;
-                }
+        .section-padding {
+            padding: 54px 72px;
+        }
 
-                @media (max-width: 768px) {
-                    .section-padding {
-                        padding: 30px 20px;
-                    }
-                }
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 30px 20px;
+            }
+        }
 
-                /* CSS from section:header */
-                .site-header {
-                    display: flex;
-                    position: fixed;
-                    top: 0;
-                    /* penting biar nempel di atas */
-                    left: 0;
-                    width: 100%;
-                    z-index: 1000;
-                    justify-content: space-between;
-                    align-items: center;
-                    background-color: var(--text-light);
-                    border-bottom: 1px solid var(--border-color-semitransparent);
-                    padding: 0 40px;
-                    height: 80px;
-                    /* lebih proporsional, jangan terlalu tinggi */
-                    box-sizing: border-box;
-                    /* biar padding gak nambah tinggi */
-                }
+        /* CSS from section:header */
+        .site-header {
+            display: flex;
+            position: fixed;
+            top: 0;
+            /* penting biar nempel di atas */
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--text-light);
+            border-bottom: 1px solid var(--border-color-semitransparent);
+            padding: 0 40px;
+            height: 80px;
+            /* lebih proporsional, jangan terlalu tinggi */
+            box-sizing: border-box;
+            /* biar padding gak nambah tinggi */
+        }
 
-                main {
-                    margin-top: 70px;
-                    /* samain dengan tinggi header */
-                }
+        main {
+            margin-top: 70px;
+            /* samain dengan tinggi header */
+        }
 
-                /* Logo */
-                .logo-container {
-                    display: flex;
-                    align-items: center;
-                }
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
 
-                .logo-image {
-                    height: 70px;
-                    width: auto;
-                    object-fit: contain;
-                }
+        .logo-image {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
 
-                /* User info */
-                .user-info {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                }
+        /* User info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-                .user-avatar {
-                    height: 30px;
-                    width: 30px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                }
+        .user-avatar {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-                .user-name {
-                    font-weight: 600;
-                    font-size: 18px;
-                    /* sebanding dengan tinggi avatar/logo */
-                    color: var(--primary-color);
-                    white-space: nowrap;
-                }
+        .user-name {
+            font-weight: 600;
+            font-size: 18px;
+            /* sebanding dengan tinggi avatar/logo */
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
 
-                .logout-link {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: 30px;
-                    width: 30px;
-                    border-radius: 8px;
-                    transition: background 0.2s;
-                }
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
 
-                .logout-link:hover {
-                    background: rgba(51, 115, 84, 0.1);
-                }
+        .logout-link:hover {
+            background: rgba(51, 115, 84, 0.1);
+        }
 
-                .logout-icon {
-                    height: 28px;
-                    width: 28px;
-                }
+        .logout-icon {
+            height: 28px;
+            width: 28px;
+        }
 
-                @media (max-width: 1024px) {
-                    .site-header {
-                        padding: 0 30px;
-                        height: 120px;
-                    }
+        @media (max-width: 1024px) {
+            .site-header {
+                padding: 0 30px;
+                height: 120px;
+            }
 
-                    .logo-text {
-                        font-size: 28px;
-                    }
+            .logo-text {
+                font-size: 28px;
+            }
 
-                    .user-name {
-                        font-size: 22px;
-                    }
-                }
+            .user-name {
+                font-size: 22px;
+            }
+        }
 
-                @media (max-width: 768px) {
-                    .site-header {
-                        flex-direction: column;
-                        height: auto;
-                        padding: 20px;
-                        gap: 20px;
-                    }
+        @media (max-width: 768px) {
+            .site-header {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+                gap: 20px;
+            }
 
-                    .logo-text {
-                        font-size: 24px;
-                    }
-                }
+            .logo-text {
+                font-size: 24px;
+            }
+        }
 
-                /* CSS from section:features */
-                #features {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 72px;
-                    background-color: var(--bg-main);
-                    padding-top: 150px;
-                }
+        /* CSS from section:features */
+        #features {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 72px;
+            background-color: var(--bg-main);
+            padding-top: 150px;
+        }
 
-                .main-title {
-                    font-family: var(--font-roboto);
-                    font-weight: 700;
-                    font-size: 54px;
-                    line-height: 60px;
-                    text-align: center;
-                    color: var(--primary-green);
-                    max-width: 1296px;
-                    margin: 0;
-                }
+        .main-title {
+            font-family: var(--font-roboto);
+            font-weight: 700;
+            font-size: 54px;
+            line-height: 60px;
+            text-align: center;
+            color: var(--primary-green);
+            max-width: 1296px;
+            margin: 0;
+        }
 
-                .features-grid {
+        .features-grid {
             display: block;
             gap: 36px;
             width: 100%;
@@ -193,7 +193,8 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            width: 160px;              /* <== ini kuncinya */
+            width: 160px;
+            /* <== ini kuncinya */
             height: 144px;
             padding: 16px 13px;
             border-radius: 9px;
@@ -207,963 +208,966 @@
             transition: transform 0.2s ease-in-out;
         }
 
-                .feature-card:hover {
-                    transform: translateY(-5px);
-                }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
 
-                .feature-card img,
-                .feature-card .icon-wrapper {
-                    width: 45px;
-                    height: 45px;
-                }
+        .feature-card img,
+        .feature-card .icon-wrapper {
+            width: 45px;
+            height: 45px;
+        }
 
-                .icon-wrapper {
-                    position: relative;
-                }
+        .icon-wrapper {
+            position: relative;
+        }
 
-                .icon-wrapper img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                }
+        .icon-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-                .bg-color-1 {
-                    background-color: #004e28;
-                }
+        .bg-color-1 {
+            background-color: #004e28;
+        }
 
-                .bg-color-2 {
-                    background-color: #6f5405;
-                }
+        .bg-color-2 {
+            background-color: #6f5405;
+        }
 
-                .bg-color-3 {
-                    background-color: #711900;
-                }
+        .bg-color-3 {
+            background-color: #711900;
+        }
 
-                .bg-color-4 {
-                    background-color: #600831;
-                }
+        .bg-color-4 {
+            background-color: #600831;
+        }
 
-                .bg-color-5 {
-                    background-color: #023C6B;
-                }
+        .bg-color-5 {
+            background-color: #023C6B;
+        }
 
-                .bg-color-6 {
-                    background-color: #6F145B;
-                }
+        .bg-color-6 {
+            background-color: #6F145B;
+        }
 
-                .bg-color-7 {
-                    background-color: #960808;
-                }
+        .bg-color-7 {
+            background-color: #960808;
+        }
 
-                .bg-color-8 {
-                    background-color: #1E7175;
-                }
+        .bg-color-8 {
+            background-color: #1E7175;
+        }
 
-                @media (max-width: 1200px) {
-                    .features-grid {
-                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                    }
+        @media (max-width: 1200px) {
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
 
-                    .main-title {
-                        font-size: 40px;
-                        line-height: 48px;
-                    }
-                }
+            .main-title {
+                font-size: 40px;
+                line-height: 48px;
+            }
+        }
 
-                @media (max-width: 768px) {
-                    .main-title {
-                        font-size: 32px;
-                        line-height: 40px;
-                    }
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 32px;
+                line-height: 40px;
+            }
 
-                    #features {
-                        gap: 40px;
-                    }
-                }
-    @media (max-width: 900px) {
-        .features-row {
-            flex-wrap: wrap;
+            #features {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .features-row {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .feature-card {
+                flex: 1 1 140px;
+                width: auto;
+                max-width: 220px;
+            }
+        }
+
+        /* CSS from section:report */
+        /* CSS from section:report */
+        .section-padding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 38px;
+        }
+
+        .report-controls-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px 48px 0;
+            gap: 28px;
+        }
+
+        /* Grup tombol kiri (year + download) */
+        .report-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        /* Tombol kanan tetap */
+        .report-controls-right {
+            display: flex;
+            align-items: center;
+        }
+
+
+        /* Gaya tombol */
+        .download-btn,
+        .year-selector,
+        .newindicator-btn {
+            border: 1px solid var(--border-color-dark);
+            border-radius: 12px;
+            padding: 9px 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 21px;
+            color: var(--primary-color);
+            background-color: transparent;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .newindicator-btn {
+            background-color: var(--primary-green);
+            color: var(--text-light);
+        }
+
+        .year-picker-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .year-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 240px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            padding: 12px;
+            display: none;
+            z-index: 300;
+        }
+
+        .year-panel.open {
+            display: block;
+        }
+
+        .year-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .year-header button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+        }
+
+        .year-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .year-grid button {
+            padding: 8px;
+            border: none;
+            background: #f7f7f7;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .year-grid button:hover {
+            background: #eaeaea;
+        }
+
+        .year-grid button.active {
+            background: #337354;
+            color: #fff;
+            font-weight: bold;
+        }
+
+
+        .category-selector {
+            display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 48px;
         }
-        .feature-card {
-            flex: 1 1 140px;
-            width: auto;
-            max-width: 220px;
+
+        .arrow-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
         }
-    }
-                /* CSS from section:report */
-                /* CSS from section:report */
-                .section-padding {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 38px;
-                }
 
-                .report-controls-top {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    box-sizing: border-box;
-                    padding: 30px 48px 0;
-                    gap: 28px;
-                }
+        .arrow-btn svg {
+            width: 48px;
+            height: 48px;
+        }
 
-                /* Grup tombol kiri (year + download) */
-                .report-controls-left {
-                    display: flex;
-                    align-items: center;
-                    gap: 28px;
-                }
+        .categories {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
 
-                /* Tombol kanan tetap */
-                .report-controls-right {
-                    display: flex;
-                    align-items: center;
-                }
+        .category-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            /* dikecilkan */
+            color: var(--primary-color);
+            opacity: 0.6;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
+        .category-btn.active {
+            background-color: var(--primary-color);
+            /* hijau */
+            color: white;
+            border-radius: 50px;
+            padding: 15px 50px;
+            opacity: 1;
+        }
 
-                /* Gaya tombol */
-                .download-btn,
-                .year-selector,
-                .newindicator-btn {
-                    border: 1px solid var(--border-color-dark);
-                    border-radius: 12px;
-                    padding: 9px 20px;
-                    display: flex;
-                    align-items: center;
-                    gap: 5px;
-                    font-weight: 600;
-                    font-size: 21px;
-                    color: var(--primary-color);
-                    background-color: transparent;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
+        .table-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--primary-green);
+        }
 
+        .table-header {
+            background-color: var(--primary-green);
+            padding: 20px;
+            text-align: center;
+        }
 
-                .newindicator-btn {
-                    background-color: var(--primary-green);
-                    color: var(--text-light);
-                }
+        .table-header h3 {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 28px;
+            font-weight: 600;
+        }
 
-                .year-picker-wrapper {
-                    position: relative;
-                    display: inline-block;
-                }
+        .table-wrapper {
+            overflow-x: auto;
+        }
 
-                .year-panel {
-                    position: absolute;
-                    top: calc(100% + 8px);
-                    right: 0;
-                    width: 240px;
-                    background: #fff;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-                    padding: 12px;
-                    display: none;
-                    z-index: 300;
-                }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--text-light);
+        }
 
-                .year-panel.open {
-                    display: block;
-                }
+        .report-table th,
+        .report-table td {
+            border: 1px solid var(--primary-green);
+            padding: 16px 10px;
+            text-align: center;
+            min-width: 70px;
+        }
 
-                .year-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    font-weight: bold;
-                    font-size: 15px;
-                    margin-bottom: 10px;
-                }
+        .report-table th {
+            background-color: var(--light-green);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
 
-                .year-header button {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 18px;
-                    padding: 4px 8px;
-                }
+        .report-table th.col-no {
+            width: 45px;
+            min-width: 45px;
+        }
 
-                .year-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 6px;
-                }
+        /* Kolom Ruangan (hanya muncul di IMPU) */
+        .report-table th.col-ruangan {
+            width: 120px;
+            min-width: 120px;
+        }
 
-                .year-grid button {
-                    padding: 8px;
-                    border: none;
-                    background: #f7f7f7;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-size: 14px;
-                }
+        /* Kolom Judul Indikator (Lebar menyesuaikan sisa ruang atau fixed lebar) */
+        .report-table th.col-judul {
+            width: 250px;
+            /* Diperlebar agar teks panjang muat */
+            min-width: 250px;
+        }
 
-                .year-grid button:hover {
-                    background: #eaeaea;
-                }
+        /* Kolom Standar */
+        .report-table th.col-standar {
+            width: 100px;
+            min-width: 100px;
+        }
 
-                .year-grid button.active {
-                    background: #337354;
-                    color: #fff;
-                    font-weight: bold;
-                }
+        /* Kolom Bulan */
+        .report-table th.col-bulan {
+            min-width: 60px;
+        }
 
+        .report-table td {
+            font-family: var(--font-inter);
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-dark);
+            height: 56px;
+        }
 
-                .category-selector {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 48px;
-                }
+        @media (max-width: 1200px) {
+            .category-nav {
+                gap: 10px;
+            }
 
-                .arrow-btn {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    color: var(--primary-color);
-                }
+            .category-link {
+                padding: 12px 30px;
+                font-size: 22px;
+            }
 
-                .arrow-btn svg {
-                    width: 48px;
-                    height: 48px;
-                }
+            .action-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
 
-                .categories {
-                    display: flex;
-                    align-items: center;
-                    gap: 48px;
-                }
+        @media (max-width: 768px) {
+            .category-nav {
+                width: 100%;
+                justify-content: space-between;
+            }
 
-                .category-btn {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    font-family: 'Roboto', sans-serif;
-                    font-weight: 600;
-                    font-size: 24px;
-                    /* dikecilkan */
-                    color: var(--primary-color);
-                    opacity: 0.6;
-                    padding: 10px 25px;
-                    transition: all 0.3s ease;
-                    text-decoration: none;
-                }
+            .category-link {
+                padding: 10px;
+                font-size: 14px;
+                flex-grow: 1;
+                text-align: center;
+            }
 
-                .category-btn.active {
-                    background-color: var(--primary-color);
-                    /* hijau */
-                    color: white;
-                    border-radius: 50px;
-                    padding: 15px 50px;
-                    opacity: 1;
-                }
+            .nav-arrow img {
+                width: 40px;
+                height: 40px;
+            }
 
-                .table-container {
-                    border-radius: 20px;
-                    overflow: hidden;
-                    border: 1px solid var(--primary-green);
-                }
+            .action-btn {
+                font-size: 20px;
+                padding: 12px 20px;
+            }
 
-                .table-header {
-                    background-color: var(--primary-green);
-                    padding: 20px;
-                    text-align: center;
-                }
-
-                .table-header h3 {
-                    margin: 0;
-                    color: var(--text-light);
-                    font-size: 28px;
-                    font-weight: 600;
-                }
-
-                .table-wrapper {
-                    overflow-x: auto;
-                }
-
-                .report-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    background-color: var(--text-light);
-                }
-
-                .report-table th,
-                .report-table td {
-                    border: 1px solid var(--primary-green);
-                    padding: 16px 10px;
-                    text-align: center;
-                    min-width: 70px;
-                }
-
-                .report-table th {
-                    background-color: var(--light-green);
-                    font-size: 18px;
-                    font-weight: 600;
-                    color: var(--text-dark);
-                }
-
-                .report-table th.col-no {
-                    width: 45px;
-                    min-width: 45px;
-                }
-
-                /* Kolom Ruangan (hanya muncul di IMPU) */
-                .report-table th.col-ruangan {
-                    width: 120px;
-                    min-width: 120px;
-                }
-
-                /* Kolom Judul Indikator (Lebar menyesuaikan sisa ruang atau fixed lebar) */
-                .report-table th.col-judul {
-                    width: 250px;
-                    /* Diperlebar agar teks panjang muat */
-                    min-width: 250px;
-                }
-
-                /* Kolom Standar */
-                .report-table th.col-standar {
-                    width: 100px;
-                    min-width: 100px;
-                }
-
-                /* Kolom Bulan */
-                .report-table th.col-bulan {
-                    min-width: 60px;
-                }
-
-                .report-table td {
-                    font-family: var(--font-inter);
-                    font-size: 18px;
-                    font-weight: 500;
-                    color: var(--text-dark);
-                    height: 56px;
-                }
-
-                @media (max-width: 1200px) {
-                    .category-nav {
-                        gap: 10px;
-                    }
-
-                    .category-link {
-                        padding: 12px 30px;
-                        font-size: 22px;
-                    }
-
-                    .action-buttons {
-                        flex-wrap: wrap;
-                        justify-content: center;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .category-nav {
-                        width: 100%;
-                        justify-content: space-between;
-                    }
-
-                    .category-link {
-                        padding: 10px;
-                        font-size: 14px;
-                        flex-grow: 1;
-                        text-align: center;
-                    }
-
-                    .nav-arrow img {
-                        width: 40px;
-                        height: 40px;
-                    }
-
-                    .action-btn {
-                        font-size: 20px;
-                        padding: 12px 20px;
-                    }
-
-                    .table-header h3 {
-                        font-size: 20px;
-                    }
-                }
-            </style>
+            .table-header h3 {
+                font-size: 20px;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
-            <section id="features" class="section-padding">
-                <h1 class="main-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
-                <div class="features-grid">
-                    <div class="features-row">
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R01']) }}" class="feature-card bg-color-1">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M37.6716 15.1013C37.6716 15.3813 37.6717 15.6613 37.653 15.9226C34.797 14.8586 31.437 15.5119 29.197 17.5279C27.685 16.1653 25.725 15.3999 23.6343 15.3999C19.0423 15.3999 15.309 19.152 15.309 23.7813C15.309 29.064 17.9597 32.9279 20.4983 35.4293C20.293 35.4106 20.125 35.3733 19.9757 35.3173C15.141 33.6559 4.33301 26.7866 4.33301 15.1013C4.33301 9.94927 8.47699 5.78662 13.5917 5.78662C16.6343 5.78662 19.3223 7.2426 21.0023 9.50127C22.701 7.2426 25.389 5.78662 28.413 5.78662C33.5277 5.78662 37.6716 9.94927 37.6716 15.1013Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M34.1996 17.9014C32.2022 17.9014 30.3915 18.872 29.2715 20.3654C28.1515 18.872 26.3596 17.9014 24.3436 17.9014C20.9462 17.9014 18.1836 20.664 18.1836 24.0987C18.1836 25.424 18.3889 26.6374 18.7623 27.7574C20.5169 33.3014 25.9116 36.6054 28.5809 37.5201C28.9542 37.6507 29.5703 37.6507 29.9623 37.5201C32.6316 36.6054 38.0262 33.3014 39.7809 27.7574C40.1542 26.6187 40.3595 25.4054 40.3595 24.0987C40.3595 20.664 37.5969 17.9014 34.1996 17.9014Z"
-                                    fill="#FFBB00" />
-                            </svg>
-                            <span>Ruang<br>Nifas</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R02']) }}" class="feature-card bg-color-2">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4"
-                                    d="M36.0669 16.8001C36.0669 19.5067 35.2643 21.9894 33.8829 24.0614C31.8669 27.0481 28.6749 29.1574 24.9603 29.6987C24.3256 29.8107 23.6723 29.8667 23.0003 29.8667C22.3283 29.8667 21.6749 29.8107 21.0403 29.6987C17.3256 29.1574 14.1336 27.0481 12.1176 24.0614C10.7363 21.9894 9.93359 19.5067 9.93359 16.8001C9.93359 9.57606 15.7763 3.7334 23.0003 3.7334C30.2243 3.7334 36.0669 9.57606 36.0669 16.8001Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M40.2657 34.4774L37.1857 35.2054C36.495 35.3734 35.9537 35.8961 35.8044 36.5868L35.151 39.3308C34.7964 40.8241 32.8924 41.2721 31.903 40.0961L22.999 29.8668L14.095 40.1147C13.1057 41.2907 11.2017 40.8427 10.847 39.3494L10.1937 36.6054C10.0257 35.9147 9.48437 35.3734 8.81237 35.2241L5.73237 34.4961C4.31371 34.1601 3.80971 32.3867 4.83637 31.3601L12.1164 24.0801C14.1324 27.0667 17.3244 29.1761 21.039 29.7174C21.6737 29.8294 22.327 29.8854 22.999 29.8854C23.671 29.8854 24.3244 29.8294 24.959 29.7174C28.6737 29.1761 31.8657 27.0667 33.8817 24.0801L41.1617 31.3601C42.1884 32.3681 41.6844 34.1414 40.2657 34.4774Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M24.0821 11.1626L25.1834 13.3653C25.3328 13.6639 25.7248 13.9626 26.0794 14.0186L28.0768 14.3546C29.3461 14.5599 29.6448 15.4933 28.7301 16.4079L27.1808 17.9572C26.9194 18.2186 26.7701 18.7226 26.8634 19.0959L27.3114 21.0186C27.6661 22.5306 26.8634 23.1279 25.5194 22.3252L23.6528 21.2239C23.3168 21.0186 22.7568 21.0186 22.4208 21.2239L20.5541 22.3252C19.2101 23.1092 18.4074 22.5306 18.7621 21.0186L19.2101 19.0959C19.2848 18.7413 19.1541 18.2186 18.8928 17.9572L17.3434 16.4079C16.4288 15.4933 16.7274 14.5786 17.9968 14.3546L19.9941 14.0186C20.3301 13.9626 20.7221 13.6639 20.8714 13.3653L21.9728 11.1626C22.5141 9.96793 23.4848 9.96793 24.0821 11.1626Z"
-                                    fill="#FFC107" />
-                            </svg>
-                            <span>Ruang<br>Perinatologi</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R03']) }}"
-                            class="feature-card bg-color-3 area-a3">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M34.1994 38.2667H32.3327V37.8C32.3327 35.7467 30.6527 34.0667 28.5994 34.0667H24.3994V29.792C23.9327 29.848 23.4661 29.8667 22.9994 29.8667C22.5327 29.8667 22.0661 29.848 21.5994 29.792V34.0667H17.3994C15.3461 34.0667 13.6661 35.7467 13.6661 37.8V38.2667H11.7994C11.0341 38.2667 10.3994 38.9013 10.3994 39.6667C10.3994 40.432 11.0341 41.0667 11.7994 41.0667H34.1994C34.9647 41.0667 35.5994 40.432 35.5994 39.6667C35.5994 38.9013 34.9647 38.2667 34.1994 38.2667Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M10.9035 21.728C9.67147 21.2614 8.5888 20.496 7.73013 19.6374C5.99414 17.7147 4.85547 15.4187 4.85547 12.7307C4.85547 10.0427 6.9648 7.93335 9.6528 7.93335H10.6981C10.2128 8.92268 9.9328 10.024 9.9328 11.2V16.8C9.9328 18.5547 10.2688 20.216 10.9035 21.728Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M41.1437 12.7307C41.1437 15.4187 40.005 17.7147 38.269 19.6374C37.4104 20.496 36.3277 21.2614 35.0957 21.728C35.7304 20.216 36.0664 18.5547 36.0664 16.8V11.2C36.0664 10.024 35.7864 8.92268 35.301 7.93335H36.3464C39.0344 7.93335 41.1437 10.0427 41.1437 12.7307Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M28.6003 3.7334H17.4003C13.2749 3.7334 9.93359 7.07473 9.93359 11.2001V16.8001C9.93359 24.0241 15.7763 29.8667 23.0003 29.8667C30.2243 29.8667 36.0669 24.0241 36.0669 16.8001V11.2001C36.0669 7.07473 32.7256 3.7334 28.6003 3.7334ZM28.3016 15.7734L27.1443 17.1921C26.9576 17.3974 26.8269 17.8081 26.8456 18.0881L26.9576 19.9174C27.0323 21.0374 26.2296 21.6161 25.1843 21.2054L23.4856 20.5334C23.2243 20.4401 22.7763 20.4401 22.5149 20.5334L20.8163 21.2054C19.7709 21.6161 18.9683 21.0374 19.0429 19.9174L19.1549 18.0881C19.1736 17.8081 19.0429 17.3974 18.8563 17.1921L17.6989 15.7734C16.9709 14.9147 17.2883 13.9627 18.3709 13.6827L20.1443 13.2347C20.4243 13.1601 20.7603 12.8987 20.9096 12.6561L21.8989 11.1254C22.5149 10.1734 23.4856 10.1734 24.1016 11.1254L25.0909 12.6561C25.2403 12.8987 25.5763 13.1601 25.8563 13.2347L27.6296 13.6827C28.7123 13.9627 29.0296 14.9147 28.3016 15.7734Z"
-                                    fill="#DC5E3A" />
-                                <path
-                                    d="M28.3013 15.7734L27.144 17.192C26.9573 17.3974 26.8267 17.808 26.8453 18.088L26.9573 19.9174C27.032 21.0374 26.2293 21.616 25.184 21.2054L23.4853 20.5334C23.224 20.44 22.776 20.44 22.5146 20.5334L20.816 21.2054C19.7706 21.616 18.968 21.0374 19.0427 19.9174L19.1546 18.088C19.1733 17.808 19.0426 17.3974 18.856 17.192L17.6986 15.7734C16.9706 14.9147 17.288 13.9627 18.3707 13.6827L20.144 13.2347C20.424 13.16 20.76 12.8987 20.9093 12.656L21.8986 11.1254C22.5146 10.1734 23.4853 10.1734 24.1013 11.1254L25.0907 12.656C25.24 12.8987 25.576 13.16 25.856 13.2347L27.6293 13.6827C28.712 13.9627 29.0293 14.9147 28.3013 15.7734Z"
-                                    fill="#FFBB00" />
-                            </svg>
-                            <span>Ruang<br>VK</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R04']) }}" class="feature-card bg-color-5">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M13.1621 36.7734C14.6928 35.1307 17.0261 35.2614 18.3701 37.0534L20.2555 39.5734C21.7675 41.5707 24.2128 41.5707 25.7248 39.5734L27.6101 37.0534C28.9541 35.2614 31.2875 35.1307 32.8181 36.7734C36.1408 40.3201 38.8475 39.1441 38.8475 34.1787V13.1414C38.8661 5.61873 37.1115 3.7334 30.0555 3.7334H15.9435C8.88748 3.7334 7.13281 5.61873 7.13281 13.1414V34.1601C7.13281 39.1441 9.85815 40.3014 13.1621 36.7734Z"
-                                    fill="#2196F3" />
-                                <path
-                                    d="M30.4661 14.4667H15.5328C14.7675 14.4667 14.1328 13.8321 14.1328 13.0667C14.1328 12.3014 14.7675 11.6667 15.5328 11.6667H30.4661C31.2315 11.6667 31.8661 12.3014 31.8661 13.0667C31.8661 13.8321 31.2315 14.4667 30.4661 14.4667Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M28.6 21.9333H17.4C16.6347 21.9333 16 21.2986 16 20.5333C16 19.768 16.6347 19.1333 17.4 19.1333H28.6C29.3653 19.1333 30 19.768 30 20.5333C30 21.2986 29.3653 21.9333 28.6 21.9333Z"
-                                    fill="#FFC107" />
-                            </svg>
-                            <span>Farmasi</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R05']) }}" class="feature-card bg-color-6">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M30.168 41.0667H15.832C8.01066 41.0667 6.46132 36.344 8.99999 30.5947L11.688 24.4907C11.688 24.4907 17.4 24.2667 23 26.1334C28.6 28 33.8827 24.472 33.8827 24.472L34.2373 24.248L37.0187 30.6134C39.52 36.3627 37.8773 41.0667 30.168 41.0667Z"
-                                    fill="#FFC107" />
-                                <path opacity="0.5"
-                                    d="M34.2368 24.2481L33.8822 24.4721C33.8822 24.4721 28.5995 28.0001 22.9995 26.1334C17.3995 24.2667 11.6875 24.4907 11.6875 24.4907L16.9142 12.5814H16.3542C15.1408 12.5814 14.0208 12.0961 13.2182 11.2934C12.4155 10.4907 11.9302 9.37073 11.9302 8.1574C11.9302 5.73073 13.9088 3.7334 16.3542 3.7334H29.6262C30.8582 3.7334 31.9595 4.2374 32.7622 5.04007C33.8075 6.0854 34.3488 7.61606 33.9382 9.24006C33.4528 11.2561 31.5115 12.5814 29.4208 12.5814H29.1222L34.2368 24.2481Z"
-                                    fill="#EB0EBB" />
-                            </svg>
-                            <span>Laboratorium</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R06']) }}" class="feature-card bg-color-7">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M41.6663 20.6639V31.0799C41.6663 36.5866 37.1863 41.0666 31.6797 41.0666H14.3197C8.81301 41.0666 4.33301 36.5866 4.33301 31.0799V20.6639C4.33301 15.1572 8.81301 10.6772 14.3197 10.6772H31.6797C37.1863 10.6772 41.6663 15.1572 41.6663 20.6639Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M19.509 28.0186L17.5863 26.0959L19.4343 24.2479C19.9757 23.7066 19.9757 22.8106 19.4343 22.2693C18.893 21.7279 17.997 21.7279 17.4557 22.2693L15.6077 24.1173L13.8157 22.3253C13.2743 21.7839 12.3783 21.7839 11.837 22.3253C11.2957 22.8666 11.2957 23.7626 11.837 24.3039L13.629 26.0959L11.781 27.9439C11.2397 28.4853 11.2397 29.3813 11.781 29.9226C12.061 30.2026 12.4157 30.3333 12.7703 30.3333C13.125 30.3333 13.4797 30.2026 13.7597 29.9226L15.6077 28.0746L17.5303 29.9973C17.8103 30.2773 18.165 30.4079 18.5197 30.4079C18.8743 30.4079 19.229 30.2773 19.509 29.9973C20.0503 29.4559 20.0503 28.5599 19.509 28.0186Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M25.8746 27.9999C24.8479 27.9999 23.9893 27.1599 23.9893 26.1333C23.9893 25.1066 24.8106 24.2666 25.8373 24.2666H25.8746C26.9013 24.2666 27.7413 25.1066 27.7413 26.1333C27.7413 27.1599 26.9199 27.9999 25.8746 27.9999Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M33.2291 27.9999C32.2024 27.9999 31.3438 27.1599 31.3438 26.1333C31.3438 25.1066 32.1651 24.2666 33.1917 24.2666H33.2291C34.2558 24.2666 35.0958 25.1066 35.0958 26.1333C35.0958 27.1599 34.2744 27.9999 33.2291 27.9999Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M29.5327 31.6773C28.506 31.6773 27.666 30.856 27.666 29.8293V29.792C27.666 28.7653 28.506 27.9253 29.5327 27.9253C30.5593 27.9253 31.3993 28.7653 31.3993 29.792C31.3993 30.8186 30.578 31.6773 29.5327 31.6773Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M29.5327 24.3226C28.506 24.3226 27.666 23.5012 27.666 22.4746V22.4372C27.666 21.4106 28.506 20.5706 29.5327 20.5706C30.5593 20.5706 31.3993 21.4106 31.3993 22.4372C31.3993 23.4639 30.578 24.3226 29.5327 24.3226Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M26.0611 5.05873L26.0425 6.8134C26.0238 8.45607 24.6611 9.81873 22.9998 9.81873C22.7198 9.81873 22.5518 10.0054 22.5518 10.2481C22.5518 10.4907 22.7385 10.6774 22.9811 10.6774H19.9758C19.9571 10.5467 19.9385 10.3974 19.9385 10.2481C19.9385 8.56806 21.3011 7.2054 22.9625 7.2054C23.2425 7.2054 23.4291 7.01873 23.4291 6.77607L23.4478 5.0214C23.4665 4.31207 24.0451 3.7334 24.7545 3.7334H24.7731C25.5011 3.7334 26.0611 4.33073 26.0611 5.05873Z"
-                                    fill="#FF0909" />
-                            </svg>
+    <section id="features" class="section-padding">
+        <h1 class="main-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
+        <div class="features-grid">
+            <div class="features-row">
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R01']) }}" class="feature-card bg-color-1">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M37.6716 15.1013C37.6716 15.3813 37.6717 15.6613 37.653 15.9226C34.797 14.8586 31.437 15.5119 29.197 17.5279C27.685 16.1653 25.725 15.3999 23.6343 15.3999C19.0423 15.3999 15.309 19.152 15.309 23.7813C15.309 29.064 17.9597 32.9279 20.4983 35.4293C20.293 35.4106 20.125 35.3733 19.9757 35.3173C15.141 33.6559 4.33301 26.7866 4.33301 15.1013C4.33301 9.94927 8.47699 5.78662 13.5917 5.78662C16.6343 5.78662 19.3223 7.2426 21.0023 9.50127C22.701 7.2426 25.389 5.78662 28.413 5.78662C33.5277 5.78662 37.6716 9.94927 37.6716 15.1013Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M34.1996 17.9014C32.2022 17.9014 30.3915 18.872 29.2715 20.3654C28.1515 18.872 26.3596 17.9014 24.3436 17.9014C20.9462 17.9014 18.1836 20.664 18.1836 24.0987C18.1836 25.424 18.3889 26.6374 18.7623 27.7574C20.5169 33.3014 25.9116 36.6054 28.5809 37.5201C28.9542 37.6507 29.5703 37.6507 29.9623 37.5201C32.6316 36.6054 38.0262 33.3014 39.7809 27.7574C40.1542 26.6187 40.3595 25.4054 40.3595 24.0987C40.3595 20.664 37.5969 17.9014 34.1996 17.9014Z"
+                            fill="#FFBB00" />
+                    </svg>
+                    <span>Ruang<br>Nifas</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R02']) }}" class="feature-card bg-color-2">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4"
+                            d="M36.0669 16.8001C36.0669 19.5067 35.2643 21.9894 33.8829 24.0614C31.8669 27.0481 28.6749 29.1574 24.9603 29.6987C24.3256 29.8107 23.6723 29.8667 23.0003 29.8667C22.3283 29.8667 21.6749 29.8107 21.0403 29.6987C17.3256 29.1574 14.1336 27.0481 12.1176 24.0614C10.7363 21.9894 9.93359 19.5067 9.93359 16.8001C9.93359 9.57606 15.7763 3.7334 23.0003 3.7334C30.2243 3.7334 36.0669 9.57606 36.0669 16.8001Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M40.2657 34.4774L37.1857 35.2054C36.495 35.3734 35.9537 35.8961 35.8044 36.5868L35.151 39.3308C34.7964 40.8241 32.8924 41.2721 31.903 40.0961L22.999 29.8668L14.095 40.1147C13.1057 41.2907 11.2017 40.8427 10.847 39.3494L10.1937 36.6054C10.0257 35.9147 9.48437 35.3734 8.81237 35.2241L5.73237 34.4961C4.31371 34.1601 3.80971 32.3867 4.83637 31.3601L12.1164 24.0801C14.1324 27.0667 17.3244 29.1761 21.039 29.7174C21.6737 29.8294 22.327 29.8854 22.999 29.8854C23.671 29.8854 24.3244 29.8294 24.959 29.7174C28.6737 29.1761 31.8657 27.0667 33.8817 24.0801L41.1617 31.3601C42.1884 32.3681 41.6844 34.1414 40.2657 34.4774Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M24.0821 11.1626L25.1834 13.3653C25.3328 13.6639 25.7248 13.9626 26.0794 14.0186L28.0768 14.3546C29.3461 14.5599 29.6448 15.4933 28.7301 16.4079L27.1808 17.9572C26.9194 18.2186 26.7701 18.7226 26.8634 19.0959L27.3114 21.0186C27.6661 22.5306 26.8634 23.1279 25.5194 22.3252L23.6528 21.2239C23.3168 21.0186 22.7568 21.0186 22.4208 21.2239L20.5541 22.3252C19.2101 23.1092 18.4074 22.5306 18.7621 21.0186L19.2101 19.0959C19.2848 18.7413 19.1541 18.2186 18.8928 17.9572L17.3434 16.4079C16.4288 15.4933 16.7274 14.5786 17.9968 14.3546L19.9941 14.0186C20.3301 13.9626 20.7221 13.6639 20.8714 13.3653L21.9728 11.1626C22.5141 9.96793 23.4848 9.96793 24.0821 11.1626Z"
+                            fill="#FFC107" />
+                    </svg>
+                    <span>Ruang<br>Perinatologi</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R03']) }}"
+                    class="feature-card bg-color-3 area-a3">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M34.1994 38.2667H32.3327V37.8C32.3327 35.7467 30.6527 34.0667 28.5994 34.0667H24.3994V29.792C23.9327 29.848 23.4661 29.8667 22.9994 29.8667C22.5327 29.8667 22.0661 29.848 21.5994 29.792V34.0667H17.3994C15.3461 34.0667 13.6661 35.7467 13.6661 37.8V38.2667H11.7994C11.0341 38.2667 10.3994 38.9013 10.3994 39.6667C10.3994 40.432 11.0341 41.0667 11.7994 41.0667H34.1994C34.9647 41.0667 35.5994 40.432 35.5994 39.6667C35.5994 38.9013 34.9647 38.2667 34.1994 38.2667Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M10.9035 21.728C9.67147 21.2614 8.5888 20.496 7.73013 19.6374C5.99414 17.7147 4.85547 15.4187 4.85547 12.7307C4.85547 10.0427 6.9648 7.93335 9.6528 7.93335H10.6981C10.2128 8.92268 9.9328 10.024 9.9328 11.2V16.8C9.9328 18.5547 10.2688 20.216 10.9035 21.728Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M41.1437 12.7307C41.1437 15.4187 40.005 17.7147 38.269 19.6374C37.4104 20.496 36.3277 21.2614 35.0957 21.728C35.7304 20.216 36.0664 18.5547 36.0664 16.8V11.2C36.0664 10.024 35.7864 8.92268 35.301 7.93335H36.3464C39.0344 7.93335 41.1437 10.0427 41.1437 12.7307Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M28.6003 3.7334H17.4003C13.2749 3.7334 9.93359 7.07473 9.93359 11.2001V16.8001C9.93359 24.0241 15.7763 29.8667 23.0003 29.8667C30.2243 29.8667 36.0669 24.0241 36.0669 16.8001V11.2001C36.0669 7.07473 32.7256 3.7334 28.6003 3.7334ZM28.3016 15.7734L27.1443 17.1921C26.9576 17.3974 26.8269 17.8081 26.8456 18.0881L26.9576 19.9174C27.0323 21.0374 26.2296 21.6161 25.1843 21.2054L23.4856 20.5334C23.2243 20.4401 22.7763 20.4401 22.5149 20.5334L20.8163 21.2054C19.7709 21.6161 18.9683 21.0374 19.0429 19.9174L19.1549 18.0881C19.1736 17.8081 19.0429 17.3974 18.8563 17.1921L17.6989 15.7734C16.9709 14.9147 17.2883 13.9627 18.3709 13.6827L20.1443 13.2347C20.4243 13.1601 20.7603 12.8987 20.9096 12.6561L21.8989 11.1254C22.5149 10.1734 23.4856 10.1734 24.1016 11.1254L25.0909 12.6561C25.2403 12.8987 25.5763 13.1601 25.8563 13.2347L27.6296 13.6827C28.7123 13.9627 29.0296 14.9147 28.3016 15.7734Z"
+                            fill="#DC5E3A" />
+                        <path
+                            d="M28.3013 15.7734L27.144 17.192C26.9573 17.3974 26.8267 17.808 26.8453 18.088L26.9573 19.9174C27.032 21.0374 26.2293 21.616 25.184 21.2054L23.4853 20.5334C23.224 20.44 22.776 20.44 22.5146 20.5334L20.816 21.2054C19.7706 21.616 18.968 21.0374 19.0427 19.9174L19.1546 18.088C19.1733 17.808 19.0426 17.3974 18.856 17.192L17.6986 15.7734C16.9706 14.9147 17.288 13.9627 18.3707 13.6827L20.144 13.2347C20.424 13.16 20.76 12.8987 20.9093 12.656L21.8986 11.1254C22.5146 10.1734 23.4853 10.1734 24.1013 11.1254L25.0907 12.656C25.24 12.8987 25.576 13.16 25.856 13.2347L27.6293 13.6827C28.712 13.9627 29.0293 14.9147 28.3013 15.7734Z"
+                            fill="#FFBB00" />
+                    </svg>
+                    <span>Ruang<br>VK</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R04']) }}" class="feature-card bg-color-5">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13.1621 36.7734C14.6928 35.1307 17.0261 35.2614 18.3701 37.0534L20.2555 39.5734C21.7675 41.5707 24.2128 41.5707 25.7248 39.5734L27.6101 37.0534C28.9541 35.2614 31.2875 35.1307 32.8181 36.7734C36.1408 40.3201 38.8475 39.1441 38.8475 34.1787V13.1414C38.8661 5.61873 37.1115 3.7334 30.0555 3.7334H15.9435C8.88748 3.7334 7.13281 5.61873 7.13281 13.1414V34.1601C7.13281 39.1441 9.85815 40.3014 13.1621 36.7734Z"
+                            fill="#2196F3" />
+                        <path
+                            d="M30.4661 14.4667H15.5328C14.7675 14.4667 14.1328 13.8321 14.1328 13.0667C14.1328 12.3014 14.7675 11.6667 15.5328 11.6667H30.4661C31.2315 11.6667 31.8661 12.3014 31.8661 13.0667C31.8661 13.8321 31.2315 14.4667 30.4661 14.4667Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M28.6 21.9333H17.4C16.6347 21.9333 16 21.2986 16 20.5333C16 19.768 16.6347 19.1333 17.4 19.1333H28.6C29.3653 19.1333 30 19.768 30 20.5333C30 21.2986 29.3653 21.9333 28.6 21.9333Z"
+                            fill="#FFC107" />
+                    </svg>
+                    <span>Farmasi</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R05']) }}" class="feature-card bg-color-6">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M30.168 41.0667H15.832C8.01066 41.0667 6.46132 36.344 8.99999 30.5947L11.688 24.4907C11.688 24.4907 17.4 24.2667 23 26.1334C28.6 28 33.8827 24.472 33.8827 24.472L34.2373 24.248L37.0187 30.6134C39.52 36.3627 37.8773 41.0667 30.168 41.0667Z"
+                            fill="#FFC107" />
+                        <path opacity="0.5"
+                            d="M34.2368 24.2481L33.8822 24.4721C33.8822 24.4721 28.5995 28.0001 22.9995 26.1334C17.3995 24.2667 11.6875 24.4907 11.6875 24.4907L16.9142 12.5814H16.3542C15.1408 12.5814 14.0208 12.0961 13.2182 11.2934C12.4155 10.4907 11.9302 9.37073 11.9302 8.1574C11.9302 5.73073 13.9088 3.7334 16.3542 3.7334H29.6262C30.8582 3.7334 31.9595 4.2374 32.7622 5.04007C33.8075 6.0854 34.3488 7.61606 33.9382 9.24006C33.4528 11.2561 31.5115 12.5814 29.4208 12.5814H29.1222L34.2368 24.2481Z"
+                            fill="#EB0EBB" />
+                    </svg>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R06']) }}" class="feature-card bg-color-7">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M41.6663 20.6639V31.0799C41.6663 36.5866 37.1863 41.0666 31.6797 41.0666H14.3197C8.81301 41.0666 4.33301 36.5866 4.33301 31.0799V20.6639C4.33301 15.1572 8.81301 10.6772 14.3197 10.6772H31.6797C37.1863 10.6772 41.6663 15.1572 41.6663 20.6639Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M19.509 28.0186L17.5863 26.0959L19.4343 24.2479C19.9757 23.7066 19.9757 22.8106 19.4343 22.2693C18.893 21.7279 17.997 21.7279 17.4557 22.2693L15.6077 24.1173L13.8157 22.3253C13.2743 21.7839 12.3783 21.7839 11.837 22.3253C11.2957 22.8666 11.2957 23.7626 11.837 24.3039L13.629 26.0959L11.781 27.9439C11.2397 28.4853 11.2397 29.3813 11.781 29.9226C12.061 30.2026 12.4157 30.3333 12.7703 30.3333C13.125 30.3333 13.4797 30.2026 13.7597 29.9226L15.6077 28.0746L17.5303 29.9973C17.8103 30.2773 18.165 30.4079 18.5197 30.4079C18.8743 30.4079 19.229 30.2773 19.509 29.9973C20.0503 29.4559 20.0503 28.5599 19.509 28.0186Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M25.8746 27.9999C24.8479 27.9999 23.9893 27.1599 23.9893 26.1333C23.9893 25.1066 24.8106 24.2666 25.8373 24.2666H25.8746C26.9013 24.2666 27.7413 25.1066 27.7413 26.1333C27.7413 27.1599 26.9199 27.9999 25.8746 27.9999Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M33.2291 27.9999C32.2024 27.9999 31.3438 27.1599 31.3438 26.1333C31.3438 25.1066 32.1651 24.2666 33.1917 24.2666H33.2291C34.2558 24.2666 35.0958 25.1066 35.0958 26.1333C35.0958 27.1599 34.2744 27.9999 33.2291 27.9999Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M29.5327 31.6773C28.506 31.6773 27.666 30.856 27.666 29.8293V29.792C27.666 28.7653 28.506 27.9253 29.5327 27.9253C30.5593 27.9253 31.3993 28.7653 31.3993 29.792C31.3993 30.8186 30.578 31.6773 29.5327 31.6773Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M29.5327 24.3226C28.506 24.3226 27.666 23.5012 27.666 22.4746V22.4372C27.666 21.4106 28.506 20.5706 29.5327 20.5706C30.5593 20.5706 31.3993 21.4106 31.3993 22.4372C31.3993 23.4639 30.578 24.3226 29.5327 24.3226Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M26.0611 5.05873L26.0425 6.8134C26.0238 8.45607 24.6611 9.81873 22.9998 9.81873C22.7198 9.81873 22.5518 10.0054 22.5518 10.2481C22.5518 10.4907 22.7385 10.6774 22.9811 10.6774H19.9758C19.9571 10.5467 19.9385 10.3974 19.9385 10.2481C19.9385 8.56806 21.3011 7.2054 22.9625 7.2054C23.2425 7.2054 23.4291 7.01873 23.4291 6.77607L23.4478 5.0214C23.4665 4.31207 24.0451 3.7334 24.7545 3.7334H24.7731C25.5011 3.7334 26.0611 4.33073 26.0611 5.05873Z"
+                            fill="#FF0909" />
+                    </svg>
 
-                            <span>Ruang<br>Anak</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R07']) }}" class="feature-card bg-color-8">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M38.6981 12.992V18.2934L14.4128 36.1014L9.50345 32.424C8.29011 31.5094 7.30078 29.5494 7.30078 28.0374V12.992C7.30078 10.9014 8.90611 8.5867 10.8661 7.8587L21.0768 4.03204C22.1408 3.64004 23.8581 3.64004 24.9221 4.03204L35.1328 7.8587C37.0928 8.5867 38.6981 10.9014 38.6981 12.992Z"
-                                    fill="#36DAE2" />
-                                <path
-                                    d="M38.6979 20.8506V28.0373C38.6979 29.5493 37.7085 31.5093 36.4952 32.4239L26.2846 40.0586C25.3886 40.7306 24.1939 41.0666 22.9992 41.0666C21.8046 41.0666 20.6099 40.7306 19.7139 40.0586L16.1299 37.3893L38.6979 20.8506Z"
-                                    fill="white" />
-                            </svg>
-                            <span>CSSD</span>
-                        </a>
+                    <span>Ruang<br>Anak</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R07']) }}" class="feature-card bg-color-8">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M38.6981 12.992V18.2934L14.4128 36.1014L9.50345 32.424C8.29011 31.5094 7.30078 29.5494 7.30078 28.0374V12.992C7.30078 10.9014 8.90611 8.5867 10.8661 7.8587L21.0768 4.03204C22.1408 3.64004 23.8581 3.64004 24.9221 4.03204L35.1328 7.8587C37.0928 8.5867 38.6981 10.9014 38.6981 12.992Z"
+                            fill="#36DAE2" />
+                        <path
+                            d="M38.6979 20.8506V28.0373C38.6979 29.5493 37.7085 31.5093 36.4952 32.4239L26.2846 40.0586C25.3886 40.7306 24.1939 41.0666 22.9992 41.0666C21.8046 41.0666 20.6099 40.7306 19.7139 40.0586L16.1299 37.3893L38.6979 20.8506Z"
+                            fill="white" />
+                    </svg>
+                    <span>CSSD</span>
+                </a>
+            </div>
+
+            <!-- ROW 2 : 6 icon -->
+            <div class="features-row">
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R08']) }}" class="feature-card bg-color-1">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M31.568 13.8321L12.3786 33.0214C11.4826 33.9174 9.95198 33.7121 9.41065 32.5734C8.43998 30.5761 7.87998 28.3174 7.87998 25.9467C7.84265 15.6427 18.296 6.83207 21.8426 4.1254C22.5333 3.60273 23.4666 3.60273 24.1386 4.1254C25.7626 5.3574 28.8053 7.91473 31.6613 11.2747C32.296 12.0214 32.2586 13.1414 31.568 13.8321Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M38.12 25.9652C38.12 34.2906 31.344 41.0666 23 41.0666C19.6587 41.0666 16.5413 39.9839 14.0213 38.1172C13.1067 37.4452 13.032 36.1012 13.8347 35.2986L32.632 16.5012C33.5093 15.6239 34.984 15.8106 35.5813 16.8932C37.112 19.7119 38.1387 22.7732 38.12 25.9652Z"
+                            fill="#1F925A" />
+                    </svg>
+                    <span>Ruang<br>Interna</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R09']) }}" class="feature-card bg-color-2">
+                    <div class="icon-wrapper">
+                        <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M31.2504 14.8401C35.8051 19.3947 35.8051 26.7867 31.2504 31.3413C26.6957 35.896 19.3037 35.896 14.749 31.3413C10.1943 26.7867 10.1943 19.3947 14.749 14.8401C19.3037 10.2854 26.6957 10.2854 31.2504 14.8401Z"
+                                fill="#FFE69B" />
+                            <path
+                                d="M15.9999 41.7948C15.8319 41.7948 15.6453 41.7574 15.4773 41.7014C11.2773 40.0214 7.87992 37.0534 5.60259 33.1334C3.39992 29.3067 2.52259 24.9761 3.10126 20.5708C3.19459 19.8054 3.92259 19.2641 4.66925 19.3574C5.43459 19.4507 5.97591 20.1601 5.88258 20.9254C5.39724 24.6961 6.14396 28.4294 8.02929 31.7147C9.97062 35.0747 12.9012 37.632 16.5039 39.0694C17.2132 39.368 17.5679 40.1707 17.2879 40.8987C17.0826 41.4587 16.5413 41.7948 15.9999 41.7948Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M11.5199 9.7627C11.1092 9.7627 10.6985 9.57607 10.4185 9.2214C9.9332 8.6054 10.0452 7.72809 10.6612 7.26143C14.2265 4.48009 18.4825 3.00537 22.9998 3.00537C27.4052 3.00537 31.6052 4.42406 35.1332 7.11206C35.7492 7.57873 35.8612 8.45604 35.3945 9.07204C34.9279 9.68804 34.0505 9.80007 33.4345 9.3334C30.4105 7.01873 26.8079 5.80537 22.9998 5.80537C19.1172 5.80537 15.4398 7.07475 12.3785 9.46408C12.1172 9.66941 11.8185 9.7627 11.5199 9.7627Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M29.9997 41.7946C29.4397 41.7946 28.917 41.4586 28.693 40.9172C28.413 40.2079 28.749 39.3866 29.477 39.0879C33.0797 37.6319 36.0104 35.0933 37.9517 31.7333C39.8557 28.4479 40.6023 24.7145 40.0983 20.9439C40.005 20.1785 40.5463 19.4693 41.3117 19.3759C42.0583 19.2826 42.7863 19.824 42.8797 20.5893C43.4397 24.976 42.581 29.3253 40.3783 33.152C38.1197 37.072 34.7037 40.0212 30.5037 41.7199C30.3543 41.7572 30.1863 41.7946 29.9997 41.7946Z"
+                                fill="#FFC107" />
+                        </svg>
+                    </div>
+                    <span>Ruang<br>IBS</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R10']) }}" class="feature-card bg-color-3">
+                    <div class="icon-wrapper">
+                        <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M39.9487 16.0161V28.7841C39.9487 30.8747 38.8287 32.8161 37.018 33.8801L25.93 40.2828C24.1193 41.3281 21.8793 41.3281 20.0499 40.2828L8.96193 33.8801C7.15126 32.8348 6.03125 30.8934 6.03125 28.7841V16.0161C6.03125 13.9255 7.15126 11.9841 8.96193 10.9201L20.0499 4.5174C21.8606 3.47207 24.1006 3.47207 25.93 4.5174L37.018 10.9201C38.8287 11.9841 39.9487 13.9068 39.9487 16.0161Z"
+                                fill="#DC5E3A" />
+                            <path
+                                d="M22.9996 25.6666C22.2343 25.6666 21.5996 25.032 21.5996 24.2666V14.4667C21.5996 13.7013 22.2343 13.0667 22.9996 13.0667C23.7649 13.0667 24.3996 13.7013 24.3996 14.4667V24.2666C24.3996 25.032 23.7649 25.6666 22.9996 25.6666Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M22.9995 32.2C22.7568 32.2 22.5141 32.144 22.2901 32.0506C22.0475 31.9573 21.8608 31.8267 21.6741 31.6587C21.5061 31.472 21.3755 31.2667 21.2635 31.0427C21.1702 30.8187 21.1328 30.576 21.1328 30.3333C21.1328 29.848 21.3194 29.3626 21.6741 29.008C21.8608 28.84 22.0475 28.7094 22.2901 28.616C22.9808 28.3174 23.8022 28.4853 24.3249 29.008C24.4929 29.1946 24.6234 29.3813 24.7168 29.624C24.8101 29.848 24.8661 30.0907 24.8661 30.3333C24.8661 30.576 24.8101 30.8187 24.7168 31.0427C24.6234 31.2667 24.4929 31.472 24.3249 31.6587C23.9702 32.0134 23.5035 32.2 22.9995 32.2Z"
+                                fill="#FFC107" />
+                        </svg>
+                    </div>
+                    <span>Ruang<br>ICU</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R11']) }}" class="feature-card bg-color-6">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M22.9997 4.83472V25.4054L5.54634 37.6134C3.95967 35.728 3.86634 32.872 5.63967 29.68L11.4637 19.208L16.9517 9.33338C18.613 6.34672 20.797 4.83472 22.9997 4.83472Z"
+                            fill="#F44336" />
+                        <path
+                            d="M40.4526 37.6133C39.2392 39.0879 37.1299 39.9653 34.3112 39.9653H11.6872C8.86856 39.9653 6.75923 39.0879 5.5459 37.6133L22.9992 25.4053L40.4526 37.6133Z"
+                            fill="#4CAF50" />
+                        <path
+                            d="M40.4533 37.6134L23 25.4054V4.83472C25.2027 4.83472 27.3867 6.34672 29.048 9.33338L34.536 19.208L40.36 29.68C42.1333 32.872 42.04 35.728 40.4533 37.6134Z"
+                            fill="#FFC107" />
+                    </svg>
+                    <span>IGD</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R12']) }}" class="feature-card bg-color-7">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M37.725 14.5974L23.3516 22.9227C22.773 23.2587 22.045 23.2587 21.4476 22.9227L7.07429 14.5974C6.04762 14 5.78629 12.6 6.57029 11.7227C7.11162 11.1067 7.72762 10.6027 8.38095 10.248L18.4983 4.64804C20.6636 3.4347 24.173 3.4347 26.3383 4.64804L36.4556 10.248C37.109 10.6027 37.725 11.1254 38.2663 11.7227C39.013 12.6 38.7516 14 37.725 14.5974Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M21.3364 26.3946V39.1252C21.3364 40.5439 19.8991 41.4772 18.6298 40.8612C14.7844 38.9759 8.30709 35.4479 8.30709 35.4479C6.02975 34.1599 4.16309 30.9119 4.16309 28.2426V18.6106C4.16309 17.1359 5.71242 16.2026 6.98175 16.9306L20.4031 24.7146C20.9631 25.0692 21.3364 25.7039 21.3364 26.3946Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M23.4639 26.3946V39.1252C23.4639 40.5439 24.9012 41.4772 26.1705 40.8612C30.0159 38.9759 36.4932 35.4479 36.4932 35.4479C38.7705 34.1599 40.6372 30.9119 40.6372 28.2426V18.6106C40.6372 17.1359 39.0879 16.2026 37.8185 16.9306L24.3972 24.7146C23.8372 25.0692 23.4639 25.7039 23.4639 26.3946Z"
+                            fill="#DC5E3A" />
+                    </svg>
+                    <span>IPSRS</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R13']) }}" class="feature-card bg-color-8">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M22.3997 35.4666C29.6162 35.4666 35.4663 29.6164 35.4663 22.3999C35.4663 15.1834 29.6162 9.33325 22.3997 9.33325C15.1832 9.33325 9.33301 15.1834 9.33301 22.3999C9.33301 29.6164 15.1832 35.4666 22.3997 35.4666Z"
+                            fill="#36DAE2" />
+                        <path
+                            d="M22.3995 42.8587C21.3729 42.8587 20.5329 42.0934 20.5329 41.0667V40.9174C20.5329 39.8907 21.3729 39.0507 22.3995 39.0507C23.4262 39.0507 24.2662 39.8907 24.2662 40.9174C24.2662 41.944 23.4262 42.8587 22.3995 42.8587ZM35.7275 37.5947C35.2422 37.5947 34.7755 37.408 34.4022 37.0534L34.1595 36.8107C33.4315 36.0827 33.4315 34.9067 34.1595 34.1787C34.8875 33.4507 36.0635 33.4507 36.7915 34.1787L37.0342 34.4214C37.7622 35.1494 37.7622 36.3254 37.0342 37.0534C36.6795 37.408 36.2129 37.5947 35.7275 37.5947ZM9.07154 37.5947C8.58621 37.5947 8.11954 37.408 7.74621 37.0534C7.01821 36.3254 7.01821 35.1494 7.74621 34.4214L7.98888 34.1787C8.71688 33.4507 9.89288 33.4507 10.6209 34.1787C11.3489 34.9067 11.3489 36.0827 10.6209 36.8107L10.3782 37.0534C10.0235 37.408 9.53821 37.5947 9.07154 37.5947ZM41.0662 24.2667H40.9169C39.8902 24.2667 39.0502 23.4267 39.0502 22.4C39.0502 21.3734 39.8902 20.5334 40.9169 20.5334C41.9435 20.5334 42.8582 21.3734 42.8582 22.4C42.8582 23.4267 42.0929 24.2667 41.0662 24.2667ZM3.88221 24.2667H3.73288C2.70621 24.2667 1.86621 23.4267 1.86621 22.4C1.86621 21.3734 2.70621 20.5334 3.73288 20.5334C4.75954 20.5334 5.67421 21.3734 5.67421 22.4C5.67421 23.4267 4.90888 24.2667 3.88221 24.2667ZM35.4849 11.1814C34.9995 11.1814 34.5329 10.9947 34.1595 10.64C33.4315 9.91203 33.4315 8.73603 34.1595 8.00803L34.4022 7.76537C35.1302 7.03737 36.3062 7.03737 37.0342 7.76537C37.7622 8.49337 37.7622 9.66937 37.0342 10.3974L36.7915 10.64C36.4369 10.9947 35.9702 11.1814 35.4849 11.1814ZM9.31421 11.1814C8.82888 11.1814 8.36221 10.9947 7.98888 10.64L7.74621 10.3787C7.01821 9.6507 7.01821 8.4747 7.74621 7.7467C8.47421 7.0187 9.65021 7.0187 10.3782 7.7467L10.6209 7.98937C11.3489 8.71737 11.3489 9.89337 10.6209 10.6214C10.2662 10.9947 9.78088 11.1814 9.31421 11.1814ZM22.3995 5.6747C21.3729 5.6747 20.5329 4.90937 20.5329 3.8827V3.73337C20.5329 2.7067 21.3729 1.8667 22.3995 1.8667C23.4262 1.8667 24.2662 2.7067 24.2662 3.73337C24.2662 4.76003 23.4262 5.6747 22.3995 5.6747Z"
+                            fill="white" />
+                    </svg>
+                    <span>Laundry</span>
+                </a>
+            </div>
+
+            <!-- ROW 3 : 5 icon -->
+            <div class="features-row">
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R14']) }}" class="feature-card bg-color-1">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M28.4671 22.3627L41.9071 12.3201C42.5231 11.8534 42.6537 10.9761 42.1871 10.3601C41.7204 9.74407 40.843 9.6134 40.227 10.0801L26.1337 20.6267L15.7737 12.8801C15.1577 12.4134 14.2804 12.5441 13.8137 13.1601C13.347 13.7761 13.4777 14.6534 14.0937 15.1201L23.8004 22.3814L12.7871 30.6321C12.1711 31.0987 12.0404 31.9761 12.5071 32.5921C12.7871 32.9654 13.1977 33.1521 13.627 33.1521C13.9257 33.1521 14.2057 33.0587 14.4671 32.8721L26.1524 24.1361L40.2457 34.6827C40.4884 34.8694 40.7871 34.9627 41.0857 34.9627C41.5151 34.9627 41.9257 34.7761 42.2057 34.4027C42.6724 33.7867 42.5417 32.9094 41.9257 32.4427L28.4671 22.3627Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M10.2667 18.6668C13.875 18.6668 16.8001 15.7417 16.8001 12.1334C16.8001 8.52517 13.875 5.6001 10.2667 5.6001C6.65847 5.6001 3.7334 8.52517 3.7334 12.1334C3.7334 15.7417 6.65847 18.6668 10.2667 18.6668Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M10.2667 39.2C13.875 39.2 16.8001 36.2749 16.8001 32.6666C16.8001 29.0584 13.875 26.1333 10.2667 26.1333C6.65847 26.1333 3.7334 29.0584 3.7334 32.6666C3.7334 36.2749 6.65847 39.2 10.2667 39.2Z"
+                            fill="#1F925A" />
+                    </svg>
+                    <span>Ruang<br>Bedah</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R15']) }}" class="feature-card bg-color-2">
+                    <div class="icon-wrapper">
+                        <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M41.048 11.2374C41.0854 11.6854 41.048 12.1521 40.936 12.6187L34.6454 37.8747C34.1974 39.76 32.5174 41.0667 30.5761 41.0667H6.04803C3.22937 41.0667 1.23206 38.3041 2.0534 35.5974L9.91205 10.3413C10.4534 8.58667 12.0774 7.39209 13.9067 7.39209H36.8667C38.6587 7.39209 40.1147 8.45608 40.7307 9.94941C40.9174 10.3414 41.0107 10.7894 41.048 11.2374Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M42.9148 36.6239C43.1015 39.0319 41.1975 41.0666 38.7895 41.0666H30.5762C32.5175 41.0666 34.1975 39.7599 34.6455 37.8746L40.9361 12.6186C41.0481 12.152 41.0855 11.6853 41.0481 11.2373L41.0668 11.2L42.9148 36.6239Z"
+                                fill="#A97F06" />
+                            <path
+                                d="M18.0688 13.3094C17.9568 13.3094 17.8448 13.2907 17.7328 13.272C16.9862 13.0853 16.5195 12.3387 16.7062 11.5734L18.6475 3.50937C18.8342 2.7627 19.5808 2.31472 20.3462 2.48272C21.0928 2.66939 21.5595 3.41601 21.3729 4.18134L19.4315 12.2454C19.2822 12.88 18.7035 13.3094 18.0688 13.3094Z"
+                                fill="#292D32" />
+                            <path
+                                d="M30.5763 13.3279C30.4829 13.3279 30.3709 13.3279 30.2776 13.2906C29.5309 13.1226 29.0456 12.3759 29.195 11.6292L30.9496 3.52792C31.1176 2.76259 31.8643 2.29589 32.6109 2.44522C33.3576 2.61322 33.8429 3.35992 33.6936 4.10658L31.9389 12.2079C31.8082 12.8799 31.2296 13.3279 30.5763 13.3279Z"
+                                fill="#292D32" />
+                            <path
+                                d="M29.307 23.8H14.3736C13.6083 23.8 12.9736 23.1653 12.9736 22.4C12.9736 21.6347 13.6083 21 14.3736 21H29.307C30.0723 21 30.707 21.6347 30.707 22.4C30.707 23.1653 30.0723 23.8 29.307 23.8Z"
+                                fill="#A97F06" />
+                            <path
+                                d="M27.4398 31.2666H12.5064C11.7411 31.2666 11.1064 30.6319 11.1064 29.8666C11.1064 29.1012 11.7411 28.4666 12.5064 28.4666H27.4398C28.2051 28.4666 28.8398 29.1012 28.8398 29.8666C28.8398 30.6319 28.2051 31.2666 27.4398 31.2666Z"
+                                fill="#A97F06" />
+                        </svg>
+                    </div>
+                    <span>Gizi</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R16']) }}" class="feature-card bg-color-4">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M41.0111 33.6001V35.4667C41.0111 38.5467 41.0111 41.0667 35.4111 41.0667H9.27773C3.67773 41.0667 3.67773 38.5467 3.67773 35.4667V33.6001C3.67773 32.5734 4.51773 31.7334 5.5444 31.7334H39.1444C40.1711 31.7334 41.0111 32.5734 41.0111 33.6001Z"
+                            fill="#FFE69B" />
+                        <path
+                            d="M38.6768 24.2666V31.7333H6.10352V24.2666C6.10352 17.0986 11.1622 11.1066 17.9008 9.66925C18.9088 9.44525 19.9542 9.33325 21.0368 9.33325H23.7435C24.8262 9.33325 25.8902 9.44525 26.8982 9.66925C33.6368 11.1253 38.6768 17.0986 38.6768 24.2666Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M27.0667 8.40006C27.0667 8.84806 27.0107 9.25873 26.8987 9.6694C25.8907 9.4454 24.8267 9.3334 23.7441 9.3334H21.0374C19.9547 9.3334 18.9094 9.4454 17.9014 9.6694C17.7894 9.25873 17.7334 8.84806 17.7334 8.40006C17.7334 5.82406 19.8241 3.7334 22.4001 3.7334C24.9761 3.7334 27.0667 5.82406 27.0667 8.40006Z"
+                            fill="#FFE69B" />
+                        <path
+                            d="M28.0004 21.9333H16.8004C16.0351 21.9333 15.4004 21.2986 15.4004 20.5333C15.4004 19.768 16.0351 19.1333 16.8004 19.1333H28.0004C28.7657 19.1333 29.4004 19.768 29.4004 20.5333C29.4004 21.2986 28.7657 21.9333 28.0004 21.9333Z"
+                            fill="#FFE69B" />
+                    </svg>
+                    <span>Rawat<br>Jalan</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R17']) }}" class="feature-card bg-color-7">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20.0662 4.57331C21.3729 3.47198 23.4822 3.47198 24.7515 4.57331L27.7009 7.09331C28.2609 7.55998 29.3249 7.95198 30.0715 7.95198H33.2449C35.2235 7.95198 36.8475 9.57598 36.8475 11.5546V14.728C36.8475 15.4746 37.2395 16.52 37.7062 17.08L40.2262 20.0293C41.3275 21.336 41.3275 23.4453 40.2262 24.7146L37.7062 27.664C37.2395 28.224 36.8475 29.2693 36.8475 30.016V33.1893C36.8475 35.168 35.2235 36.792 33.2449 36.792H30.0715C29.3249 36.792 28.2795 37.184 27.7195 37.6507L24.7702 40.1707C23.4635 41.272 21.3542 41.272 20.0849 40.1707L17.1355 37.6507C16.5755 37.184 15.5115 36.792 14.7835 36.792H11.5169C9.53819 36.792 7.91419 35.168 7.91419 33.1893V29.9973C7.91419 29.2693 7.54085 28.2053 7.07419 27.664L4.55419 24.696C3.47152 23.408 3.47152 21.3173 4.55419 20.0293L7.07419 17.0613C7.54085 16.5013 7.91419 15.456 7.91419 14.728V11.5733C7.91419 9.59465 9.53819 7.97065 11.5169 7.97065H14.7462C15.4929 7.97065 16.5382 7.57865 17.0982 7.11198L20.0662 4.57331Z"
+                            fill="#FFBB00" />
+                        <path
+                            d="M27.6458 30.3147L22.4004 18.4987L17.1551 30.3147L14.5791 29.176L21.1124 14.4854H23.6884L30.2218 29.176L27.6458 30.3147Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M25.6667 26.2453H19.1334C18.3681 26.2453 17.7334 25.6106 17.7334 24.8453C17.7334 24.08 18.3681 23.4453 19.1334 23.4453H25.6667C26.4321 23.4453 27.0667 24.08 27.0667 24.8453C27.0667 25.6106 26.4321 26.2453 25.6667 26.2453Z"
+                            fill="#FF0909" />
+                    </svg>
+                    <span>Ruang<br>VIP</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R18']) }}" class="feature-card bg-color-8">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M39.3121 22.0641L39.0134 21.6534C38.4908 21.0187 37.8748 20.5147 37.1654 20.1414C36.2134 19.6001 35.1308 19.3201 34.0108 19.3201H10.7708C9.65077 19.3201 8.58677 19.6001 7.61611 20.1414C6.88811 20.5334 6.23477 21.0747 5.69344 21.7467C4.62944 23.1094 4.12544 24.7894 4.29344 26.4694L4.98411 35.1867C5.22677 37.8187 5.54411 41.0667 11.4614 41.0667H33.3388C39.2561 41.0667 39.5548 37.8187 39.8161 35.1681L40.5068 26.4881C40.6748 24.9201 40.2641 23.3521 39.3121 22.0641ZM26.8614 32.3681H17.9201C17.1921 32.3681 16.6134 31.7707 16.6134 31.0614C16.6134 30.3521 17.1921 29.7547 17.9201 29.7547H26.8614C27.5894 29.7547 28.1681 30.3521 28.1681 31.0614C28.1681 31.7894 27.5894 32.3681 26.8614 32.3681Z"
+                            fill="#36DAE2" />
+                        <path
+                            d="M6.30957 21.1121C6.72024 20.7387 7.1309 20.4027 7.61624 20.1414C8.56824 19.6001 9.6509 19.3201 10.7709 19.3201H34.0296C35.1496 19.3201 36.2136 19.6001 37.1842 20.1414C37.6696 20.4027 38.0989 20.7387 38.4909 21.1307V20.1414V18.3307C38.4909 11.6667 36.4562 9.63206 29.7922 9.63206H25.3496C24.5282 9.63206 24.5096 9.6134 24.0242 8.97873L21.7842 5.9734C20.7202 4.59207 19.8802 3.7334 17.2109 3.7334H15.0082C8.34424 3.7334 6.30957 5.76806 6.30957 12.4321V20.1601V21.1121Z"
+                            fill="white" />
+                    </svg>
+                    <span>Rekam<br>Medis</span>
+                </a>
+            </div>
+
+            <!-- ROW 4 : 4 icon -->
+            <div class="features-row">
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R19']) }}" class="feature-card bg-color-1">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5.17073 18.6667C4.36807 18.6667 3.7334 18.0321 3.7334 17.2294V12.9174C3.7334 7.85873 7.85873 3.7334 12.9174 3.7334H17.2294C18.0321 3.7334 18.6667 4.36807 18.6667 5.17073C18.6667 5.9734 18.0321 6.60807 17.2294 6.60807H12.9174C9.42673 6.60807 6.60807 9.4454 6.60807 12.9174V17.2294C6.60807 18.0321 5.95473 18.6667 5.17073 18.6667Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M39.6298 18.6667C38.8458 18.6667 38.1925 18.0321 38.1925 17.2294V12.9174C38.1925 9.42673 35.3551 6.60807 31.8831 6.60807H27.5711C26.7685 6.60807 26.1338 5.95473 26.1338 5.17073C26.1338 4.38673 26.7685 3.7334 27.5711 3.7334H31.8831C36.9418 3.7334 41.0671 7.85873 41.0671 12.9174V17.2294C41.0671 18.0321 40.4325 18.6667 39.6298 18.6667Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M31.8826 41.0667H29.2879C28.5039 41.0667 27.8506 40.432 27.8506 39.6294C27.8506 38.8454 28.4853 38.192 29.2879 38.192H31.8826C35.3733 38.192 38.1919 35.3547 38.1919 31.8827V29.3067C38.1919 28.5227 38.8266 27.8694 39.6293 27.8694C40.4133 27.8694 41.0666 28.5041 41.0666 29.3067V31.8827C41.0666 36.9414 36.9413 41.0667 31.8826 41.0667Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M17.2294 41.0666H12.9174C7.85873 41.0666 3.7334 36.9413 3.7334 31.8826V27.5706C3.7334 26.768 4.36807 26.1333 5.17073 26.1333C5.9734 26.1333 6.60807 26.768 6.60807 27.5706V31.8826C6.60807 35.3733 9.4454 38.192 12.9174 38.192H17.2294C18.0134 38.192 18.6667 38.8266 18.6667 39.6293C18.6667 40.432 18.0321 41.0666 17.2294 41.0666Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M34.459 20.9626H31.9203H12.8803H10.3416C9.53896 20.9626 8.9043 21.616 8.9043 22.4C8.9043 23.184 9.53896 23.8373 10.3416 23.8373H12.8803H31.9203H34.459C35.2616 23.8373 35.8963 23.184 35.8963 22.4C35.8963 21.616 35.2616 20.9626 34.459 20.9626Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M12.8799 26.0214V26.6374C12.8799 29.7361 15.3812 32.2374 18.4799 32.2374H26.3199C29.4186 32.2374 31.9199 29.7361 31.9199 26.6374V26.0214C31.9199 25.7974 31.7519 25.6294 31.5279 25.6294H13.2719C13.0479 25.6294 12.8799 25.7974 12.8799 26.0214Z"
+                            fill="#1F925A" />
+                        <path
+                            d="M12.8799 18.7787V18.1627C12.8799 15.0641 15.3812 12.5627 18.4799 12.5627H26.3199C29.4186 12.5627 31.9199 15.0641 31.9199 18.1627V18.7787C31.9199 19.0027 31.7519 19.1707 31.5279 19.1707H13.2719C13.0479 19.1707 12.8799 19.0027 12.8799 18.7787Z"
+                            fill="#FFC107" />
+                    </svg>
+                    <span>Ruang<br>Radiologi</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R20']) }}" class="feature-card bg-color-2">
+                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M24.3597 30.3333H20.8504C18.3677 30.3333 16.333 28.2427 16.333 25.6667C16.333 24.9013 16.9677 24.2667 17.733 24.2667C18.4983 24.2667 19.133 24.9013 19.133 25.6667C19.133 26.6933 19.8984 27.5333 20.8504 27.5333H24.3597C25.0877 27.5333 25.6663 26.88 25.6663 26.0773C25.6663 25.0693 25.3864 24.92 24.7517 24.696L19.133 22.736C17.9383 22.3066 16.333 21.448 16.333 18.704C16.333 16.3707 18.181 14.448 20.4397 14.448H23.949C26.4316 14.448 28.4663 16.5387 28.4663 19.1147C28.4663 19.88 27.8317 20.5147 27.0663 20.5147C26.301 20.5147 25.6663 19.88 25.6663 19.1147C25.6663 18.088 24.901 17.248 23.949 17.248H20.4397C19.7117 17.248 19.133 17.9013 19.133 18.704C19.133 19.712 19.413 19.8613 20.0477 20.0853L25.6663 22.0453C26.861 22.4746 28.4663 23.3333 28.4663 26.0773C28.4663 28.4293 26.6183 30.3333 24.3597 30.3333Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M22.4 32.2001C21.6347 32.2001 21 31.5654 21 30.8001V14.0001C21 13.2348 21.6347 12.6001 22.4 12.6001C23.1653 12.6001 23.8 13.2348 23.8 14.0001V30.8001C23.8 31.5654 23.1653 32.2001 22.4 32.2001Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M22.3997 42.4666C11.3303 42.4666 2.33301 33.4692 2.33301 22.3999C2.33301 11.3306 11.3303 2.33325 22.3997 2.33325C23.165 2.33325 23.7997 2.96792 23.7997 3.73325C23.7997 4.49859 23.165 5.13325 22.3997 5.13325C12.8797 5.13325 5.13301 12.8799 5.13301 22.3999C5.13301 31.9199 12.8797 39.6666 22.3997 39.6666C31.9197 39.6666 39.6663 31.9199 39.6663 22.3999C39.6663 21.6346 40.301 20.9999 41.0663 20.9999C41.8317 20.9999 42.4663 21.6346 42.4663 22.3999C42.4663 33.4692 33.469 42.4666 22.3997 42.4666Z"
+                            fill="#FFE69B" />
+                        <path
+                            d="M41.0669 12.5999C40.3015 12.5999 39.6669 11.9653 39.6669 11.1999V5.13325H33.6002C32.8349 5.13325 32.2002 4.49859 32.2002 3.73325C32.2002 2.96792 32.8349 2.33325 33.6002 2.33325H41.0669C41.8322 2.33325 42.4669 2.96792 42.4669 3.73325V11.1999C42.4669 11.9653 41.8322 12.5999 41.0669 12.5999Z"
+                            fill="#FFE69B" />
+                        <path
+                            d="M31.7332 14.4666C31.3786 14.4666 31.0239 14.3359 30.7439 14.0559C30.2026 13.5146 30.2026 12.6186 30.7439 12.0772L40.0772 2.74389C40.6186 2.20256 41.5146 2.20256 42.0559 2.74389C42.5972 3.28522 42.5972 4.18122 42.0559 4.72255L32.7226 14.0559C32.4426 14.3359 32.0879 14.4666 31.7332 14.4666Z"
+                            fill="#FFE69B" />
+                    </svg>
+                    <span>Keuangan</span>
+                </a>
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R21']) }}" class="feature-card bg-color-7">
+                    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M37.9228 12.1625C36.8028 8.36495 33.6353 5.19745 29.8378 4.07745C26.9503 3.23745 24.9553 3.30745 23.5728 4.33995C21.9103 5.58245 21.7178 7.82245 21.7178 9.41495V13.7725C21.7178 18.0775 23.6778 20.265 27.5278 20.265H32.5503C34.1253 20.265 36.3828 20.0725 37.6253 18.41C38.6928 17.045 38.7803 15.05 37.9228 12.1625Z"
+                            fill="#FF0909" />
+                        <path
+                            d="M33.0929 23.38C32.6379 22.855 31.9729 22.5575 31.2904 22.5575H25.0254C21.9454 22.5575 19.4429 20.055 19.4429 16.975V10.71C19.4429 10.0275 19.1454 9.36252 18.6204 8.90752C18.1129 8.45252 17.4129 8.24252 16.7479 8.33002C12.6354 8.85502 8.85543 11.1125 6.38793 14.5075C3.90293 17.92 2.99293 22.085 3.78043 26.25C4.91793 32.27 9.73043 37.0825 15.7679 38.22C16.7304 38.4125 17.6929 38.5 18.6554 38.5C21.8229 38.5 24.8854 37.52 27.4929 35.6125C30.8879 33.145 33.1454 29.365 33.6704 25.2525C33.7579 24.57 33.5479 23.8875 33.0929 23.38Z"
+                            fill="#FFBB00" />
+                    </svg>
+                    <span>Kantor</span>
+                </a>
+                <a href="{{ route('superadmin.skm.rekap') }}" class="feature-card bg-color-8">
+                    <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20.6658 4.57331C21.9538 3.47198 24.0631 3.47198 25.3698 4.57331L28.3191 7.11195C28.8791 7.59729 29.9244 7.98935 30.6711 7.98935H33.8445C35.8231 7.98935 37.4471 9.61333 37.4471 11.592V14.7652C37.4471 15.4932 37.8391 16.5573 38.3244 17.1173L40.8631 20.0666C41.9645 21.3546 41.9645 23.464 40.8631 24.7707L38.3244 27.7199C37.8391 28.2799 37.4471 29.3253 37.4471 30.0719V33.2453C37.4471 35.224 35.8231 36.8479 33.8445 36.8479H30.6711C29.9431 36.8479 28.8791 37.24 28.3191 37.7253L25.3698 40.264C24.0818 41.3653 21.9725 41.3653 20.6658 40.264L17.7165 37.7253C17.1565 37.24 16.1111 36.8479 15.3645 36.8479H12.1351C10.1564 36.8479 8.53246 35.224 8.53246 33.2453V30.0532C8.53246 29.3252 8.14047 28.2799 7.67381 27.7199L5.1538 24.752C4.07113 23.464 4.07113 21.3733 5.1538 20.0853L7.67381 17.1173C8.14047 16.5573 8.53246 15.5119 8.53246 14.7839V11.592C8.53246 9.61333 10.1564 7.98935 12.1351 7.98935H15.3645C16.0925 7.98935 17.1565 7.59729 17.7165 7.11195L20.6658 4.57331Z"
+                            fill="#36DAE2" />
+                        <path
+                            d="M31.549 20.6641C31.1943 20.1601 30.597 19.8801 29.8877 19.8801H26.2477C26.005 19.8801 25.781 19.7867 25.6317 19.6001C25.4824 19.4134 25.4077 19.1707 25.445 18.9094L25.893 15.9974C26.0797 15.1387 25.501 14.1494 24.6424 13.8694C23.8397 13.5707 22.8877 13.9813 22.5143 14.5413L18.893 19.9174V19.2454C18.893 17.9387 18.333 17.3974 16.9517 17.3974H16.037C14.6557 17.3974 14.0957 17.9387 14.0957 19.2454V28.1681C14.0957 29.4748 14.6557 30.0161 16.037 30.0161H16.9517C18.2584 30.0161 18.8184 29.512 18.8744 28.3174L21.6184 30.4267C21.9917 30.8 22.8317 31.0054 23.429 31.0054H26.8823C28.077 31.0054 29.2717 30.1093 29.533 29.008L31.717 22.3627C31.9597 21.7654 31.9037 21.1494 31.549 20.6641Z"
+                            fill="white" />
+                    </svg>
+                    <span>SKM</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="report" class="section-padding">
+        <div class="report-controls-top">
+            <div class="report-controls-left">
+                <!-- YEAR SELECTOR -->
+                <div class="year-picker-wrapper">
+                    <div class="year-selector" id="yearBtn">
+                        <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M37.5 18.45C38.5313 18.45 39.375 19.2937 39.375 20.325V31.875C39.375 37.5 36.5625 41.25 30 41.25H15C8.4375 41.25 5.625 37.5 5.625 31.875V20.325C5.625 19.2937 6.46875 18.45 7.5 18.45H37.5Z"
+                                fill="#337354" />
+                            <path
+                                d="M15.9375 28.1249C15.45 28.1249 14.9625 27.9186 14.6063 27.5811C14.2688 27.2249 14.0625 26.7374 14.0625 26.2499C14.0625 25.7624 14.2688 25.2749 14.6063 24.9187C15.1313 24.3937 15.9563 24.2249 16.65 24.5249C16.8938 24.6186 17.1 24.7499 17.2687 24.9187C17.6062 25.2749 17.8125 25.7624 17.8125 26.2499C17.8125 26.7374 17.6062 27.2249 17.2687 27.5811C16.9125 27.9186 16.425 28.1249 15.9375 28.1249Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M22.5 28.1249C22.0125 28.1249 21.525 27.9186 21.1688 27.5811C20.8313 27.2249 20.625 26.7374 20.625 26.2499C20.625 25.7624 20.8313 25.2749 21.1688 24.9187C21.3375 24.7499 21.5437 24.6186 21.7875 24.5249C22.4812 24.2249 23.3062 24.3937 23.8312 24.9187C24.1687 25.2749 24.375 25.7624 24.375 26.2499C24.375 26.7374 24.1687 27.2249 23.8312 27.5811C23.7375 27.6561 23.6438 27.7311 23.55 27.8061C23.4375 27.8811 23.325 27.9374 23.2125 27.9749C23.1 28.0312 22.9875 28.0687 22.875 28.0874C22.7438 28.1062 22.6313 28.1249 22.5 28.1249Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M29.0625 28.125C28.575 28.125 28.0875 27.9188 27.7313 27.5813C27.3938 27.225 27.1875 26.7375 27.1875 26.25C27.1875 25.7625 27.3938 25.275 27.7313 24.9188C27.9188 24.75 28.1062 24.6187 28.35 24.525C28.6875 24.375 29.0625 24.3375 29.4375 24.4125C29.55 24.4313 29.6625 24.4687 29.775 24.525C29.8875 24.5625 30 24.6188 30.1125 24.6938C30.2063 24.7688 30.3 24.8438 30.3937 24.9188C30.7312 25.275 30.9375 25.7625 30.9375 26.25C30.9375 26.7375 30.7312 27.225 30.3937 27.5813C30.3 27.6563 30.2063 27.7312 30.1125 27.8062C30 27.8812 29.8875 27.9375 29.775 27.975C29.6625 28.0313 29.55 28.0688 29.4375 28.0875C29.3063 28.1063 29.175 28.125 29.0625 28.125Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M15.9375 34.6875C15.6938 34.6875 15.45 34.6313 15.225 34.5375C14.9812 34.4438 14.7938 34.3125 14.6063 34.1438C14.2688 33.7875 14.0625 33.3 14.0625 32.8125C14.0625 32.325 14.2688 31.8375 14.6063 31.4813C14.7938 31.3125 14.9812 31.1812 15.225 31.0875C15.5625 30.9375 15.9375 30.9 16.3125 30.975C16.425 30.9938 16.5375 31.0312 16.65 31.0875C16.7625 31.125 16.875 31.1813 16.9875 31.2563C17.0813 31.3313 17.175 31.4063 17.2687 31.4813C17.6062 31.8375 17.8125 32.325 17.8125 32.8125C17.8125 33.3 17.6062 33.7875 17.2687 34.1438C17.175 34.2188 17.0813 34.3125 16.9875 34.3687C16.875 34.4437 16.7625 34.5 16.65 34.5375C16.5375 34.5938 16.425 34.6313 16.3125 34.65C16.1813 34.6688 16.0688 34.6875 15.9375 34.6875Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M22.5 34.6875C22.0125 34.6875 21.525 34.4812 21.1688 34.1437C20.8313 33.7875 20.625 33.3 20.625 32.8125C20.625 32.325 20.8313 31.8375 21.1688 31.4813C21.8625 30.7875 23.1375 30.7875 23.8312 31.4813C24.1687 31.8375 24.375 32.325 24.375 32.8125C24.375 33.3 24.1687 33.7875 23.8312 34.1437C23.475 34.4812 22.9875 34.6875 22.5 34.6875Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
+                                fill="#FFC107" />
+                        </svg>
+
+                        <span id="selectedYear">{{ $tahun }}</span>
                     </div>
 
-                    <!-- ROW 2 : 6 icon -->
-                    <div class="features-row">
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R08']) }}" class="feature-card bg-color-1">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M31.568 13.8321L12.3786 33.0214C11.4826 33.9174 9.95198 33.7121 9.41065 32.5734C8.43998 30.5761 7.87998 28.3174 7.87998 25.9467C7.84265 15.6427 18.296 6.83207 21.8426 4.1254C22.5333 3.60273 23.4666 3.60273 24.1386 4.1254C25.7626 5.3574 28.8053 7.91473 31.6613 11.2747C32.296 12.0214 32.2586 13.1414 31.568 13.8321Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M38.12 25.9652C38.12 34.2906 31.344 41.0666 23 41.0666C19.6587 41.0666 16.5413 39.9839 14.0213 38.1172C13.1067 37.4452 13.032 36.1012 13.8347 35.2986L32.632 16.5012C33.5093 15.6239 34.984 15.8106 35.5813 16.8932C37.112 19.7119 38.1387 22.7732 38.12 25.9652Z"
-                                    fill="#1F925A" />
-                            </svg>
-                            <span>Ruang<br>Interna</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R09']) }}" class="feature-card bg-color-2">
-                            <div class="icon-wrapper">
-                                <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M31.2504 14.8401C35.8051 19.3947 35.8051 26.7867 31.2504 31.3413C26.6957 35.896 19.3037 35.896 14.749 31.3413C10.1943 26.7867 10.1943 19.3947 14.749 14.8401C19.3037 10.2854 26.6957 10.2854 31.2504 14.8401Z"
-                                        fill="#FFE69B" />
-                                    <path
-                                        d="M15.9999 41.7948C15.8319 41.7948 15.6453 41.7574 15.4773 41.7014C11.2773 40.0214 7.87992 37.0534 5.60259 33.1334C3.39992 29.3067 2.52259 24.9761 3.10126 20.5708C3.19459 19.8054 3.92259 19.2641 4.66925 19.3574C5.43459 19.4507 5.97591 20.1601 5.88258 20.9254C5.39724 24.6961 6.14396 28.4294 8.02929 31.7147C9.97062 35.0747 12.9012 37.632 16.5039 39.0694C17.2132 39.368 17.5679 40.1707 17.2879 40.8987C17.0826 41.4587 16.5413 41.7948 15.9999 41.7948Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M11.5199 9.7627C11.1092 9.7627 10.6985 9.57607 10.4185 9.2214C9.9332 8.6054 10.0452 7.72809 10.6612 7.26143C14.2265 4.48009 18.4825 3.00537 22.9998 3.00537C27.4052 3.00537 31.6052 4.42406 35.1332 7.11206C35.7492 7.57873 35.8612 8.45604 35.3945 9.07204C34.9279 9.68804 34.0505 9.80007 33.4345 9.3334C30.4105 7.01873 26.8079 5.80537 22.9998 5.80537C19.1172 5.80537 15.4398 7.07475 12.3785 9.46408C12.1172 9.66941 11.8185 9.7627 11.5199 9.7627Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M29.9997 41.7946C29.4397 41.7946 28.917 41.4586 28.693 40.9172C28.413 40.2079 28.749 39.3866 29.477 39.0879C33.0797 37.6319 36.0104 35.0933 37.9517 31.7333C39.8557 28.4479 40.6023 24.7145 40.0983 20.9439C40.005 20.1785 40.5463 19.4693 41.3117 19.3759C42.0583 19.2826 42.7863 19.824 42.8797 20.5893C43.4397 24.976 42.581 29.3253 40.3783 33.152C38.1197 37.072 34.7037 40.0212 30.5037 41.7199C30.3543 41.7572 30.1863 41.7946 29.9997 41.7946Z"
-                                        fill="#FFC107" />
-                                </svg>
-                            </div>
-                            <span>Ruang<br>IBS</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R10']) }}" class="feature-card bg-color-3">
-                            <div class="icon-wrapper">
-                                <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M39.9487 16.0161V28.7841C39.9487 30.8747 38.8287 32.8161 37.018 33.8801L25.93 40.2828C24.1193 41.3281 21.8793 41.3281 20.0499 40.2828L8.96193 33.8801C7.15126 32.8348 6.03125 30.8934 6.03125 28.7841V16.0161C6.03125 13.9255 7.15126 11.9841 8.96193 10.9201L20.0499 4.5174C21.8606 3.47207 24.1006 3.47207 25.93 4.5174L37.018 10.9201C38.8287 11.9841 39.9487 13.9068 39.9487 16.0161Z"
-                                        fill="#DC5E3A" />
-                                    <path
-                                        d="M22.9996 25.6666C22.2343 25.6666 21.5996 25.032 21.5996 24.2666V14.4667C21.5996 13.7013 22.2343 13.0667 22.9996 13.0667C23.7649 13.0667 24.3996 13.7013 24.3996 14.4667V24.2666C24.3996 25.032 23.7649 25.6666 22.9996 25.6666Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M22.9995 32.2C22.7568 32.2 22.5141 32.144 22.2901 32.0506C22.0475 31.9573 21.8608 31.8267 21.6741 31.6587C21.5061 31.472 21.3755 31.2667 21.2635 31.0427C21.1702 30.8187 21.1328 30.576 21.1328 30.3333C21.1328 29.848 21.3194 29.3626 21.6741 29.008C21.8608 28.84 22.0475 28.7094 22.2901 28.616C22.9808 28.3174 23.8022 28.4853 24.3249 29.008C24.4929 29.1946 24.6234 29.3813 24.7168 29.624C24.8101 29.848 24.8661 30.0907 24.8661 30.3333C24.8661 30.576 24.8101 30.8187 24.7168 31.0427C24.6234 31.2667 24.4929 31.472 24.3249 31.6587C23.9702 32.0134 23.5035 32.2 22.9995 32.2Z"
-                                        fill="#FFC107" />
-                                </svg>
-                            </div>
-                            <span>Ruang<br>ICU</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R11']) }}" class="feature-card bg-color-6">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M22.9997 4.83472V25.4054L5.54634 37.6134C3.95967 35.728 3.86634 32.872 5.63967 29.68L11.4637 19.208L16.9517 9.33338C18.613 6.34672 20.797 4.83472 22.9997 4.83472Z"
-                                    fill="#F44336" />
-                                <path
-                                    d="M40.4526 37.6133C39.2392 39.0879 37.1299 39.9653 34.3112 39.9653H11.6872C8.86856 39.9653 6.75923 39.0879 5.5459 37.6133L22.9992 25.4053L40.4526 37.6133Z"
-                                    fill="#4CAF50" />
-                                <path
-                                    d="M40.4533 37.6134L23 25.4054V4.83472C25.2027 4.83472 27.3867 6.34672 29.048 9.33338L34.536 19.208L40.36 29.68C42.1333 32.872 42.04 35.728 40.4533 37.6134Z"
-                                    fill="#FFC107" />
-                            </svg>
-                            <span>IGD</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R12']) }}" class="feature-card bg-color-7">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M37.725 14.5974L23.3516 22.9227C22.773 23.2587 22.045 23.2587 21.4476 22.9227L7.07429 14.5974C6.04762 14 5.78629 12.6 6.57029 11.7227C7.11162 11.1067 7.72762 10.6027 8.38095 10.248L18.4983 4.64804C20.6636 3.4347 24.173 3.4347 26.3383 4.64804L36.4556 10.248C37.109 10.6027 37.725 11.1254 38.2663 11.7227C39.013 12.6 38.7516 14 37.725 14.5974Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M21.3364 26.3946V39.1252C21.3364 40.5439 19.8991 41.4772 18.6298 40.8612C14.7844 38.9759 8.30709 35.4479 8.30709 35.4479C6.02975 34.1599 4.16309 30.9119 4.16309 28.2426V18.6106C4.16309 17.1359 5.71242 16.2026 6.98175 16.9306L20.4031 24.7146C20.9631 25.0692 21.3364 25.7039 21.3364 26.3946Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M23.4639 26.3946V39.1252C23.4639 40.5439 24.9012 41.4772 26.1705 40.8612C30.0159 38.9759 36.4932 35.4479 36.4932 35.4479C38.7705 34.1599 40.6372 30.9119 40.6372 28.2426V18.6106C40.6372 17.1359 39.0879 16.2026 37.8185 16.9306L24.3972 24.7146C23.8372 25.0692 23.4639 25.7039 23.4639 26.3946Z"
-                                    fill="#DC5E3A" />
-                            </svg>
-                            <span>IPSRS</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R13']) }}" class="feature-card bg-color-8">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M22.3997 35.4666C29.6162 35.4666 35.4663 29.6164 35.4663 22.3999C35.4663 15.1834 29.6162 9.33325 22.3997 9.33325C15.1832 9.33325 9.33301 15.1834 9.33301 22.3999C9.33301 29.6164 15.1832 35.4666 22.3997 35.4666Z"
-                                    fill="#36DAE2" />
-                                <path
-                                    d="M22.3995 42.8587C21.3729 42.8587 20.5329 42.0934 20.5329 41.0667V40.9174C20.5329 39.8907 21.3729 39.0507 22.3995 39.0507C23.4262 39.0507 24.2662 39.8907 24.2662 40.9174C24.2662 41.944 23.4262 42.8587 22.3995 42.8587ZM35.7275 37.5947C35.2422 37.5947 34.7755 37.408 34.4022 37.0534L34.1595 36.8107C33.4315 36.0827 33.4315 34.9067 34.1595 34.1787C34.8875 33.4507 36.0635 33.4507 36.7915 34.1787L37.0342 34.4214C37.7622 35.1494 37.7622 36.3254 37.0342 37.0534C36.6795 37.408 36.2129 37.5947 35.7275 37.5947ZM9.07154 37.5947C8.58621 37.5947 8.11954 37.408 7.74621 37.0534C7.01821 36.3254 7.01821 35.1494 7.74621 34.4214L7.98888 34.1787C8.71688 33.4507 9.89288 33.4507 10.6209 34.1787C11.3489 34.9067 11.3489 36.0827 10.6209 36.8107L10.3782 37.0534C10.0235 37.408 9.53821 37.5947 9.07154 37.5947ZM41.0662 24.2667H40.9169C39.8902 24.2667 39.0502 23.4267 39.0502 22.4C39.0502 21.3734 39.8902 20.5334 40.9169 20.5334C41.9435 20.5334 42.8582 21.3734 42.8582 22.4C42.8582 23.4267 42.0929 24.2667 41.0662 24.2667ZM3.88221 24.2667H3.73288C2.70621 24.2667 1.86621 23.4267 1.86621 22.4C1.86621 21.3734 2.70621 20.5334 3.73288 20.5334C4.75954 20.5334 5.67421 21.3734 5.67421 22.4C5.67421 23.4267 4.90888 24.2667 3.88221 24.2667ZM35.4849 11.1814C34.9995 11.1814 34.5329 10.9947 34.1595 10.64C33.4315 9.91203 33.4315 8.73603 34.1595 8.00803L34.4022 7.76537C35.1302 7.03737 36.3062 7.03737 37.0342 7.76537C37.7622 8.49337 37.7622 9.66937 37.0342 10.3974L36.7915 10.64C36.4369 10.9947 35.9702 11.1814 35.4849 11.1814ZM9.31421 11.1814C8.82888 11.1814 8.36221 10.9947 7.98888 10.64L7.74621 10.3787C7.01821 9.6507 7.01821 8.4747 7.74621 7.7467C8.47421 7.0187 9.65021 7.0187 10.3782 7.7467L10.6209 7.98937C11.3489 8.71737 11.3489 9.89337 10.6209 10.6214C10.2662 10.9947 9.78088 11.1814 9.31421 11.1814ZM22.3995 5.6747C21.3729 5.6747 20.5329 4.90937 20.5329 3.8827V3.73337C20.5329 2.7067 21.3729 1.8667 22.3995 1.8667C23.4262 1.8667 24.2662 2.7067 24.2662 3.73337C24.2662 4.76003 23.4262 5.6747 22.3995 5.6747Z"
-                                    fill="white" />
-                            </svg>
-                            <span>Laundry</span>
-                        </a>
-                    </div>
-
-                    <!-- ROW 3 : 5 icon -->
-                    <div class="features-row">
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R14']) }}" class="feature-card bg-color-1">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M28.4671 22.3627L41.9071 12.3201C42.5231 11.8534 42.6537 10.9761 42.1871 10.3601C41.7204 9.74407 40.843 9.6134 40.227 10.0801L26.1337 20.6267L15.7737 12.8801C15.1577 12.4134 14.2804 12.5441 13.8137 13.1601C13.347 13.7761 13.4777 14.6534 14.0937 15.1201L23.8004 22.3814L12.7871 30.6321C12.1711 31.0987 12.0404 31.9761 12.5071 32.5921C12.7871 32.9654 13.1977 33.1521 13.627 33.1521C13.9257 33.1521 14.2057 33.0587 14.4671 32.8721L26.1524 24.1361L40.2457 34.6827C40.4884 34.8694 40.7871 34.9627 41.0857 34.9627C41.5151 34.9627 41.9257 34.7761 42.2057 34.4027C42.6724 33.7867 42.5417 32.9094 41.9257 32.4427L28.4671 22.3627Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M10.2667 18.6668C13.875 18.6668 16.8001 15.7417 16.8001 12.1334C16.8001 8.52517 13.875 5.6001 10.2667 5.6001C6.65847 5.6001 3.7334 8.52517 3.7334 12.1334C3.7334 15.7417 6.65847 18.6668 10.2667 18.6668Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M10.2667 39.2C13.875 39.2 16.8001 36.2749 16.8001 32.6666C16.8001 29.0584 13.875 26.1333 10.2667 26.1333C6.65847 26.1333 3.7334 29.0584 3.7334 32.6666C3.7334 36.2749 6.65847 39.2 10.2667 39.2Z"
-                                    fill="#1F925A" />
-                            </svg>
-                            <span>Ruang<br>Bedah</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R15']) }}" class="feature-card bg-color-2">
-                            <div class="icon-wrapper">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M41.048 11.2374C41.0854 11.6854 41.048 12.1521 40.936 12.6187L34.6454 37.8747C34.1974 39.76 32.5174 41.0667 30.5761 41.0667H6.04803C3.22937 41.0667 1.23206 38.3041 2.0534 35.5974L9.91205 10.3413C10.4534 8.58667 12.0774 7.39209 13.9067 7.39209H36.8667C38.6587 7.39209 40.1147 8.45608 40.7307 9.94941C40.9174 10.3414 41.0107 10.7894 41.048 11.2374Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M42.9148 36.6239C43.1015 39.0319 41.1975 41.0666 38.7895 41.0666H30.5762C32.5175 41.0666 34.1975 39.7599 34.6455 37.8746L40.9361 12.6186C41.0481 12.152 41.0855 11.6853 41.0481 11.2373L41.0668 11.2L42.9148 36.6239Z"
-                                        fill="#A97F06" />
-                                    <path
-                                        d="M18.0688 13.3094C17.9568 13.3094 17.8448 13.2907 17.7328 13.272C16.9862 13.0853 16.5195 12.3387 16.7062 11.5734L18.6475 3.50937C18.8342 2.7627 19.5808 2.31472 20.3462 2.48272C21.0928 2.66939 21.5595 3.41601 21.3729 4.18134L19.4315 12.2454C19.2822 12.88 18.7035 13.3094 18.0688 13.3094Z"
-                                        fill="#292D32" />
-                                    <path
-                                        d="M30.5763 13.3279C30.4829 13.3279 30.3709 13.3279 30.2776 13.2906C29.5309 13.1226 29.0456 12.3759 29.195 11.6292L30.9496 3.52792C31.1176 2.76259 31.8643 2.29589 32.6109 2.44522C33.3576 2.61322 33.8429 3.35992 33.6936 4.10658L31.9389 12.2079C31.8082 12.8799 31.2296 13.3279 30.5763 13.3279Z"
-                                        fill="#292D32" />
-                                    <path
-                                        d="M29.307 23.8H14.3736C13.6083 23.8 12.9736 23.1653 12.9736 22.4C12.9736 21.6347 13.6083 21 14.3736 21H29.307C30.0723 21 30.707 21.6347 30.707 22.4C30.707 23.1653 30.0723 23.8 29.307 23.8Z"
-                                        fill="#A97F06" />
-                                    <path
-                                        d="M27.4398 31.2666H12.5064C11.7411 31.2666 11.1064 30.6319 11.1064 29.8666C11.1064 29.1012 11.7411 28.4666 12.5064 28.4666H27.4398C28.2051 28.4666 28.8398 29.1012 28.8398 29.8666C28.8398 30.6319 28.2051 31.2666 27.4398 31.2666Z"
-                                        fill="#A97F06" />
-                                </svg>
-                            </div>
-                            <span>Gizi</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R16']) }}" class="feature-card bg-color-4">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M41.0111 33.6001V35.4667C41.0111 38.5467 41.0111 41.0667 35.4111 41.0667H9.27773C3.67773 41.0667 3.67773 38.5467 3.67773 35.4667V33.6001C3.67773 32.5734 4.51773 31.7334 5.5444 31.7334H39.1444C40.1711 31.7334 41.0111 32.5734 41.0111 33.6001Z"
-                                    fill="#FFE69B" />
-                                <path
-                                    d="M38.6768 24.2666V31.7333H6.10352V24.2666C6.10352 17.0986 11.1622 11.1066 17.9008 9.66925C18.9088 9.44525 19.9542 9.33325 21.0368 9.33325H23.7435C24.8262 9.33325 25.8902 9.44525 26.8982 9.66925C33.6368 11.1253 38.6768 17.0986 38.6768 24.2666Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M27.0667 8.40006C27.0667 8.84806 27.0107 9.25873 26.8987 9.6694C25.8907 9.4454 24.8267 9.3334 23.7441 9.3334H21.0374C19.9547 9.3334 18.9094 9.4454 17.9014 9.6694C17.7894 9.25873 17.7334 8.84806 17.7334 8.40006C17.7334 5.82406 19.8241 3.7334 22.4001 3.7334C24.9761 3.7334 27.0667 5.82406 27.0667 8.40006Z"
-                                    fill="#FFE69B" />
-                                <path
-                                    d="M28.0004 21.9333H16.8004C16.0351 21.9333 15.4004 21.2986 15.4004 20.5333C15.4004 19.768 16.0351 19.1333 16.8004 19.1333H28.0004C28.7657 19.1333 29.4004 19.768 29.4004 20.5333C29.4004 21.2986 28.7657 21.9333 28.0004 21.9333Z"
-                                    fill="#FFE69B" />
-                            </svg>
-                            <span>Rawat<br>Jalan</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R17']) }}" class="feature-card bg-color-7">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M20.0662 4.57331C21.3729 3.47198 23.4822 3.47198 24.7515 4.57331L27.7009 7.09331C28.2609 7.55998 29.3249 7.95198 30.0715 7.95198H33.2449C35.2235 7.95198 36.8475 9.57598 36.8475 11.5546V14.728C36.8475 15.4746 37.2395 16.52 37.7062 17.08L40.2262 20.0293C41.3275 21.336 41.3275 23.4453 40.2262 24.7146L37.7062 27.664C37.2395 28.224 36.8475 29.2693 36.8475 30.016V33.1893C36.8475 35.168 35.2235 36.792 33.2449 36.792H30.0715C29.3249 36.792 28.2795 37.184 27.7195 37.6507L24.7702 40.1707C23.4635 41.272 21.3542 41.272 20.0849 40.1707L17.1355 37.6507C16.5755 37.184 15.5115 36.792 14.7835 36.792H11.5169C9.53819 36.792 7.91419 35.168 7.91419 33.1893V29.9973C7.91419 29.2693 7.54085 28.2053 7.07419 27.664L4.55419 24.696C3.47152 23.408 3.47152 21.3173 4.55419 20.0293L7.07419 17.0613C7.54085 16.5013 7.91419 15.456 7.91419 14.728V11.5733C7.91419 9.59465 9.53819 7.97065 11.5169 7.97065H14.7462C15.4929 7.97065 16.5382 7.57865 17.0982 7.11198L20.0662 4.57331Z"
-                                    fill="#FFBB00" />
-                                <path
-                                    d="M27.6458 30.3147L22.4004 18.4987L17.1551 30.3147L14.5791 29.176L21.1124 14.4854H23.6884L30.2218 29.176L27.6458 30.3147Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M25.6667 26.2453H19.1334C18.3681 26.2453 17.7334 25.6106 17.7334 24.8453C17.7334 24.08 18.3681 23.4453 19.1334 23.4453H25.6667C26.4321 23.4453 27.0667 24.08 27.0667 24.8453C27.0667 25.6106 26.4321 26.2453 25.6667 26.2453Z"
-                                    fill="#FF0909" />
-                            </svg>
-                            <span>Ruang<br>VIP</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R18']) }}" class="feature-card bg-color-8">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M39.3121 22.0641L39.0134 21.6534C38.4908 21.0187 37.8748 20.5147 37.1654 20.1414C36.2134 19.6001 35.1308 19.3201 34.0108 19.3201H10.7708C9.65077 19.3201 8.58677 19.6001 7.61611 20.1414C6.88811 20.5334 6.23477 21.0747 5.69344 21.7467C4.62944 23.1094 4.12544 24.7894 4.29344 26.4694L4.98411 35.1867C5.22677 37.8187 5.54411 41.0667 11.4614 41.0667H33.3388C39.2561 41.0667 39.5548 37.8187 39.8161 35.1681L40.5068 26.4881C40.6748 24.9201 40.2641 23.3521 39.3121 22.0641ZM26.8614 32.3681H17.9201C17.1921 32.3681 16.6134 31.7707 16.6134 31.0614C16.6134 30.3521 17.1921 29.7547 17.9201 29.7547H26.8614C27.5894 29.7547 28.1681 30.3521 28.1681 31.0614C28.1681 31.7894 27.5894 32.3681 26.8614 32.3681Z"
-                                    fill="#36DAE2" />
-                                <path
-                                    d="M6.30957 21.1121C6.72024 20.7387 7.1309 20.4027 7.61624 20.1414C8.56824 19.6001 9.6509 19.3201 10.7709 19.3201H34.0296C35.1496 19.3201 36.2136 19.6001 37.1842 20.1414C37.6696 20.4027 38.0989 20.7387 38.4909 21.1307V20.1414V18.3307C38.4909 11.6667 36.4562 9.63206 29.7922 9.63206H25.3496C24.5282 9.63206 24.5096 9.6134 24.0242 8.97873L21.7842 5.9734C20.7202 4.59207 19.8802 3.7334 17.2109 3.7334H15.0082C8.34424 3.7334 6.30957 5.76806 6.30957 12.4321V20.1601V21.1121Z"
-                                    fill="white" />
-                            </svg>
-                            <span>Rekam<br>Medis</span>
-                        </a>
-                    </div>
-
-                    <!-- ROW 4 : 4 icon -->
-                    <div class="features-row">
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R19']) }}" class="feature-card bg-color-1">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M5.17073 18.6667C4.36807 18.6667 3.7334 18.0321 3.7334 17.2294V12.9174C3.7334 7.85873 7.85873 3.7334 12.9174 3.7334H17.2294C18.0321 3.7334 18.6667 4.36807 18.6667 5.17073C18.6667 5.9734 18.0321 6.60807 17.2294 6.60807H12.9174C9.42673 6.60807 6.60807 9.4454 6.60807 12.9174V17.2294C6.60807 18.0321 5.95473 18.6667 5.17073 18.6667Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M39.6298 18.6667C38.8458 18.6667 38.1925 18.0321 38.1925 17.2294V12.9174C38.1925 9.42673 35.3551 6.60807 31.8831 6.60807H27.5711C26.7685 6.60807 26.1338 5.95473 26.1338 5.17073C26.1338 4.38673 26.7685 3.7334 27.5711 3.7334H31.8831C36.9418 3.7334 41.0671 7.85873 41.0671 12.9174V17.2294C41.0671 18.0321 40.4325 18.6667 39.6298 18.6667Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M31.8826 41.0667H29.2879C28.5039 41.0667 27.8506 40.432 27.8506 39.6294C27.8506 38.8454 28.4853 38.192 29.2879 38.192H31.8826C35.3733 38.192 38.1919 35.3547 38.1919 31.8827V29.3067C38.1919 28.5227 38.8266 27.8694 39.6293 27.8694C40.4133 27.8694 41.0666 28.5041 41.0666 29.3067V31.8827C41.0666 36.9414 36.9413 41.0667 31.8826 41.0667Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M17.2294 41.0666H12.9174C7.85873 41.0666 3.7334 36.9413 3.7334 31.8826V27.5706C3.7334 26.768 4.36807 26.1333 5.17073 26.1333C5.9734 26.1333 6.60807 26.768 6.60807 27.5706V31.8826C6.60807 35.3733 9.4454 38.192 12.9174 38.192H17.2294C18.0134 38.192 18.6667 38.8266 18.6667 39.6293C18.6667 40.432 18.0321 41.0666 17.2294 41.0666Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M34.459 20.9626H31.9203H12.8803H10.3416C9.53896 20.9626 8.9043 21.616 8.9043 22.4C8.9043 23.184 9.53896 23.8373 10.3416 23.8373H12.8803H31.9203H34.459C35.2616 23.8373 35.8963 23.184 35.8963 22.4C35.8963 21.616 35.2616 20.9626 34.459 20.9626Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M12.8799 26.0214V26.6374C12.8799 29.7361 15.3812 32.2374 18.4799 32.2374H26.3199C29.4186 32.2374 31.9199 29.7361 31.9199 26.6374V26.0214C31.9199 25.7974 31.7519 25.6294 31.5279 25.6294H13.2719C13.0479 25.6294 12.8799 25.7974 12.8799 26.0214Z"
-                                    fill="#1F925A" />
-                                <path
-                                    d="M12.8799 18.7787V18.1627C12.8799 15.0641 15.3812 12.5627 18.4799 12.5627H26.3199C29.4186 12.5627 31.9199 15.0641 31.9199 18.1627V18.7787C31.9199 19.0027 31.7519 19.1707 31.5279 19.1707H13.2719C13.0479 19.1707 12.8799 19.0027 12.8799 18.7787Z"
-                                    fill="#FFC107" />
-                            </svg>
-                            <span>Ruang<br>Radiologi</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R20']) }}" class="feature-card bg-color-2">
-                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M24.3597 30.3333H20.8504C18.3677 30.3333 16.333 28.2427 16.333 25.6667C16.333 24.9013 16.9677 24.2667 17.733 24.2667C18.4983 24.2667 19.133 24.9013 19.133 25.6667C19.133 26.6933 19.8984 27.5333 20.8504 27.5333H24.3597C25.0877 27.5333 25.6663 26.88 25.6663 26.0773C25.6663 25.0693 25.3864 24.92 24.7517 24.696L19.133 22.736C17.9383 22.3066 16.333 21.448 16.333 18.704C16.333 16.3707 18.181 14.448 20.4397 14.448H23.949C26.4316 14.448 28.4663 16.5387 28.4663 19.1147C28.4663 19.88 27.8317 20.5147 27.0663 20.5147C26.301 20.5147 25.6663 19.88 25.6663 19.1147C25.6663 18.088 24.901 17.248 23.949 17.248H20.4397C19.7117 17.248 19.133 17.9013 19.133 18.704C19.133 19.712 19.413 19.8613 20.0477 20.0853L25.6663 22.0453C26.861 22.4746 28.4663 23.3333 28.4663 26.0773C28.4663 28.4293 26.6183 30.3333 24.3597 30.3333Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M22.4 32.2001C21.6347 32.2001 21 31.5654 21 30.8001V14.0001C21 13.2348 21.6347 12.6001 22.4 12.6001C23.1653 12.6001 23.8 13.2348 23.8 14.0001V30.8001C23.8 31.5654 23.1653 32.2001 22.4 32.2001Z"
-                                    fill="#FFC107" />
-                                <path
-                                    d="M22.3997 42.4666C11.3303 42.4666 2.33301 33.4692 2.33301 22.3999C2.33301 11.3306 11.3303 2.33325 22.3997 2.33325C23.165 2.33325 23.7997 2.96792 23.7997 3.73325C23.7997 4.49859 23.165 5.13325 22.3997 5.13325C12.8797 5.13325 5.13301 12.8799 5.13301 22.3999C5.13301 31.9199 12.8797 39.6666 22.3997 39.6666C31.9197 39.6666 39.6663 31.9199 39.6663 22.3999C39.6663 21.6346 40.301 20.9999 41.0663 20.9999C41.8317 20.9999 42.4663 21.6346 42.4663 22.3999C42.4663 33.4692 33.469 42.4666 22.3997 42.4666Z"
-                                    fill="#FFE69B" />
-                                <path
-                                    d="M41.0669 12.5999C40.3015 12.5999 39.6669 11.9653 39.6669 11.1999V5.13325H33.6002C32.8349 5.13325 32.2002 4.49859 32.2002 3.73325C32.2002 2.96792 32.8349 2.33325 33.6002 2.33325H41.0669C41.8322 2.33325 42.4669 2.96792 42.4669 3.73325V11.1999C42.4669 11.9653 41.8322 12.5999 41.0669 12.5999Z"
-                                    fill="#FFE69B" />
-                                <path
-                                    d="M31.7332 14.4666C31.3786 14.4666 31.0239 14.3359 30.7439 14.0559C30.2026 13.5146 30.2026 12.6186 30.7439 12.0772L40.0772 2.74389C40.6186 2.20256 41.5146 2.20256 42.0559 2.74389C42.5972 3.28522 42.5972 4.18122 42.0559 4.72255L32.7226 14.0559C32.4426 14.3359 32.0879 14.4666 31.7332 14.4666Z"
-                                    fill="#FFE69B" />
-                            </svg>
-                            <span>Keuangan</span>
-                        </a>
-                        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R21']) }}" class="feature-card bg-color-7">
-                            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M37.9228 12.1625C36.8028 8.36495 33.6353 5.19745 29.8378 4.07745C26.9503 3.23745 24.9553 3.30745 23.5728 4.33995C21.9103 5.58245 21.7178 7.82245 21.7178 9.41495V13.7725C21.7178 18.0775 23.6778 20.265 27.5278 20.265H32.5503C34.1253 20.265 36.3828 20.0725 37.6253 18.41C38.6928 17.045 38.7803 15.05 37.9228 12.1625Z"
-                                    fill="#FF0909" />
-                                <path
-                                    d="M33.0929 23.38C32.6379 22.855 31.9729 22.5575 31.2904 22.5575H25.0254C21.9454 22.5575 19.4429 20.055 19.4429 16.975V10.71C19.4429 10.0275 19.1454 9.36252 18.6204 8.90752C18.1129 8.45252 17.4129 8.24252 16.7479 8.33002C12.6354 8.85502 8.85543 11.1125 6.38793 14.5075C3.90293 17.92 2.99293 22.085 3.78043 26.25C4.91793 32.27 9.73043 37.0825 15.7679 38.22C16.7304 38.4125 17.6929 38.5 18.6554 38.5C21.8229 38.5 24.8854 37.52 27.4929 35.6125C30.8879 33.145 33.1454 29.365 33.6704 25.2525C33.7579 24.57 33.5479 23.8875 33.0929 23.38Z"
-                                    fill="#FFBB00" />
-                            </svg>
-                            <span>Kantor</span>
-                        </a>
-                        <a href="{{ route('superadmin.skm_rekap') }}" class="feature-card bg-color-8">
-                            <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M20.6658 4.57331C21.9538 3.47198 24.0631 3.47198 25.3698 4.57331L28.3191 7.11195C28.8791 7.59729 29.9244 7.98935 30.6711 7.98935H33.8445C35.8231 7.98935 37.4471 9.61333 37.4471 11.592V14.7652C37.4471 15.4932 37.8391 16.5573 38.3244 17.1173L40.8631 20.0666C41.9645 21.3546 41.9645 23.464 40.8631 24.7707L38.3244 27.7199C37.8391 28.2799 37.4471 29.3253 37.4471 30.0719V33.2453C37.4471 35.224 35.8231 36.8479 33.8445 36.8479H30.6711C29.9431 36.8479 28.8791 37.24 28.3191 37.7253L25.3698 40.264C24.0818 41.3653 21.9725 41.3653 20.6658 40.264L17.7165 37.7253C17.1565 37.24 16.1111 36.8479 15.3645 36.8479H12.1351C10.1564 36.8479 8.53246 35.224 8.53246 33.2453V30.0532C8.53246 29.3252 8.14047 28.2799 7.67381 27.7199L5.1538 24.752C4.07113 23.464 4.07113 21.3733 5.1538 20.0853L7.67381 17.1173C8.14047 16.5573 8.53246 15.5119 8.53246 14.7839V11.592C8.53246 9.61333 10.1564 7.98935 12.1351 7.98935H15.3645C16.0925 7.98935 17.1565 7.59729 17.7165 7.11195L20.6658 4.57331Z"
-                                    fill="#36DAE2" />
-                                <path
-                                    d="M31.549 20.6641C31.1943 20.1601 30.597 19.8801 29.8877 19.8801H26.2477C26.005 19.8801 25.781 19.7867 25.6317 19.6001C25.4824 19.4134 25.4077 19.1707 25.445 18.9094L25.893 15.9974C26.0797 15.1387 25.501 14.1494 24.6424 13.8694C23.8397 13.5707 22.8877 13.9813 22.5143 14.5413L18.893 19.9174V19.2454C18.893 17.9387 18.333 17.3974 16.9517 17.3974H16.037C14.6557 17.3974 14.0957 17.9387 14.0957 19.2454V28.1681C14.0957 29.4748 14.6557 30.0161 16.037 30.0161H16.9517C18.2584 30.0161 18.8184 29.512 18.8744 28.3174L21.6184 30.4267C21.9917 30.8 22.8317 31.0054 23.429 31.0054H26.8823C28.077 31.0054 29.2717 30.1093 29.533 29.008L31.717 22.3627C31.9597 21.7654 31.9037 21.1494 31.549 20.6641Z"
-                                    fill="white" />
-                            </svg>
-                            <span>SKM</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
-            <section id="report" class="section-padding">
-                <div class="report-controls-top">
-                    <div class="report-controls-left">
-                        <!-- YEAR SELECTOR -->
-                        <div class="year-picker-wrapper">
-                            <div class="year-selector" id="yearBtn">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M37.5 18.45C38.5313 18.45 39.375 19.2937 39.375 20.325V31.875C39.375 37.5 36.5625 41.25 30 41.25H15C8.4375 41.25 5.625 37.5 5.625 31.875V20.325C5.625 19.2937 6.46875 18.45 7.5 18.45H37.5Z"
-                                        fill="#337354" />
-                                    <path
-                                        d="M15.9375 28.1249C15.45 28.1249 14.9625 27.9186 14.6063 27.5811C14.2688 27.2249 14.0625 26.7374 14.0625 26.2499C14.0625 25.7624 14.2688 25.2749 14.6063 24.9187C15.1313 24.3937 15.9563 24.2249 16.65 24.5249C16.8938 24.6186 17.1 24.7499 17.2687 24.9187C17.6062 25.2749 17.8125 25.7624 17.8125 26.2499C17.8125 26.7374 17.6062 27.2249 17.2687 27.5811C16.9125 27.9186 16.425 28.1249 15.9375 28.1249Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M22.5 28.1249C22.0125 28.1249 21.525 27.9186 21.1688 27.5811C20.8313 27.2249 20.625 26.7374 20.625 26.2499C20.625 25.7624 20.8313 25.2749 21.1688 24.9187C21.3375 24.7499 21.5437 24.6186 21.7875 24.5249C22.4812 24.2249 23.3062 24.3937 23.8312 24.9187C24.1687 25.2749 24.375 25.7624 24.375 26.2499C24.375 26.7374 24.1687 27.2249 23.8312 27.5811C23.7375 27.6561 23.6438 27.7311 23.55 27.8061C23.4375 27.8811 23.325 27.9374 23.2125 27.9749C23.1 28.0312 22.9875 28.0687 22.875 28.0874C22.7438 28.1062 22.6313 28.1249 22.5 28.1249Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M29.0625 28.125C28.575 28.125 28.0875 27.9188 27.7313 27.5813C27.3938 27.225 27.1875 26.7375 27.1875 26.25C27.1875 25.7625 27.3938 25.275 27.7313 24.9188C27.9188 24.75 28.1062 24.6187 28.35 24.525C28.6875 24.375 29.0625 24.3375 29.4375 24.4125C29.55 24.4313 29.6625 24.4687 29.775 24.525C29.8875 24.5625 30 24.6188 30.1125 24.6938C30.2063 24.7688 30.3 24.8438 30.3937 24.9188C30.7312 25.275 30.9375 25.7625 30.9375 26.25C30.9375 26.7375 30.7312 27.225 30.3937 27.5813C30.3 27.6563 30.2063 27.7312 30.1125 27.8062C30 27.8812 29.8875 27.9375 29.775 27.975C29.6625 28.0313 29.55 28.0688 29.4375 28.0875C29.3063 28.1063 29.175 28.125 29.0625 28.125Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M15.9375 34.6875C15.6938 34.6875 15.45 34.6313 15.225 34.5375C14.9812 34.4438 14.7938 34.3125 14.6063 34.1438C14.2688 33.7875 14.0625 33.3 14.0625 32.8125C14.0625 32.325 14.2688 31.8375 14.6063 31.4813C14.7938 31.3125 14.9812 31.1812 15.225 31.0875C15.5625 30.9375 15.9375 30.9 16.3125 30.975C16.425 30.9938 16.5375 31.0312 16.65 31.0875C16.7625 31.125 16.875 31.1813 16.9875 31.2563C17.0813 31.3313 17.175 31.4063 17.2687 31.4813C17.6062 31.8375 17.8125 32.325 17.8125 32.8125C17.8125 33.3 17.6062 33.7875 17.2687 34.1438C17.175 34.2188 17.0813 34.3125 16.9875 34.3687C16.875 34.4437 16.7625 34.5 16.65 34.5375C16.5375 34.5938 16.425 34.6313 16.3125 34.65C16.1813 34.6688 16.0688 34.6875 15.9375 34.6875Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M22.5 34.6875C22.0125 34.6875 21.525 34.4812 21.1688 34.1437C20.8313 33.7875 20.625 33.3 20.625 32.8125C20.625 32.325 20.8313 31.8375 21.1688 31.4813C21.8625 30.7875 23.1375 30.7875 23.8312 31.4813C24.1687 31.8375 24.375 32.325 24.375 32.8125C24.375 33.3 24.1687 33.7875 23.8312 34.1437C23.475 34.4812 22.9875 34.6875 22.5 34.6875Z"
-                                        fill="#FFC107" />
-                                    <path
-                                        d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
-                                        fill="#FFC107" />
-                                </svg>
-
-                                <span id="selectedYear">{{ $tahun }}</span>
-                            </div>
-
-                            <div class="year-panel" id="yearPanel">
-                                <div class="year-header">
-                                    <button id="prevYears">&lt;</button>
-                                    <span id="yearRange">2020 - 2029</span>
-                                    <button id="nextYears">&gt;</button>
-                                </div>
-                                <div class="year-grid" id="yearGrid"></div>
-                            </div>
+                    <div class="year-panel" id="yearPanel">
+                        <div class="year-header">
+                            <button id="prevYears">&lt;</button>
+                            <span id="yearRange">2020 - 2029</span>
+                            <button id="nextYears">&gt;</button>
                         </div>
-
-                        <form action="{{ route('superadmin.download_rekap_indikator') }}" method="GET" style="display: inline;">
-
-                            <input type="hidden" name="tahun" value="{{ $tahun }}">
-                            <input type="hidden" name="kategori" value="{{ $selectedKategori }}">
-
-                            <button type="submit" class="download-btn"
-                                style="background: none; border: 1px solid var(--border-color-dark); font-family: inherit;">
-                                <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="50" height="50" rx="10" fill="#FCFCFC" />
-                                    <path
-                                        d="M38 29.3333V35.1111C38 35.8773 37.6956 36.6121 37.1539 37.1539C36.6121 37.6956 35.8773 38 35.1111 38H14.8889C14.1227 38 13.3879 37.6956 12.8461 37.1539C12.3044 36.6121 12 35.8773 12 35.1111V29.3333M17.7778 22.1111L25 29.3333M25 29.3333L32.2222 22.1111M25 29.3333V12"
-                                        stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span>Download File</span>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="report-controls-right">
-                        <a href="{{ route('superadmin.indikator_mutu.create') }}" class="newindicator-btn">
-                            <svg width="45" height="46" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M14.6436 5.25H30.3564C33.5699 5.25004 36.0144 6.20395 37.6523 7.84375C39.2901 9.48351 40.2402 11.9278 40.2314 15.1406V30.8564C40.2314 34.0699 39.2772 36.5147 37.6367 38.1553C35.9962 39.7958 33.5513 40.7499 30.3379 40.75H14.6436C11.43 40.75 8.98513 39.7958 7.34473 38.1533C5.70437 36.5108 4.75008 34.0613 4.75 30.8379V15.1436C4.75004 11.93 5.7042 9.48526 7.34473 7.84473C8.88269 6.30677 11.1274 5.37163 14.0498 5.26074L14.6436 5.25Z"
-                                    stroke="white" stroke-width="2" />
-                                <path
-                                    d="M33.75 21.5938H23.9062V11.75C23.9062 10.9812 23.2688 10.3438 22.5 10.3438C21.7312 10.3438 21.0938 10.9812 21.0938 11.75V21.5938H11.25C10.4812 21.5938 9.84375 22.2312 9.84375 23C9.84375 23.7688 10.4812 24.4062 11.25 24.4062H21.0938V34.25C21.0938 35.0187 21.7312 35.6562 22.5 35.6562C23.2688 35.6562 23.9062 35.0187 23.9062 34.25V24.4062H33.75C34.5187 24.4062 35.1562 23.7688 35.1562 23C35.1562 22.2312 34.5187 21.5938 33.75 21.5938Z"
-                                    fill="white" />
-                            </svg>
-                            <span>Tambah Indikator Baru</span>
-                        </a>
+                        <div class="year-grid" id="yearGrid"></div>
                     </div>
                 </div>
 
+                <form action="{{ route('superadmin.download_rekap_indikator') }}" method="GET" style="display: inline;">
 
-                <!-- Category Selector -->
-                <div class="category-selector">
-                    @php
-// Array mapping: Nama Lengkap => Singkatan
-$categoryMap = [
-    'Indikator Mutu Prioritas Unit' => 'IMPU',
-    'Indikator Nasional Mutu' => 'INM',
-    'Indikator Mutu Prioritas RS' => 'IMPRS'
-];
+                    <input type="hidden" name="tahun" value="{{ $tahun }}">
+                    <input type="hidden" name="kategori" value="{{ $selectedKategori }}">
 
-$categoryKeys = array_keys($categoryMap);
-$currentIndex = array_search($selectedKategori, $categoryKeys);
-if ($currentIndex === false)
-    $currentIndex = 1;
-
-$prevIndex = ($currentIndex - 1 + count($categoryKeys)) % count($categoryKeys);
-$nextIndex = ($currentIndex + 1) % count($categoryKeys);
-
-// -- LOGIKA BARU UNTUK MENAMPILKAN 3 ITEM --
-// Buat array baru yang hanya berisi 3 kategori yang akan ditampilkan
-$displayCategories = [
-    $categoryKeys[$prevIndex] => $categoryMap[$categoryKeys[$prevIndex]],
-    $categoryKeys[$currentIndex] => $categoryMap[$categoryKeys[$currentIndex]],
-    $categoryKeys[$nextIndex] => $categoryMap[$categoryKeys[$nextIndex]],
-];
-                    @endphp
-
-                    {{-- Link untuk panah kiri --}}
-                    <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$prevIndex]]) }}" class="arrow-btn prev"
-                        aria-label="Previous category">
-                        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <button type="submit" class="download-btn"
+                        style="background: none; border: 1px solid var(--border-color-dark); font-family: inherit;">
+                        <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="50" height="50" rx="10" fill="#FCFCFC" />
                             <path
-                                d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                                fill="white" stroke="#DC5E3A" />
-                            <path
-                                d="M23.91 34.4101L32.91 25.4101C33.78 24.5401 35.22 24.5401 36.09 25.4101C36.96 26.2801 36.96 27.7201 36.09 28.5901L30.93 33.7501H46.5C47.73 33.7501 48.75 34.7701 48.75 36.0001C48.75 37.2301 47.73 38.2501 46.5 38.2501H30.93L36.09 43.4101C36.96 44.2801 36.96 45.7201 36.09 46.5901C35.64 47.0401 35.07 47.2501 34.5 47.2501C33.93 47.2501 33.36 47.0401 32.91 46.5901L23.91 37.5901C23.04 36.7201 23.04 35.2801 23.91 34.4101Z"
-                                fill="#DC5E3A" />
+                                d="M38 29.3333V35.1111C38 35.8773 37.6956 36.6121 37.1539 37.1539C36.6121 37.6956 35.8773 38 35.1111 38H14.8889C14.1227 38 13.3879 37.6956 12.8461 37.1539C12.3044 36.6121 12 35.8773 12 35.1111V29.3333M17.7778 22.1111L25 29.3333M25 29.3333L32.2222 22.1111M25 29.3333V12"
+                                stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
+                        <span>Download File</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="report-controls-right">
+                <a href="{{ route('superadmin.indikator_mutu.create') }}" class="newindicator-btn">
+                    <svg width="45" height="46" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.6436 5.25H30.3564C33.5699 5.25004 36.0144 6.20395 37.6523 7.84375C39.2901 9.48351 40.2402 11.9278 40.2314 15.1406V30.8564C40.2314 34.0699 39.2772 36.5147 37.6367 38.1553C35.9962 39.7958 33.5513 40.7499 30.3379 40.75H14.6436C11.43 40.75 8.98513 39.7958 7.34473 38.1533C5.70437 36.5108 4.75008 34.0613 4.75 30.8379V15.1436C4.75004 11.93 5.7042 9.48526 7.34473 7.84473C8.88269 6.30677 11.1274 5.37163 14.0498 5.26074L14.6436 5.25Z"
+                            stroke="white" stroke-width="2" />
+                        <path
+                            d="M33.75 21.5938H23.9062V11.75C23.9062 10.9812 23.2688 10.3438 22.5 10.3438C21.7312 10.3438 21.0938 10.9812 21.0938 11.75V21.5938H11.25C10.4812 21.5938 9.84375 22.2312 9.84375 23C9.84375 23.7688 10.4812 24.4062 11.25 24.4062H21.0938V34.25C21.0938 35.0187 21.7312 35.6562 22.5 35.6562C23.2688 35.6562 23.9062 35.0187 23.9062 34.25V24.4062H33.75C34.5187 24.4062 35.1562 23.7688 35.1562 23C35.1562 22.2312 34.5187 21.5938 33.75 21.5938Z"
+                            fill="white" />
+                    </svg>
+                    <span>Tambah Indikator Baru</span>
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Category Selector -->
+        <div class="category-selector">
+            @php
+                // Array mapping: Nama Lengkap => Singkatan
+                $categoryMap = [
+                    'Indikator Mutu Prioritas Unit' => 'IMPU',
+                    'Indikator Nasional Mutu' => 'INM',
+                    'Indikator Mutu Prioritas RS' => 'IMPRS'
+                ];
+
+                $categoryKeys = array_keys($categoryMap);
+                $currentIndex = array_search($selectedKategori, $categoryKeys);
+                if ($currentIndex === false)
+                    $currentIndex = 1;
+
+                $prevIndex = ($currentIndex - 1 + count($categoryKeys)) % count($categoryKeys);
+                $nextIndex = ($currentIndex + 1) % count($categoryKeys);
+
+                // -- LOGIKA BARU UNTUK MENAMPILKAN 3 ITEM --
+                // Buat array baru yang hanya berisi 3 kategori yang akan ditampilkan
+                $displayCategories = [
+                    $categoryKeys[$prevIndex] => $categoryMap[$categoryKeys[$prevIndex]],
+                    $categoryKeys[$currentIndex] => $categoryMap[$categoryKeys[$currentIndex]],
+                    $categoryKeys[$nextIndex] => $categoryMap[$categoryKeys[$nextIndex]],
+                ];
+            @endphp
+
+            {{-- Link untuk panah kiri --}}
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$prevIndex]]) }}" class="arrow-btn prev"
+                aria-label="Previous category">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
+                        fill="white" stroke="#DC5E3A" />
+                    <path
+                        d="M23.91 34.4101L32.91 25.4101C33.78 24.5401 35.22 24.5401 36.09 25.4101C36.96 26.2801 36.96 27.7201 36.09 28.5901L30.93 33.7501H46.5C47.73 33.7501 48.75 34.7701 48.75 36.0001C48.75 37.2301 47.73 38.2501 46.5 38.2501H30.93L36.09 43.4101C36.96 44.2801 36.96 45.7201 36.09 46.5901C35.64 47.0401 35.07 47.2501 34.5 47.2501C33.93 47.2501 33.36 47.0401 32.91 46.5901L23.91 37.5901C23.04 36.7201 23.04 35.2801 23.91 34.4101Z"
+                        fill="#DC5E3A" />
+                </svg>
+            </a>
+
+            <div class="categories">
+                {{-- Loop melalui array baru yang hanya berisi 3 item --}}
+                @foreach ($displayCategories as $fullName => $shortName)
+                    <a href="{{ route('superadmin.dashboard', ['kategori' => $fullName]) }}"
+                        class="category-btn {{ $selectedKategori == $fullName ? 'active' : '' }}">
+                        {{ $shortName }}
                     </a>
+                @endforeach
+            </div>
 
-                    <div class="categories">
-                        {{-- Loop melalui array baru yang hanya berisi 3 item --}}
-                        @foreach ($displayCategories as $fullName => $shortName)
-                            <a href="{{ route('superadmin.dashboard', ['kategori' => $fullName]) }}"
-                                class="category-btn {{ $selectedKategori == $fullName ? 'active' : '' }}">
-                                {{ $shortName }}
-                            </a>
-                        @endforeach
-                    </div>
+            {{-- Link untuk panah kanan --}}
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$nextIndex]]) }}" class="arrow-btn next"
+                aria-label="Next category">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
+                        fill="white" stroke="#DC5E3A" />
+                    <path
+                        d="M48.09 37.5899L39.09 46.5899C38.22 47.4599 36.78 47.4599 35.91 46.5899C35.04 45.7199 35.04 44.2799 35.91 43.4099L41.07 38.2499H25.5C24.27 38.2499 23.25 37.2299 23.25 35.9999C23.25 34.7699 24.27 33.7499 25.5 33.7499H41.07L35.91 28.5899C35.04 27.7199 35.04 26.2799 35.91 25.4099C36.36 24.9599 36.93 24.7499 37.5 24.7499C38.07 24.7499 38.64 24.9599 39.09 25.4099L48.09 34.4099C48.96 35.2799 48.96 36.7199 48.09 37.5899Z"
+                        fill="#DC5E3A" />
+                </svg>
+            </a>
+        </div>
 
-                    {{-- Link untuk panah kanan --}}
-                    <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$nextIndex]]) }}" class="arrow-btn next"
-                        aria-label="Next category">
-                        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                                fill="white" stroke="#DC5E3A" />
-                            <path
-                                d="M48.09 37.5899L39.09 46.5899C38.22 47.4599 36.78 47.4599 35.91 46.5899C35.04 45.7199 35.04 44.2799 35.91 43.4099L41.07 38.2499H25.5C24.27 38.2499 23.25 37.2299 23.25 35.9999C23.25 34.7699 24.27 33.7499 25.5 33.7499H41.07L35.91 28.5899C35.04 27.7199 35.04 26.2799 35.91 25.4099C36.36 24.9599 36.93 24.7499 37.5 24.7499C38.07 24.7499 38.64 24.9599 39.09 25.4099L48.09 34.4099C48.96 35.2799 48.96 36.7199 48.09 37.5899Z"
-                                fill="#DC5E3A" />
-                        </svg>
-                    </a>
-                </div>
+        <!-- Baris ketiga: tabel -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Rekapitulasi {{ $selectedKategori }}</h3>
+            </div>
+            <div class="table-wrapper">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">No.</th>
 
-                <!-- Baris ketiga: tabel -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3>Rekapitulasi {{ $selectedKategori }}</h3>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="report-table">
-                            <thead>
-                                <tr>
-                                    <th class="col-no">No.</th>
+                            {{-- Tampilkan Kolom Ruangan HANYA jika kategori IMPU --}}
+                            @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
+                                <th class="col-ruangan">Ruangan</th>
+                            @endif
 
-                                    {{-- Tampilkan Kolom Ruangan HANYA jika kategori IMPU --}}
-                                    @if($selectedKategori === 'Indikator Mutu Prioritas Unit (IMPU)')
-                                        <th class="col-ruangan">Ruangan</th>
-                                    @endif
+                            <th class="col-judul">Judul Indikator</th>
+                            <th class="col-standar">Standart</th>
 
-                                    <th class="col-judul">Judul Indikator</th>
-                                    <th class="col-standar">Standart</th>
+                            <th class="col-bulan">Jan</th>
+                            <th class="col-bulan">Feb</th>
+                            <th class="col-bulan">Mar</th>
+                            <th class="col-bulan">Apr</th>
+                            <th class="col-bulan">Mei</th>
+                            <th class="col-bulan">Jun</th>
+                            <th class="col-bulan">Jul</th>
+                            <th class="col-bulan">Agu</th>
+                            <th class="col-bulan">Sep</th>
+                            <th class="col-bulan">Okt</th>
+                            <th class="col-bulan">Nov</th>
+                            <th class="col-bulan">Des</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-table-body">
+                        @forelse ($indikatorData as $index => $item)
+                            <tr>
+                                <td>{{ $index + 1 }}.</td>
 
-                                    <th class="col-bulan">Jan</th>
-                                    <th class="col-bulan">Feb</th>
-                                    <th class="col-bulan">Mar</th>
-                                    <th class="col-bulan">Apr</th>
-                                    <th class="col-bulan">Mei</th>
-                                    <th class="col-bulan">Jun</th>
-                                    <th class="col-bulan">Jul</th>
-                                    <th class="col-bulan">Agu</th>
-                                    <th class="col-bulan">Sep</th>
-                                    <th class="col-bulan">Okt</th>
-                                    <th class="col-bulan">Nov</th>
-                                    <th class="col-bulan">Des</th>
-                                </tr>
-                            </thead>
-                            <tbody id="report-table-body">
-                                @forelse ($indikatorData as $index => $item)
-                                    <tr>
-                                        <td>{{ $index + 1 }}.</td>
+                                {{-- Isi Kolom Ruangan HANYA jika kategori IMPU --}}
+                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit)')
+                                    <td>{{ $item->ruangan }}</td>
+                                @endif
 
-                                        {{-- Isi Kolom Ruangan HANYA jika kategori IMPU --}}
-                                        @if($selectedKategori === 'Indikator Mutu Prioritas Unit (IMPU)')
-                                            <td>{{ $item->ruangan }}</td>
-                                        @endif
+                                <td style="text-align: left;">{{ $item->judul }}</td>
+                                <td style="text-align: center;">{{ $item->standar }}</td>
 
-                                        <td style="text-align: left;">{{ $item->judul }}</td>
-                                        <td style="text-align: center;">{{ $item->standar }}</td>
-
-                                        @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                            <td>
-                                                {{ $item->data_bulan[$bulan] ?? '' }}
-                                            </td>
-                                        @endfor
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="{{ $selectedKategori === 'Indikator Mutu Prioritas Unit (IMPU)' ? '16' : '15' }}"
-                                            style="text-align: center; padding: 20px;">
-                                            Tidak ada data laporan untuk kategori ini di tahun yang dipilih.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+                                @for ($bulan = 1; $bulan <= 12; $bulan++)
+                                    <td>
+                                        {{ $item->data_bulan[$bulan] ?? '' }}
+                                    </td>
+                                @endfor
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="{{ $selectedKategori === 'Indikator Mutu Prioritas Unit' ? '16' : '15' }}"
+                                    style="text-align: center; padding: 20px;">
+                                    Tidak ada data laporan untuk kategori ini di tahun yang dipilih.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @push('scripts')
