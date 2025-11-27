@@ -26,10 +26,10 @@ class SkmController extends Controller
 
         $listPertanyaan = DB::table('pilihan_jawaban')
             ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
-            ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan') // <--- PENTING: Ambil kolom urutan
+            ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
             ->distinct()
             ->orderBy('pertanyaan.urutan', 'asc')
-            ->get() // Eksekusi query dulu (ambil semua data)
+            ->get() 
             ->pluck('id_pertanyaan');
 
         // === Query Data Jawaban ===

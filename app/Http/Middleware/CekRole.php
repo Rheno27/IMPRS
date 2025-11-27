@@ -16,7 +16,7 @@ class CekRole
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        // 1. Cek apakah user sudah login?
+        // 1. Cek apakah user sudah login
         if (!Auth::check()) {
             return redirect('/login')->withErrors(['login' => 'Silahkan login terlebih dahulu']);
         }
