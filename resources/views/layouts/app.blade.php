@@ -23,7 +23,9 @@
             " class="logo-container">
             <img src="{{ asset('image/logo.png') }}" alt="Logo RSD Kalisat" class="logo-image">
         </a>
-        @if (Session::has('user') && (Request::is('admin/*') || Request::is('superadmin/*')))
+
+        {{-- PERBAIKAN DI SINI: Menggunakan Auth::check() pengganti Session manual --}}
+        @if (Auth::check() && (Request::is('admin/*') || Request::is('superadmin/*')))
             <div class="user-info">
                 <svg width="10" height="10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="user-avatar">
@@ -34,9 +36,12 @@
                         d="M19.9996 24.1667C11.6496 24.1667 4.84961 29.7667 4.84961 36.6667C4.84961 37.1334 5.21628 37.5001 5.68294 37.5001H34.3163C34.7829 37.5001 35.1496 37.1334 35.1496 36.6667C35.1496 29.7667 28.3496 24.1667 19.9996 24.1667Z"
                         fill="#337354" />
                 </svg>
+
+                {{-- PERBAIKAN DI SINI: Mengambil nama user dari Auth facade --}}
                 <span class="user-name">
-                    {{ Session::get('user')->username ?? '---' }}
+                    {{ Auth::user()->username ?? '---' }}
                 </span>
+
                 <a href="{{ route('logout') }}" class="logout-link" aria-label="Logout">
                     <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
