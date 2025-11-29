@@ -60,32 +60,42 @@ class InputIndikatorController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user(); 
         $tanggal = $request->input('tanggal', date('Y-m-d'));
         $updated = 0;
+        $errors = [];
 
         foreach ($request->pasien_sesuai as $id_indikator => $ps) {
+            $total = $request->total_pasien[$id_indikator] ?? 0;
+            $sesuai = $ps ?? 0;
 
-            // 1. Cari record 'indikator_ruangan' untuk mendapatkan Primary Key
+            // 1. Cek Negatif
+            if ($total < 0 || $sesuai < 0) {
+                return redirect()->back()->with('error', 'Gagal: Input tidak boleh angka negatif.');
+            }
+
+            // 2. Cek Logika (Sesuai > Total)
+            if ($sesuai > $total) {
+                return redirect()->back()->with('error', 'Gagal: Jumlah pasien sesuai tidak boleh lebih besar dari total pasien.');
+            }
+
             $indikatorRuangan = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
                 ->where('id_indikator', $id_indikator)
                 ->first();
+
             if (!$indikatorRuangan) {
                 continue;
             }
 
-            $dataToStore = [
-                'total_pasien' => $request->total_pasien[$id_indikator] ?? 0,
-                'pasien_sesuai' => $ps ?? 0,
-            ];
-
-            // 2. Lakukan update atau create menggunakan kunci yang benar
             MutuRuangan::updateOrCreate(
                 [
                     'tanggal' => $tanggal,
-                    'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan, // Kunci yang benar
+                    'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
                 ],
-                $dataToStore
+                [
+                    'total_pasien' => $total,
+                    'pasien_sesuai' => $sesuai,
+                ]
             );
             $updated++;
         }
@@ -96,6 +106,7 @@ class InputIndikatorController extends Controller
             return redirect()->back()->with('info', 'Tidak ada data yang diubah atau dikirim.');
         }
     }
+
     /**
      * Display the specified resource.
      */
