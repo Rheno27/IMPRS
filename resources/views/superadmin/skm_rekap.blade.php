@@ -676,7 +676,7 @@
                     b.addEventListener('click', () => {
                         const selectedMonth = index + 1; // Konversi ke format 1-12 untuk URL
                         // Pastikan nama route-nya benar
-                        const baseUrl = "{{ route('superadmin.skm_rekap') }}"; 
+                        const baseUrl = "{{ route('superadmin.skm.rekap') }}"; 
 
                         // Arahkan browser ke URL baru dengan parameter bulan dan tahun
                         // Controller akan menangkap 'month' dan 'year' ini
