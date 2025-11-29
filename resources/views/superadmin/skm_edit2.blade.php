@@ -724,23 +724,7 @@
 @section('content')
 
     <section id="survey-nav" class="survey-nav-section">
-        <section id="survey-navigation" class="survey-nav-container">
-            <h2 class="survey-title">SURVEI KEPUASAN MASYARAKAT</h2>
-            <nav class="survey-tabs">
-                <a href="{{ route('superadmin.skm_rekap') }}"
-                    class="tab-item {{ request()->routeIs('superadmin.skm_rekap') ? 'active' : '' }}">
-                    Rekap SKM
-                </a>
-                <a href="{{ route('superadmin.skm_edit2') }}"
-                    class="tab-item {{ request()->routeIs('superadmin.skm_edit2') ? 'active' : '' }}">
-                    Edit Pertanyaan
-                </a>
-                <a href="{{ route('superadmin.skm_hasil') }}"
-                    class="tab-item {{ request()->routeIs('superadmin.skm_hasil') ? 'active' : '' }}">
-                    Hasil Survei
-                </a>
-            </nav>
-        </section>
+        @include('superadmin.partials.skm_nav')
 
         <form id="survey-form" method="POST" action="{{ route('superadmin.skm.update_pertanyaan') }}">
             @csrf
