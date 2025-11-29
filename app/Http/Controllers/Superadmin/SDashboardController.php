@@ -34,9 +34,7 @@ class SDashboardController extends Controller
                 ->whereHas('indikatorMutu.kategori', function ($query) use ($selectedKategori) {
                     $query->where('kategori', $selectedKategori);
                 })
-                ->whereHas('mutuRuangan', function ($query) use ($tahun) {
-                    $query->whereYear('tanggal', $tahun);
-                })
+                ->where('active', true)
                 ->with([
                     'ruangan',
                     'indikatorMutu',

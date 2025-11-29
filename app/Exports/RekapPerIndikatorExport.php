@@ -42,9 +42,7 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 ->whereHas('indikatorMutu.kategori', function ($query) {
                     $query->where('kategori', $this->kategori);
                 })
-                ->whereHas('mutuRuangan', function ($query) {
-                    $query->whereYear('tanggal', $this->tahun);
-                })
+                ->where('active', true)
                 ->with([
                     'ruangan',
                     'indikatorMutu',

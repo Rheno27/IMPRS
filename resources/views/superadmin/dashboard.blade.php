@@ -1142,7 +1142,7 @@
                                 <td>{{ $index + 1 }}.</td>
 
                                 {{-- Isi Kolom Ruangan HANYA jika kategori IMPU --}}
-                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit)')
+                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
                                     <td>{{ $item->ruangan }}</td>
                                 @endif
 
