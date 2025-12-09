@@ -1,695 +1,49 @@
 @extends('layouts.app')
 
-@section('styles')
-    <style>
-        :root {
-            --primary-green: #337354;
-            --dark-green: #2a7f54;
-            --light-green-bg: #d6e3dd;
-            --dark-text: #2d2d2d;
-            --light-text: #9e9e9e;
-            --white: #ffffff;
-            --background: #fcfcfc;
-            --border-color: rgba(51, 115, 84, 0.5);
-            --edit-btn-bg: #5f4c14;
-            --save-btn-bg: #004e28;
-            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', 'Roboto', sans-serif;
-            background-color: var(--background);
-            color: var(--dark-text);
-        }
-
-        .page-container {
-            max-width: 1440px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button {
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            /* Penyesuaian Ukuran */
-            gap: 6px;
-            padding: 3px 12px;
-            border-radius: 6px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            line-height: 18px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* CSS from section:header */
-        .site-header {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--background);
-            border-bottom: 1px solid var(--border-color-semitransparent);
-            box-sizing: border-box;
-            /* Penyesuaian Ukuran */
-            padding: 0 30px;
-            height: 60px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-image {
-            /* Penyesuaian Ukuran */
-            height: 52px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            /* Penyesuaian Ukuran */
-            gap: 15px;
-        }
-
-        .user-avatar {
-            /* Penyesuaian Ukuran */
-            height: 22px;
-            width: 22px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--primary-color);
-            white-space: nowrap;
-            /* Penyesuaian Ukuran */
-            font-size: 14px;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-            /* Penyesuaian Ukuran */
-            height: 22px;
-            width: 22px;
-            border-radius: 6px;
-        }
-
-        .logout-link:hover {
-            background: rgba(51, 115, 84, 0.1);
-        }
-
-        .logout-icon {
-            /* Penyesuaian Ukuran */
-            height: 21px;
-            width: 21px;
-        }
-
-        main {
-            /* Penyesuaian Ukuran: margin-top = tinggi header */
-            margin-top: 60px;
-        }
-
-        /* CSS from section:main-content */
-        .main-content-section {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            /* Penyesuaian Ukuran */
-            padding: 40px 54px;
-            gap: 27px;
-        }
-
-        .date-picker {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            border: 1px solid var(--primary-green);
-            background: #fff;
-            /* Penyesuaian Ukuran */
-            gap: 8px;
-            padding: 6px 9px;
-            border-radius: 8px;
-        }
-
-        .date-picker .calendar-btn {
-            background: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            border-radius: 0 !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: inherit;
-            line-height: 0;
-            /* Penyesuaian Ukuran */
-            width: 21px;
-            height: 21px;
-        }
-
-        .calendar-btn svg {
-            /* Penyesuaian Ukuran */
-            width: 34px;
-            height: 34px;
-        }
-
-        .date-text {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            color: var(--dark-text);
-            /* Penyesuaian Ukuran */
-            font-size: 15px;
-        }
-
-        /* Ukuran pop-up kalender juga disesuaikan */
-        .calendar-popup {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: #ffffff;
-            border: 1px solid var(--primary-green);
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            z-index: 1200;
-            /* Penyesuaian Ukuran */
-            width: 240px;
-            padding: 8px;
-        }
-
-        .calendar-popup.hidden {
-            display: none;
-        }
-
-        .calendar-popup .cal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .calendar-popup .cal-header .month-label {
-            font-weight: 600;
-            color: var(--primary-green);
-        }
-
-        .calendar-popup .cal-nav button {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .calendar-popup .weekday-row {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 4px;
-            font-size: 11px;
-            color: var(--light-text);
-            text-align: center;
-        }
-
-        .calendar-popup .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .calendar-popup .day-btn {
-            background: transparent;
-            border: none;
-            color: var(--dark-text);
-            padding: 5px;
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .calendar-popup .day-btn:hover {
-            background: rgba(51, 115, 84, 0.08);
-        }
-
-        .calendar-popup .day-btn.selected {
-            background: var(--primary-green);
-            color: #fff;
-        }
-
-        .calendar-popup .cal-nav svg {
-            stroke: var(--primary-green);
-            width: 16px;
-            height: 16px;
-        }
-
-        .calendar-popup .cal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .calendar-popup .cancel-btn,
-        .calendar-popup .confirm-btn {
-            /* Penyesuaian Ukuran */
-            min-width: 60px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .calendar-popup .cancel-btn {
-            background: #e0e0e0;
-            color: #555;
-        }
-
-        .calendar-popup .confirm-btn {
-            background: var(--primary-green);
-            color: #fff;
-        }
-
-        .calendar-popup .cal-header select {
-            font-family: 'Roboto', sans-serif;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #f0f0f0;
-            color: #333;
-            cursor: pointer;
-            /* Penyesuaian Ukuran */
-            font-size: 14px;
-            padding: 4px 8px;
-        }
-
-        .calendar-popup .cal-header select:focus {
-            border: 2px solid var(--primary-green);
-            outline: none;
-        }
-
-        .indicator-table-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .table-title {
-            background-color: var(--primary-green);
-            color: var(--white);
-            font-weight: 600;
-            text-align: center;
-            margin: 0;
-            /* Penyesuaian Ukuran */
-            font-size: 18px;
-            padding: 14px 8px;
-            border-radius: 15px 15px 0 0;
-        }
-
-        .indicator-grid {
-            display: grid;
-            /* Penyesuaian Ukuran */
-            grid-template-columns: 35px 1.5fr 1fr 1fr;
-            border: 1px solid var(--primary-green);
-            border-top: none;
-        }
-
-        .grid-header {
-            background-color: var(--light-green-bg);
-            border-bottom: 1px solid var(--primary-green);
-            border-right: 1px solid var(--primary-green);
-            text-align: center;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            line-height: 1.4;
-            /* Penyesuaian Ukuran */
-            padding: 8px 7px;
-            font-size: 14px;
-        }
-
-        .grid-header:last-child {
-            border-right: none;
-        }
-
-        .grid-cell {
-            background-color: var(--white);
-            border-bottom: 1px solid var(--primary-green);
-            border-right: 1px solid var(--primary-green);
-            display: flex;
-            align-items: center;
-            /* Penyesuaian Ukuran */
-            padding: 9px;
-            font-size: 14px;
-        }
-
-        .grid-cell:nth-child(4n) {
-            border-right: none;
-        }
-
-        .indicator-grid>.grid-cell:nth-last-child(-n+4) {
-            border-bottom: none;
-        }
-
-        .cell-no {
-            justify-content: center;
-            font-weight: 500;
-            /* Penyesuaian Ukuran */
-            font-size: 14px;
-        }
-
-        .cell-placeholder {
-            color: var(--light-text);
-        }
-
-        .cell-actions {
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .input-plain {
-            width: 100%;
-            padding: 4px 6px;
-            border: none;
-            border-bottom: 1px solid #ccc;
-            font-family: inherit;
-            background-color: transparent;
-            outline: none;
-            /* Penyesuaian Ukuran */
-            font-size: 14px;
-        }
-
-        .input-plain::-webkit-inner-spin-button,
-        .input-plain::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Tombol save utama di bawah form */
-        .save-btn {
-            background-color: var(--save-btn-bg);
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            /* Penyesuaian Ukuran */
-            font-size: 16px;
-            width: 150px;
-            height: 40px;
-            gap: 8px;
-            border-radius: 8px;
-        }
-
-        /* ========================================= */
-        /* RESPONSIVE CSS - MEDIA QUERIES       */
-        /* ========================================= */
-
-        /* Untuk Tablet Landscape (lebar <= 1024px) */
-        @media (max-width: 1024px) {
-            .main-content-section {
-                /* Mengurangi padding agar konten lebih lega */
-                padding: 30px 40px;
-            }
-
-            .table-title {
-                font-size: 17px;
-            }
-
-            .grid-header,
-            .grid-cell,
-            .input-plain {
-                font-size: 13px;
-                /* Sedikit mengecilkan font tabel */
-            }
-        }
-
-        /* Untuk Tablet Portrait (lebar <= 768px) */
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 0 15px;
-                height: 55px;
-            }
-
-            main {
-                margin-top: 55px;
-            }
-
-            .logo-image {
-                height: 45px;
-            }
-
-            .user-name {
-                display: none;
-            }
-
-            .main-content-section {
-                padding: 24px;
-                /* Konten memenuhi lebar layar */
-                align-items: stretch;
-            }
-
-            .date-picker {
-                /* Pindahkan pemilih tanggal ke kanan */
-                align-self: flex-end;
-            }
-
-            /* --- Transformasi Tabel Menjadi Kartu --- */
-            .indicator-grid {
-                display: block;
-                /* Hapus layout grid */
-                border: none;
-            }
-
-            .grid-header {
-                display: none;
-                /* Sembunyikan header tabel di tampilan ini */
-            }
-
-            .grid-cell {
-                display: grid;
-                /* Buat 2 kolom: satu untuk label, satu untuk input/data */
-                grid-template-columns: 150px 1fr;
-                border: 1px solid var(--primary-green);
-                border-top: none;
-                padding: 12px;
-                gap: 12px;
-                align-items: center;
-            }
-
-            /* Beri border atas untuk baris pertama setiap item */
-            .grid-cell.cell-no {
-                border-top: 1px solid var(--primary-green);
-                border-radius: 10px 10px 0 0;
-            }
-
-            /* Beri border radius di akhir setiap item kartu dan spasi bawah */
-            .grid-cell:nth-child(4n) {
-                border-radius: 0 0 10px 10px;
-                margin-bottom: 15px;
-            }
-
-            /* Gunakan pseudo-element untuk membuat label dari data-label */
-            .grid-cell::before {
-                content: attr(data-label);
-                font-weight: 600;
-                padding-right: 10px;
-            }
-
-            /* Menambahkan teks label secara dinamis */
-            .grid-cell:nth-child(4n-3)::before {
-                content: "No.";
-            }
-
-            .grid-cell:nth-child(4n-2)::before {
-                content: "Variabel Penilaian";
-            }
-
-            .grid-cell:nth-child(4n-1)::before {
-                content: "Jml. Sesuai Indikator";
-            }
-
-            .grid-cell:nth-child(4n)::before {
-                content: "Total Pasien";
-            }
-
-            .cell-no {
-                justify-content: flex-start;
-            }
-        }
-
-        .alert {
-            padding: 15px;
-            margin-bottom: 24px;
-            /* Samakan dengan 'gap' di main-content-section */
-            border: 1px solid transparent;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 500;
-            width: 100%;
-            /* Agar lebarnya sama dengan elemen lain */
-            box-sizing: border-box;
-            /* Penting agar padding tidak merusak layout */
-        }
-
-        .alert-info {
-            color: #0c5460;
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
-        }
-
-
-        .custom-alert {
-            padding: 16px 20px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(51, 115, 84, 0.15);
-            /* Bayangan halus hijau */
-            animation: slideDown 0.4s ease-out;
-            border: 1px solid transparent;
-            width: 100%;
-            box-sizing: border-box
-        }
-
-        .custom-alert.success {
-            background-color: #eaf5f0;
-            /* Hijau sangat muda */
-            border-color: rgba(51, 115, 84, 0.2);
-            color: var(--primary-color);
-        }
-
-        .custom-alert.error {
-            background-color: #fdeaea;
-            /* Merah sangat muda */
-            border-color: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-        }
-
-        .alert-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .alert-close-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        .alert-close-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            opacity: 1;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-@endsection
-
 @section('content')
-
     <main id="main-content" class="main-content-section">
+        {{-- Flash Messages menggunakan CSS global .alert dan .custom-alert --}}
         @if(session('info'))
             <div class="alert alert-info">{{ session('info') }}</div>
         @endif
-        {{-- NOTIFIKASI SUKSES --}}
+
         @if (session('success'))
             <div class="custom-alert success" role="alert">
                 <div class="alert-content">
-                    {{-- Ikon Centang Hijau --}}
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" />
+                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" />
                     </svg>
                     <span>{{ session('success') }}</span>
                 </div>
                 <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18" />
+                        <path d="M6 6L18 18" />
                     </svg>
                 </button>
             </div>
         @endif
 
-        {{-- NOTIFIKASI ERROR --}}
         @if (session('error'))
             <div class="custom-alert error" role="alert">
                 <div class="alert-content">
-                    {{-- Ikon Tanda Seru Merah --}}
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" />
+                        <path d="M12 8V13" />
+                        <path d="M11.9945 16H12.0035" stroke-width="2" />
                     </svg>
                     <span>{{ session('error') }}</span>
                 </div>
                 <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18" />
+                        <path d="M6 6L18 18" />
                     </svg>
                 </button>
             </div>
         @endif
+
         <div class="date-picker">
             <button type="button" id="calendarTrigger" class="calendar-btn" aria-label="Pilih tanggal">
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -717,7 +71,7 @@
                     <path
                         d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
                         fill="#FFC107" />
-                </svg>
+                    </svg>
             </button>
             <span id="dateDisplay" class="date-text">--</span>
 
@@ -744,13 +98,11 @@
                 @csrf
                 <input type="hidden" name="tanggal" value="{{ $tanggal }}">
                 <div class="indicator-grid">
-                    <!-- Table Header -->
                     <div class="grid-header">No.</div>
                     <div class="grid-header">Variabel Penilaian</div>
                     <div class="grid-header">Jumlah Pasien/Kejadian yang <br>Memenuhi Indikator</div>
                     <div class="grid-header">Total Pasien/Kejadian</div>
 
-                    <!-- Table Data Row (Dinamis) -->
                     @foreach($indikator as $i => $item)
                         <div class="grid-cell cell-no">{{ $i + 1 }}.</div>
                         <div class="grid-cell">{{ $item->variabel ?? $item->standar }}</div>
@@ -774,9 +126,7 @@
                 </div>
             </form>
         </div>
-
     </main>
-
 @endsection
 
 @push('scripts')

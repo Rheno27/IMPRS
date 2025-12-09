@@ -1,565 +1,11 @@
 @extends('layouts.app')
 @section('styles')
     <style>
-        :root {
-            --primary-color: #337354;
-            --secondary-color: #ffbb00;
-            --text-dark: #2d2d2d;
-            --text-light: #ffffff;
-            --bg-light: #fcfcfc;
-            --bg-table-header: #d6e3dd;
-            --border-color-light: #77a28d;
-            --border-color-dark: #337354;
-            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        .page-container {
-            max-width: 1080px;
-            /* 1440 * 0.75 */
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .site-header {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--text-light);
-            border-bottom: 1px solid var(--primary-color);
-            padding: 0 30px;
-            /* 40 * 0.75 */
-            height: 60px;
-            /* 80 * 0.75 */
-            box-sizing: border-box;
-        }
-
-        main {
-            margin-top: 60px;
-            /* Adjusted to match header height */
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-image {
-            height: 52px;
-            /* 70 * 0.75 */
-            width: auto;
-            object-fit: contain;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            /* 20 * 0.75 */
-        }
-
-        .user-avatar {
-            height: 22px;
-            width: 22px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 13.5px;
-            /* 18 * 0.75 */
-            color: var(--primary-color);
-            white-space: nowrap;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 22px;
-            width: 22px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .logout-link:hover {
-            background: rgba(51, 115, 84, 0.1);
-        }
-
-        .logout-icon {
-            height: 21px;
-            width: 21px;
-        }
-
-        /* HERO SECTION */
         .hero-section {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 150px 30px;
-            /* 200 * 0.75 */
-            text-align: center;
-            overflow: hidden;
-            min-height: 44vh;
-            /* 58 * 0.75 */
-            background-image: url('{{ asset('image/background.png') }}');
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            color: var(--primary-color);
-        }
-
-        .hero-title {
-            font-weight: 790;
-            font-size: 36.75px;
-            /* 49 * 0.75 */
-            line-height: 41px;
-            /* 55 * 0.75 */
-            color: var(--primary-color);
-            margin: 0;
-            max-width: 750px;
-        }
-
-        .hero-subtitle {
-            font-weight: 400;
-            font-size: 18px;
-            /* 24 * 0.75 */
-            line-height: 21px;
-            /* 28 * 0.75 */
-            color: var(--primary-color);
-            margin: 0;
-            max-width: 675px;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            background-color: var(--secondary-color);
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 18px;
-            /* 24 * 0.75 */
-            line-height: 19.5px;
-            /* 26 * 0.75 */
-            padding: 10.5px 28.5px;
-            /* 14x38 * 0.75 */
-            border-radius: 30px;
-            text-decoration: none;
-        }
-
-        .cta-button svg {
-            width: 16.5px;
-            height: 16.5px;
-        }
-
-        /* REPORT SECTION */
-        .report-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 28.5px;
-            /* 38 * 0.75 */
-        }
-
-        .report-controls-top {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            width: 100%;
-            padding: 22.5px 36px 0;
-            gap: 21px;
-            box-sizing: border-box;
-        }
-
-        .download-btn,
-        .year-selector {
-            border: 1px solid var(--border-color-dark);
-            border-radius: 9px;
-            padding: 6.75px 15px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: 600;
-            font-size: 15.75px;
-            color: var(--primary-color);
-            background-color: transparent;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .year-picker-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-
-        .year-panel {
-            position: absolute;
-            top: calc(100% + 6px);
-            right: 0;
-            width: 180px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-shadow: 0 4.5px 15px rgba(0, 0, 0, 0.12);
-            padding: 9px;
-            display: none;
-            z-index: 300;
-        }
-
-        .year-panel.open {
-            display: block;
-        }
-
-        .year-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 11.25px;
-            margin-bottom: 7.5px;
-        }
-
-        .year-header button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 13.5px;
-            padding: 3px 6px;
-        }
-
-        .year-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4.5px;
-        }
-
-        .year-grid button {
-            padding: 6px;
-            border: none;
-            background: #f7f7f7;
-            border-radius: 4.5px;
-            cursor: pointer;
-            font-size: 10.5px;
-        }
-
-        .year-grid button:hover {
-            background: #eaeaea;
-        }
-
-        .year-grid button.active {
-            background: #337354;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .month-selector {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 36px;
-        }
-
-        .arrow-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-        }
-
-        .arrow-btn svg {
-            width: 36px;
-            height: 36px;
-        }
-
-        .months {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-        }
-
-        .month-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 18px;
-            color: var(--primary-color);
-            opacity: 0.6;
-            padding: 7.5px 15px;
-            transition: all 0.3s ease;
-        }
-
-        .month-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 37.5px;
-            padding: 11.25px 37.5px;
-            opacity: 1;
-        }
-
-        .table-wrapper {
-            width: calc(100% - 78px);
-            margin: 0 39px;
-        }
-
-        .report-title {
-            text-align: center;
-            font-weight: 500;
-            font-size: 16.5px;
-            line-height: 21px;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color-light);
-            border-bottom: none;
-            border-radius: 15px 15px 0 0;
-            background-color: var(--bg-table-header);
-        }
-
-        .report-title p {
-            margin: 0;
-            padding: 7.5px;
-            border-bottom: 1px solid var(--border-color-light);
-        }
-
-        .report-title p:last-child {
-            border-bottom: none;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .report-data {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid var(--border-color-dark);
-            margin: 0;
-            margin-bottom: 45px;
-        }
-
-        .report-data th,
-        .report-data td {
-            border: 1px solid var(--border-color-dark);
-            text-align: center;
-            font-size: 10.5px;
-            height: 21px;
-            padding: 4px;
-            /* Added padding for better spacing */
-        }
-
-        .report-data th {
-            background-color: var(--bg-table-header);
-            font-weight: 600;
-            font-size: 14.25px;
-            padding: 7.5px 3.75px;
-            white-space: nowrap;
-            /* Prevent headers from wrapping */
-        }
-
-        .report-data tbody td {
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 13.5px;
-            min-width: 21px;
-        }
-
-        .report-data .text-left {
-            text-align: left;
-            padding: 6px 9px;
-            font-size: 13.5px;
-            white-space: nowrap;
-        }
-
-        /* ========================================= */
-        /* RESPONSIVE CSS - MEDIA QUERIES      */
-        /* ========================================= */
-
-        /* For tablets and medium-sized screens */
-        @media (max-width: 1024px) {
-            .hero-section {
-                padding: 100px 25px;
-                min-height: auto;
+                background-image: url('{{ asset('image/background.png') }}');
             }
-
-            .hero-title {
-                font-size: 30px;
-                line-height: 1.2;
-            }
-
-            .hero-subtitle {
-                font-size: 16px;
-            }
-
-            .report-controls-top {
-                padding: 20px 25px 0;
-            }
-
-            .table-wrapper {
-                width: calc(100% - 50px);
-                margin: 0 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 0 15px;
-                height: 55px;
-            }
-
-            main {
-                margin-top: 55px;
-            }
-
-            .logo-image {
-                height: 45px;
-            }
-
-            .user-name {
-                display: none;
-            }
-
-            .hero-section {
-                padding: 60px 15px;
-            }
-
-            .hero-title {
-                font-size: 24px;
-            }
-
-            .hero-subtitle {
-                font-size: 14px;
-                line-height: 1.5;
-            }
-
-            .cta-button {
-                font-size: 16px;
-                padding: 9px 20px;
-            }
-
-            .report-section {
-                gap: 20px;
-            }
-
-            /* --- PERUBAHAN DI SINI --- */
-            /* Membuat kontrol tetap satu baris di mobile */
-            .report-controls-top {
-                flex-direction: row;
-                /* Kembali ke baris horizontal */
-                justify-content: flex-end;
-                /* Posisikan di tengah */
-                gap: 15px;
-                padding: 20px 15px 0;
-            }
-
-            .download-btn,
-            .year-selector {
-                width: auto;
-                /* Hapus width 100% agar tidak memenuhi layar */
-                justify-content: center;
-                box-sizing: border-box;
-                font-size: 13px;
-                /* Perkecil font agar muat */
-                padding: 6px 10px;
-                /* Perkecil padding */
-            }
-
-            .download-btn svg,
-            .year-selector svg {
-                width: 20px;
-                /* Atur lebar SVG */
-                height: 20px;
-                /* Atur tinggi SVG */
-            }
-
-            .month-selector {
-                gap: 15px;
-                width: 100%;
-                justify-content: space-between;
-                padding: 0 15px;
-                box-sizing: border-box;
-            }
-
-            .months {
-                gap: 10px;
-                flex-grow: 1;
-                justify-content: center;
-            }
-
-            .arrow-btn svg {
-                width: 32px;
-                height: 32px;
-            }
-
-            .month-btn {
-                font-size: 14px;
-                padding: 6px 12px;
-            }
-
-            .month-btn:not(.active) {
-                display: none;
-            }
-
-            .month-btn.active {
-                padding: 8px 25px;
-            }
-
-            .table-wrapper {
-                width: calc(100% - 30px);
-                margin: 0 15px;
-            }
-
-            .report-title p {
-                font-size: 14px;
-                padding: 6px;
-            }
-
-            .report-data th,
-            .report-data td {
-                font-size: 11px;
-                padding: 5px 3px;
-            }
-
-            .report-data th {
-                font-size: 12px;
-            }
-
-            .report-data .text-left {
-                font-size: 12px;
-                padding: 5px 8px;
-            }
-        }
-    </style>
+        </style>
 @endsection
-
 
 @section('content')
         <section id="hero" class="hero-section">
@@ -583,8 +29,7 @@
 
         <section id="report-table" class="report-section">
             <div class="report-controls-top">
-                <button type="button" class="download-btn" onclick="document.getElementById('downloadModal').style.display='block'"
-                    style="cursor: pointer;">
+                <button type="button" class="download-btn" onclick="document.getElementById('downloadModal').style.display='block'">
                     <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="50" height="50" rx="10" fill="#FCFCFC" />
                         <path
@@ -594,17 +39,13 @@
                     <span>Download File</span>
                 </button>
 
-                <div id="downloadModal"
-                    style="display:none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-                    <div
-                        style="background-color: #fff; margin: 15% auto; padding: 25px; width: 320px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-
-                        <h3 style="color: #337354; margin-top: 0;">Pilih Periode Laporan</h3>
+                <div id="downloadModal" class="modal-overlay">
+                    <div class="modal-box">
+                        <h3 class="modal-title">Pilih Periode Laporan</h3>
 
                         <form action="{{ route('admin.download_rekap') }}" method="GET">
-                            <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Bulan:</div>
-                            <select name="bulan"
-                                style="margin-bottom: 15px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+                            <label class="form-label-sm">Bulan:</label>
+                            <select name="bulan" class="form-select-full">
                                 @foreach(range(1, 12) as $m)
                                     <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
                                         {{ date('F', mktime(0, 0, 0, $m, 1)) }}
@@ -612,27 +53,25 @@
                                 @endforeach
                             </select>
 
-                            <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Tahun:</div>
-                            <select name="tahun"
-                                style="margin-bottom: 25px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+                            <label class="form-label-sm">Tahun:</label>
+                            <select name="tahun" class="form-select-full">
                                 @foreach(range(date('Y') - 2, date('Y') + 2) as $y)
                                     <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                 @endforeach
                             </select>
 
-                            <div style="display: flex; gap: 10px; justify-content: center;">
-                                <button type="button" onclick="document.getElementById('downloadModal').style.display='none'"
-                                    style="padding: 10px 20px; background: #f1f1f1; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; color: #333;">
+                            <div class="modal-actions">
+                                <button type="button" class="btn-secondary" onclick="document.getElementById('downloadModal').style.display='none'">
                                     Batal
                                 </button>
-                                <button type="submit"
-                                    style="padding: 10px 20px; background: #337354; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                <button type="submit" class="btn-primary">
                                     Download
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
+
                 <div class="year-picker-wrapper">
                     <div class="year-selector" id="yearBtn">
                         <svg width="35" height="36" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -677,54 +116,32 @@
 
             <div class="month-selector">
                 @php
-    // Array nama bulan lengkap
-    $namaBulanLengkap = [1 => "Januari", 2 => "Februari", 3 => "Maret", 4 => "April", 5 => "Mei", 6 => "Juni", 7 => "Juli", 8 => "Agustus", 9 => "September", 10 => "Oktober", 11 => "November", 12 => "Desember"];
-
-    // Ambil bulan aktif dari controller, default ke bulan saat ini jika tidak ada
-    $bulanAktif = $bulan ?? date('n');
-
-    // Tentukan index untuk tombol panah
-    $prevIndex = ($bulanAktif - 1 < 1) ? 12 : $bulanAktif - 1;
-    $nextIndex = ($bulanAktif + 1 > 12) ? 1 : $bulanAktif + 1;
+                    $namaBulanLengkap = [1 => "Januari", 2 => "Februari", 3 => "Maret", 4 => "April", 5 => "Mei", 6 => "Juni", 7 => "Juli", 8 => "Agustus", 9 => "September", 10 => "Oktober", 11 => "November", 12 => "Desember"];
+                    $bulanAktif = $bulan ?? date('n');
+                    $prevIndex = ($bulanAktif - 1 < 1) ? 12 : $bulanAktif - 1;
+                    $nextIndex = ($bulanAktif + 1 > 12) ? 1 : $bulanAktif + 1;
                 @endphp
 
-                {{-- Link panah kiri --}}
-                <a href="{{ route('admin.dashboard', ['bulan' => $prevIndex, 'tahun' => date('Y')]) }}" class="arrow-btn prev"
-                    aria-label="Previous month">
+                <a href="{{ route('admin.dashboard', ['bulan' => $prevIndex, 'tahun' => date('Y')]) }}" class="arrow-btn prev" aria-label="Previous month">
                     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                            fill="white" stroke="#DC5E3A" />
-                        <path
-                            d="M23.91 34.4101L32.91 25.4101C33.78 24.5401 35.22 24.5401 36.09 25.4101C36.96 26.2801 36.96 27.7201 36.09 28.5901L30.93 33.7501H46.5C47.73 33.7501 48.75 34.7701 48.75 36.0001C48.75 37.2301 47.73 38.2501 46.5 38.2501H30.93L36.09 43.4101C36.96 44.2801 36.96 45.7201 36.09 46.5901C35.64 47.0401 35.07 47.2501 34.5 47.2501C33.93 47.2501 33.36 47.0401 32.91 46.5901L23.91 37.5901C23.04 36.7201 23.04 35.2801 23.91 34.4101Z"
-                            fill="#DC5E3A" />
+                        <path d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z" fill="white" stroke="#DC5E3A" />
+                        <path d="M23.91 34.4101L32.91 25.4101C33.78 24.5401 35.22 24.5401 36.09 25.4101C36.96 26.2801 36.96 27.7201 36.09 28.5901L30.93 33.7501H46.5C47.73 33.7501 48.75 34.7701 48.75 36.0001C48.75 37.2301 47.73 38.2501 46.5 38.2501H30.93L36.09 43.4101C36.96 44.2801 36.96 45.7201 36.09 46.5901C35.64 47.0401 35.07 47.2501 34.5 47.2501C33.93 47.2501 33.36 47.0401 32.91 46.5901L23.91 37.5901C23.04 36.7201 23.04 35.2801 23.91 34.4101Z" fill="#DC5E3A" />
                     </svg>
                 </a>
-                <div class="months">
-                    @php
-    $displayMonths = [
-        $prevIndex => $namaBulanLengkap[$prevIndex],
-        $bulanAktif => $namaBulanLengkap[$bulanAktif],
-        $nextIndex => $namaBulanLengkap[$nextIndex],
-    ];
-                    @endphp
 
-                    @foreach ($displayMonths as $indexBulan => $namaBulanItem)
+                <div class="months">
+                    @foreach ([$prevIndex => $namaBulanLengkap[$prevIndex], $bulanAktif => $namaBulanLengkap[$bulanAktif], $nextIndex => $namaBulanLengkap[$nextIndex]] as $indexBulan => $namaBulanItem)
                         <a href="{{ route('admin.dashboard', ['bulan' => $indexBulan, 'tahun' => date('Y')]) }}"
                             class="month-btn {{ $bulanAktif == $indexBulan ? 'active' : '' }}">
                             {{ $namaBulanItem }}
                         </a>
                     @endforeach
                 </div>
-                <a href="{{ route('admin.dashboard', ['bulan' => $nextIndex, 'tahun' => date('Y')]) }}" class="arrow-btn next"
-                    aria-label="Next month">
+
+                <a href="{{ route('admin.dashboard', ['bulan' => $nextIndex, 'tahun' => date('Y')]) }}" class="arrow-btn next" aria-label="Next month">
                     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                            fill="white" stroke="#DC5E3A" />
-                        <path
-                            d="M48.09 37.5899L39.09 46.5899C38.22 47.4599 36.78 47.4599 35.91 46.5899C35.04 45.7199 35.04 44.2799 35.91 43.4099L41.07 38.2499H25.5C24.27 38.2499 23.25 37.2299 23.25 35.9999C23.25 34.7699 24.27 33.7499 25.5 33.7499H41.07L35.91 28.5899C35.04 27.7199 35.04 26.2799 35.91 25.4099C36.36 24.9599 36.93 24.7499 37.5 24.7499C38.07 24.7499 38.64 24.9599 39.09 25.4099L48.09 34.4099C48.96 35.2799 48.96 36.7199 48.09 37.5899Z"
-                            fill="#DC5E3A" />
+                        <path d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z" fill="white" stroke="#DC5E3A" />
+                        <path d="M48.09 37.5899L39.09 46.5899C38.22 47.4599 36.78 47.4599 35.91 46.5899C35.04 45.7199 35.04 44.2799 35.91 43.4099L41.07 38.2499H25.5C24.27 38.2499 23.25 37.2299 23.25 35.9999C23.25 34.7699 24.27 33.7499 25.5 33.7499H41.07L35.91 28.5899C35.04 27.7199 35.04 26.2799 35.91 25.4099C36.36 24.9599 36.93 24.7499 37.5 24.7499C38.07 24.7499 38.64 24.9599 39.09 25.4099L48.09 34.4099C48.96 35.2799 48.96 36.7199 48.09 37.5899Z" fill="#DC5E3A" />
                     </svg>
                 </a>
             </div>
@@ -757,18 +174,14 @@
                                     <td rowspan="2">{{ $row['no'] }}.</td>
                                     <td rowspan="2" class="text-left">{{ $row['variabel'] }}</td>
                                     @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
-                                        <td>
-                                            {{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->pasien_sesuai : '' }}
-                                        </td>
+                                        <td>{{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->pasien_sesuai : '' }}</td>
                                     @endfor
                                     <td rowspan="2">{{ $row['jumlah_sesuai'] }}</td>
                                     <td rowspan="2">{{ $row['persen'] }}%</td>
                                 </tr>
                                 <tr>
                                     @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
-                                        <td>
-                                            {{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->total_pasien : '' }}
-                                        </td>
+                                        <td>{{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->total_pasien : '' }}</td>
                                     @endfor
                                 </tr>
                             @endforeach
@@ -782,4 +195,5 @@
 @push('scripts')
     <script>
         const selectedYearFromServer = {{ $tahun }};
-</script>@endpush
+    </script>
+@endpush
