@@ -1,386 +1,13 @@
 @extends('layouts.app')
 
-@section('styles')
-    <style>
-        :root {
-            --green: #337354;
-            --green-dark: #004e28;
-            --accent: #DC5E3A;
-            --edit-bg: #ffe6e6;
-            --bg: #fcfcfc;
-            --text-light: #ffff;
-            --text: #2d2d2d;
-            --panel-shadow: 0 8px 20px rgba(10, 13, 18, 0.08);
-            --border-color-light: #77a28d;
-            --bg-table-header: #d6e3dd;
-            --border-color-light: #77a28d;
-            --border-color-dark: #337354;
-            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .site-header {
-            display: flex;
-            position: fixed;
-            top: 0;
-            /* penting biar nempel di atas */
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--text-light);
-            border-bottom: 1px solid var(--border-color-semitransparent);
-            padding: 0 40px;
-            height: 80px;
-            /* lebih proporsional, jangan terlalu tinggi */
-            box-sizing: border-box;
-            /* biar padding gak nambah tinggi */
-        }
-
-        /* Logo */
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-image {
-            height: 70px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        /* User info */
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-avatar {
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 18px;
-            /* sebanding dengan tinggi avatar/logo */
-            color: var(--primary-color);
-            white-space: nowrap;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 30px;
-            width: 30px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .logout-link:hover {
-            background: rgba(51, 115, 84, 0.1);
-        }
-
-        .logout-icon {
-            height: 28px;
-            width: 28px;
-        }
-
-        @media (max-width: 1024px) {
-            .site-header {
-                padding: 0 24px;
-                height: 100px;
-            }
-
-            .brand-name {
-                font-size: 24px;
-            }
-
-            .username {
-                font-size: 20px;
-            }
-
-            .user-icon,
-            .logout-icon {
-                width: 32px;
-                height: 32px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                flex-direction: column;
-                height: auto;
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .user-profile {
-                width: 100%;
-                justify-content: flex-end;
-            }
-        }
-
-
-        /* toolbar */
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 52px;
-            gap: 16px;
-            padding-top: 130px;
-        }
-
-        .toolbar-left {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .toolbar-right {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        /* common button */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            background: #fff;
-            border: 1px solid #d8e8de;
-        }
-
-        /* Calendar button */
-        .btn-calendar {
-            border: 1px solid var(--green);
-            position: relative;
-            /* panel absolute relatif ke wrapper */
-            background: #fff;
-            color: var(--text);
-            min-width: 160px;
-            justify-content: flex-start;
-        }
-
-        .btn-calendar:hover {
-            background: #fbfbfb;
-        }
-
-        /* download button (green border + green text) */
-        .btn-download {
-            border: 1px solid var(--green);
-            color: var(--green);
-            background: #fff;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 18px;
-        }
-
-        .btn-download:hover {
-            background: #f7fbf8;
-        }
-
-        /* edit button on the right */
-        .btn-edit {
-            background: var(--edit-bg);
-            border: 1px solid rgba(141, 10, 0, 0.08);
-            color: #8D0A00;
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-        }
-
-        .btn-edit:hover {
-            background: #ffd6d6;
-        }
-
-        .calendar-panel {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            z-index: 150;
-            display: none;
-            flex-direction: column;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            width: 250px;
-        }
-
-        .calendar-panel.open {
-            display: flex;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .calendar-header button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 4px 8px;
-        }
-
-        .calendar-months {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-
-        .calendar-months button {
-            padding: 8px;
-            border: none;
-            background: #f7f7f7;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .calendar-months button:hover {
-            background: #eaeaea;
-        }
-
-        .calendar-months button.active {
-            background: #337354;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        /* small responsive tweak */
-        @media (max-width:680px) {
-            .toolbar {
-                padding: 16px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-
-            .toolbar-left {
-                order: 1
-            }
-
-            .toolbar-right {
-                order: 2;
-                justify-content: flex-end;
-            }
-
-            .calendar-panel {
-                top: calc(100% + 6px);
-                left: 0;
-                right: auto;
-            }
-        }
-
-        .table-wrapper {
-            width: calc(100% - 104px);
-            margin: 0 52px;
-        }
-
-        .report-title {
-            text-align: center;
-            font-weight: 550;
-            font-size: 22px;
-            line-height: 28px;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color-light);
-            border-bottom: none;
-            border-radius: 20px 20px 0 0;
-            background-color: var(--bg-table-header);
-        }
-
-        .report-title p {
-            margin: 0;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color-light);
-        }
-
-        .report-title p:last-child {
-            border-bottom: none;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .report-data {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid var(--border-color-dark);
-            margin-bottom: 60px;
-        }
-
-        .report-data th,
-        .report-data td {
-            border: 1px solid var(--border-color-dark);
-            text-align: center;
-            font-size: 14px;
-            height: 28px;
-        }
-
-        .report-data th {
-            background-color: var(--bg-table-header);
-            font-weight: 600;
-            font-size: 19px;
-            padding: 10px 5px;
-        }
-
-        .report-data thead tr:first-child th {
-            border-bottom: 1px solid var(--border-color-dark);
-        }
-
-        .report-data tbody td {
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 18px;
-            min-width: 28px;
-        }
-
-        .report-data .text-left {
-            text-align: left;
-            padding: 8px 12px;
-            font-size: 18px;
-        }
-    </style>
-@endsection
-
 @section('content')
-    <div class="toolbar" aria-label="toolbar">
+    {{-- Container utama toolbar --}}
+    <div class="toolbar-container" style="padding-top: 40px;">
+
         <div class="toolbar-left">
             <div style="position:relative;">
-                <button id="calendarBtn" class="btn btn-calendar" aria-haspopup="true" aria-expanded="false"
-                    aria-controls="calendarPanel">
+                {{-- Calendar Button --}}
+                <button id="calendarBtn" class="btn-control" aria-haspopup="true" aria-expanded="false">
                     <svg width="33" height="33" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
@@ -407,144 +34,129 @@
                             d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
                             fill="#FFC107" />
                     </svg>
-                    <span id="monthYear" aria-live="polite">Agustus 2025</span>
+                    <span id="monthYear" style="color: var(--text-dark);">{{ $namaBulan[$bulan] }} {{ $tahun }}</span>
                 </button>
 
-                <div id="calendarPanel" class="calendar-panel" role="dialog" aria-hidden="true">
-                    <div class="calendar-header">
-                        <button id="prevYear" aria-label="Tahun Sebelumnya">‹</button>
-                        <span id="calendarYear"></span>
-                        <button id="nextYear" aria-label="Tahun Berikutnya">›</button>
+                <div id="calendarPanel" class="calendar-popup" style="display: none; width: 280px; left: 0; right: auto;">
+                    <div class="cal-header">
+                        <button id="prevYear" class="arrow-btn">&lt;</button>
+                        <span id="calendarYear" style="font-weight: bold;">{{ $tahun }}</span>
+                        <button id="nextYear" class="arrow-btn">&gt;</button>
                     </div>
-                    <div class="calendar-months"></div>
+                    <div class="calendar-months"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top:10px;">
+                        {{-- JS akan mengisi ini --}}
+                    </div>
                 </div>
-
             </div>
-            <button id="downloadBtn" type="button" class="btn btn-download" title="Download file"
+
+            {{-- Download Button --}}
+            <button id="downloadBtn" type="button" class="btn-control"
                 onclick="document.getElementById('downloadModalSuper').style.display='flex'">
-                <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M27 18.3333V24.1111C27 24.8773 26.6956 25.6121 26.1539 26.1539C25.6121 26.6956 24.8773 27 24.1111 27H3.88889C3.12271 27 2.38791 26.6956 1.84614 26.1539C1.30436 25.6121 1 24.8773 1 24.1111V18.3333M6.77778 11.1111L14 18.3333M14 18.3333L21.2222 11.1111M14 18.3333V1"
-                        stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                <span>Download File</span>
+                <span style="color: var(--primary-color);">Download File</span>
             </button>
-
-            <div id="downloadModalSuper"
-                style="display:none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
-                <div
-                    style="background-color: #fff; padding: 25px; width: 320px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-
-                    <h3 style="color: #337354; margin-top: 0;">Download Rekap Ruangan</h3>
-
-                    <form action="{{ route('superadmin.download_rekap') }}" method="GET">
-
-                        <input type="hidden" name="ruangan_id" value="{{ $ruangan->id_ruangan }}">
-
-                        <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Bulan:</div>
-                        <select name="bulan"
-                            style="margin-bottom: 15px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
-                            @foreach(range(1, 12) as $m)
-                                <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $m, 1)) }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        <div style="text-align: left; font-size: 14px; margin-bottom: 5px; color: #333;">Tahun:</div>
-                        <select name="tahun"
-                            style="margin-bottom: 25px; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
-                            @foreach(range(date('Y') - 2, date('Y') + 2) as $y)
-                                <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endforeach
-                        </select>
-
-                        <div style="display: flex; gap: 10px; justify-content: center;">
-                            <button type="button" onclick="document.getElementById('downloadModalSuper').style.display='none'"
-                                style="padding: 10px 20px; background: #f1f1f1; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; color: #333;">
-                                Batal
-                            </button>
-                            <button type="submit"
-                                style="padding: 10px 20px; background: #337354; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                                Download Excel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
 
+        {{-- Grup Kanan: Edit Button --}}
         <div class="toolbar-right">
-            <button class="btn-edit" 
-                    onclick="window.location.href='{{ route('superadmin.ruangan.edit_indikator', ['ruangan' => $ruangan]) }}'" 
-                    id="editIndicatorBtn"
-                    title="Edit indikator ruangan">
-                <svg width="35" height="35" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {{-- ... kode SVG Anda tidak perlu diubah ... --}}
-                    <path
-                        d="M39.375 41.25H5.625C4.85625 41.25 4.21875 40.6125 4.21875 39.8438C4.21875 39.075 4.85625 38.4375 5.625 38.4375H39.375C40.1437 38.4375 40.7812 39.075 40.7812 39.8438C40.7812 40.6125 40.1437 41.25 39.375 41.25Z"
-                        fill="#8D0A00" />
-                    <path
-                        d="M35.6623 6.52511C32.0248 2.88761 28.4623 2.79386 24.7311 6.52511L22.4623 8.79386C22.2748 8.98136 22.1998 9.28136 22.2748 9.54386C23.6998 14.5126 27.6748 18.4876 32.6436 19.9126C32.7186 19.9314 32.7936 19.9501 32.8686 19.9501C33.0748 19.9501 33.2623 19.8751 33.4123 19.7251L35.6623 17.4564C37.5186 15.6189 38.4186 13.8376 38.4186 12.0376C38.4373 10.1814 37.5373 8.38136 35.6623 6.52511Z"
-                        fill="#8D0A00" />
-                    <path
-                        d="M29.2686 21.6187C28.7249 21.3562 28.1999 21.0937 27.6936 20.7937C27.2811 20.55 26.8874 20.2875 26.4936 20.0062C26.1749 19.8 25.7999 19.5 25.4436 19.2C25.4061 19.1812 25.2749 19.0687 25.1249 18.9187C24.5061 18.3937 23.8124 17.7188 23.1936 16.9688C23.1374 16.9313 23.0436 16.8 22.9124 16.6312C22.7249 16.4062 22.4061 16.0312 22.1249 15.6C21.8999 15.3187 21.6374 14.9062 21.3936 14.4937C21.0936 13.9875 20.8311 13.4812 20.5686 12.9562C20.3061 12.3937 20.0999 11.85 19.9124 11.3438L8.13737 23.1187C7.89362 23.3625 7.66862 23.8312 7.61237 24.15L6.59987 31.3312C6.41237 32.6062 6.76862 33.8062 7.55612 34.6125C8.23112 35.2687 9.16861 35.625 10.1811 35.625C10.4061 35.625 10.6311 35.6062 10.8561 35.5687L18.0561 34.5563C18.3936 34.5 18.8624 34.275 19.0874 34.0312L30.8624 22.2562C30.3374 22.0687 29.8311 21.8625 29.2686 21.6187Z"
-                        fill="#F44336" />
+            <button class="btn-control btn-danger-outline"
+                onclick="window.location.href='{{ route('superadmin.ruangan.edit_indikator', ['ruangan' => $ruangan]) }}'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                 </svg>
                 <span>Edit Indikator Ruangan</span>
             </button>
         </div>
     </div>
 
-    <div class="table-wrapper">
-        <div class="report-title">
-            <p>Penilaian Indikator Mutu di Ruang {{ $ruangan->nama_ruangan }}</p>
-            <p>Bulan {{ $namaBulan[$bulan] ?? '' }}</p>
-            <p>RSD KALISAT</p>
+    {{-- Tabel Laporan --}}
+    <div class="report-container" style="margin-top: 30px;">
+        <div class="report-table-wrapper">
+            <div class="report-header-block">
+                <h3>Penilaian Indikator Mutu di Ruang {{ $ruangan->nama_ruangan }}<br>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[$bulan] ?? '' }} - RSD KALISAT</span>
+                </h3>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width: 50px;">No.</th>
+                            <th rowspan="2">Variabel Penilaian</th>
+                            <th colspan="{{ $jumlahHari }}">Tanggal</th>
+                            <th rowspan="2" style="width: 80px;">Jumlah</th>
+                            <th rowspan="2" style="width: 60px;">%</th>
+                        </tr>
+                        <tr>
+                            @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
+                                <th>{{ $tgl }}</th>
+                            @endfor
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($indikatorData as $row)
+                            <tr>
+                                <td rowspan="2">{{ $row['no'] }}.</td>
+                                <td rowspan="2" class="text-start">{{ $row['variabel'] }}</td>
+
+                                {{-- Numerator --}}
+                                @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
+                                    <td>{{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->pasien_sesuai : '' }}</td>
+                                @endfor
+                                <td rowspan="2">{{ $row['jumlah_sesuai'] }}</td>
+                                <td rowspan="2">{{ $row['persen'] }}%</td>
+                            </tr>
+                            <tr>
+                                {{-- Denominator --}}
+                                @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
+                                    <td>{{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->total_pasien : '' }}</td>
+                                @endfor
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="table-container">
-            <table class="report-data">
-                <thead>
-                    <tr>
-                        <th rowspan="2">No.</th>
-                        <th rowspan="2">Variabel Penilaian</th>
-                        <th colspan="{{ $jumlahHari }}">Tanggal</th>
-                        <th rowspan="2">Jumlah</th>
-                        <th rowspan="2">%</th>
-                    </tr>
-                    <tr>
-                        @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
-                            <th>{{ $tgl }}</th>
-                        @endfor
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($indikatorData as $row)
-                        <tr>
-                            <td rowspan="2">{{ $row['no'] }}.</td>
-                            <td rowspan="2" class="text-left">{{ $row['variabel'] }}</td>
+    </div>
 
-                            {{-- Baris untuk Numerator (Pasien Sesuai) --}}
-                            @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
-                                <td>
-                                    {{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->pasien_sesuai : '' }}
-                                </td>
-                            @endfor
+    {{-- Modal Download (Menggunakan class global .modal-overlay yang sudah dibuat sebelumnya) --}}
+    <div id="downloadModalSuper" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title">Download Rekap Ruangan</h3>
+            <form action="{{ route('superadmin.download_rekap') }}" method="GET">
+                <input type="hidden" name="ruangan_id" value="{{ $ruangan->id_ruangan }}">
 
-                            <td rowspan="2">{{ $row['jumlah_sesuai'] }}</td>
-                            <td rowspan="2">{{ $row['persen'] }}%</td>
-                        </tr>
-                        <tr>
-                            {{-- Baris untuk Denominator (Total Pasien) --}}
-                            @for($tgl = 1; $tgl <= $jumlahHari; $tgl++)
-                                <td>
-                                    {{ isset($row['byTanggal'][$tgl]) ? $row['byTanggal'][$tgl]->total_pasien : '' }}
-                                </td>
-                            @endfor
-                        </tr>
+                <label class="form-label-sm">Bulan:</label>
+                <select name="bulan" class="form-select-full">
+                    @foreach(range(1, 12) as $m)
+                        <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
+                            {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                        </option>
                     @endforeach
-                </tbody>
-            </table>
+                </select>
+
+                <label class="form-label-sm">Tahun:</label>
+                <select name="tahun" class="form-select-full">
+                    @foreach(range(date('Y') - 2, date('Y') + 2) as $y)
+                        <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endforeach
+                </select>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary"
+                        onclick="document.getElementById('downloadModalSuper').style.display='none'">Batal</button>
+                    <button type="submit" class="btn-primary">Download Excel</button>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -552,76 +164,55 @@
 @push('scripts')
     <script>
         (function () {
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-            // 1. Inisialisasi state dari data PHP yang dikirim controller, bukan tanggal hari ini
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
             let currentYear = {{ $tahun }};
-            // Bulan dari PHP adalah 1-12, sedangkan di JavaScript index-nya 0-11
-            let currentMonthIndex = {{ $bulan }} - 1;
-
-            const monthYearEl = document.getElementById('monthYear');
-            const panel = document.getElementById('calendarPanel');
             const btn = document.getElementById('calendarBtn');
+            const panel = document.getElementById('calendarPanel');
             const yearEl = document.getElementById('calendarYear');
             const monthsContainer = document.querySelector('.calendar-months');
-            const prevYearBtn = document.getElementById('prevYear');
-            const nextYearBtn = document.getElementById('nextYear');
+
+            // Toggle Panel
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+                renderMonths();
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!panel.contains(e.target) && !btn.contains(e.target)) {
+                    panel.style.display = 'none';
+                }
+            });
+
+            // Navigation Year
+            document.getElementById('prevYear').addEventListener('click', (e) => {
+                e.preventDefault(); currentYear--; renderMonths();
+            });
+            document.getElementById('nextYear').addEventListener('click', (e) => {
+                e.preventDefault(); currentYear++; renderMonths();
+            });
 
             function renderMonths() {
                 yearEl.textContent = currentYear;
-                monthsContainer.innerHTML = "";
-                monthNames.forEach((m, index) => {
-                    const b = document.createElement('button');
-                    b.textContent = m;
+                monthsContainer.innerHTML = '';
+                monthNames.forEach((m, i) => {
+                    let btn = document.createElement('button');
+                    btn.textContent = m;
+                    btn.className = 'day-btn'; // Reuse class day-btn from global css
+                    btn.style.width = '100%';
 
-                    // Tandai bulan yang sedang aktif
-                    if (index === currentMonthIndex) {
-                        b.classList.add('active');
+                    // Highlight active month
+                    if (currentYear == {{ $tahun }} && (i + 1) == {{ $bulan }}) {
+                        btn.classList.add('selected');
                     }
 
-                    // 2. BAGIAN UTAMA YANG DIPERBAIKI:
-                    // Tambahkan event listener yang akan me-reload halaman dengan parameter baru.
-                    b.addEventListener('click', () => {
-                        const selectedMonth = index + 1; // Konversi ke format 1-12 untuk URL
-                        const baseUrl = "{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan]) }}";
-
-                        // Arahkan browser ke URL baru dengan parameter bulan dan tahun yang dipilih
-                        window.location.href = `${baseUrl}?bulan=${selectedMonth}&tahun=${currentYear}`;
+                    btn.addEventListener('click', () => {
+                        window.location.href = `{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan]) }}?bulan=${i + 1}&tahun=${currentYear}`;
                     });
-                    monthsContainer.appendChild(b);
+                    monthsContainer.appendChild(btn);
                 });
             }
-
-            // Navigasi tahun hanya mengubah tampilan panel, tidak perlu me-reload halaman
-            prevYearBtn.addEventListener('click', () => {
-                currentYear--;
-                renderMonths();
-            });
-            nextYearBtn.addEventListener('click', () => {
-                currentYear++;
-                renderMonths();
-            });
-
-            // Buka/tutup panel
-            btn.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                panel.classList.toggle('open');
-                // Render pilihan bulan hanya saat panel dibuka agar efisien
-                if (panel.classList.contains('open')) {
-                    renderMonths();
-                }
-            });
-
-            // Tutup panel jika klik di area lain
-            document.addEventListener('click', (e) => {
-                if (!panel.contains(e.target) && !btn.contains(e.target)) {
-                    panel.classList.remove('open');
-                }
-            });
-
-            // 3. Inisialisasi teks pada tombol utama saat halaman pertama kali dimuat
-            monthYearEl.textContent = monthNames[currentMonthIndex] + " " + currentYear;
         })();
-
     </script>
 @endpush

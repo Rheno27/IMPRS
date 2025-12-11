@@ -401,7 +401,7 @@ main {
 }
 
 /* Dashboard Table Styles */
-.table-wrapper { width: calc(100% - 78px); margin: 0 39px; }
+.table-wrapper { margin: 0; }
 .report-title {
     text-align: center; font-weight: 500; font-size: 16.5px; color: var(--text-dark);
     border: 1px solid var(--border-light); border-bottom: none; border-radius: 15px 15px 0 0;
@@ -856,3 +856,415 @@ main {
     .form-navigation { flex-direction: column-reverse; gap: 16px; }
     .nav-button { width: 100%; }
 }
+
+/* ========================================= */
+/* 11. SUPER ADMIN DASHBOARD (Features Grid) */
+/* ========================================= */
+.features-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding-top: 100px; /* Space for fixed header */
+    padding-bottom: 50px;
+}
+
+.main-title {
+    font-weight: 700;
+    font-size: 36px; /* Adjusted for better scaling */
+    line-height: 1.2;
+    text-align: center;
+    color: var(--primary-color);
+    max-width: 900px;
+    margin: 0;
+}
+
+.features-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 1280px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.features-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 150px;
+    height: 140px;
+    padding: 16px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.3;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.feature-card svg, 
+.feature-card img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+/* Feature Card Colors */
+.bg-color-1 { background-color: #004e28; }
+.bg-color-2 { background-color: #6f5405; }
+.bg-color-3 { background-color: #711900; }
+.bg-color-4 { background-color: #600831; }
+.bg-color-5 { background-color: #023C6B; }
+.bg-color-6 { background-color: #6F145B; }
+.bg-color-7 { background-color: #960808; }
+.bg-color-8 { background-color: #1E7175; }
+
+/* ========================================= */
+/* 12. SUPER ADMIN TOOLBAR & CONTROLS        */
+/* ========================================= */
+.toolbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 48px 0;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Button Styles (Base) */
+.btn-control {
+    border: 1px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: #fff;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    min-height: 42px;
+    box-sizing: border-box;
+}
+
+.btn-control:hover {
+    background-color: #f0f7f4;
+}
+
+.btn-control svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Specific Button Variants */
+.btn-primary-action {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.btn-primary-action:hover {
+    background-color: var(--primary-dark);
+    color: #fff;
+}
+
+.btn-danger-outline {
+    border-color: rgba(141, 10, 0, 0.2);
+    background-color: #ffe6e6;
+    color: #8D0A00;
+}
+.btn-danger-outline:hover {
+    background-color: #ffd6d6;
+}
+
+/* ========================================= */
+/* 13. CATEGORY NAVIGATOR (Arrows)           */
+/* ========================================= */
+.category-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.nav-arrow:hover {
+    transform: scale(1.1);
+}
+
+.nav-arrow svg {
+    width: 48px;
+    height: 48px;
+}
+
+.category-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.category-pill {
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.category-pill.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(51, 115, 84, 0.3);
+}
+
+.category-pill:not(.active):hover {
+    background-color: rgba(51, 115, 84, 0.05);
+}
+
+/* ========================================= */
+/* 14. REPORT TABLE (Super Admin Variant)    */
+/* ========================================= */
+.report-container {
+    padding: 0 48px 50px;
+}
+
+.report-table-wrapper {
+    border: 1px solid var(--primary-color);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.report-header-block {
+    background-color: var(--primary-color);
+    padding: 15px;
+    text-align: center;
+}
+
+.report-header-block h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background-color: var(--bg-table-header);
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 12px 8px;
+    border: 1px solid var(--border-semitransparent);
+    font-size: 14px;
+    text-align: center;
+}
+
+.data-table td {
+    padding: 10px 8px;
+    border: 1px solid var(--border-semitransparent);
+    text-align: center;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.text-start { text-align: left !important; }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .features-section { padding-top: 80px; }
+    .toolbar-container { padding: 20px; flex-direction: column; align-items: stretch; }
+    .toolbar-left, .toolbar-right { justify-content: space-between; }
+    .report-container { padding: 0 20px 40px; }
+    .category-nav { gap: 10px; }
+    .category-pill { padding: 8px 12px; font-size: 13px; }
+    .nav-arrow svg { width: 32px; height: 32px; }
+    .data-table th, .data-table td { font-size: 12px; padding: 6px 4px; }
+}
+
+/* ========================================= */
+/* 15. MANAGEMENT/CRUD TABLES (Super Admin)  */
+/* ========================================= */
+
+/* Toolbar di atas tabel (Tombol Tambah) */
+.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+
+.btn-add-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    border: 1px solid var(--primary-color);
+    border-radius: 12px;
+    background-color: transparent;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-add-outline:hover {
+    background-color: #f0f7f4;
+    transform: translateY(-2px);
+}
+
+.btn-add-outline svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Tabel CRUD Standard */
+.crud-table-wrapper {
+    overflow-x: auto;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid var(--primary-color);
+    border-top: none;
+}
+
+.crud-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+}
+
+.crud-table th {
+    background-color: var(--bg-table-header);
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px;
+    text-align: center;
+    border-right: 1px solid rgba(51, 115, 84, 0.3);
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.crud-table td {
+    padding: 12px 15px;
+    font-size: 15px;
+    color: var(--text-dark);
+    border-right: 1px solid rgba(51, 115, 84, 0.3);
+    border-bottom: 1px solid rgba(51, 115, 84, 0.3);
+    vertical-align: middle;
+}
+
+.crud-table tr:last-child td {
+    border-bottom: none;
+}
+
+.crud-table td:last-child, 
+.crud-table th:last-child {
+    border-right: none;
+}
+
+/* Helper Class untuk lebar kolom */
+.col-fit { width: 1%; white-space: nowrap; }
+.col-md { width: 25%; }
+.col-lg { width: 40%; }
+.text-start { text-align: left !important; }
+.text-center { text-align: center !important; }
+
+/* ========================================= */
+/* 16. ACTION BUTTONS (Edit, Delete, Save)   */
+/* ========================================= */
+.action-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    color: #fff;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-edit { background-color: #593103; /* Kuning/Orange Gelap */ }
+.btn-delete { background-color: #610707; /* Merah */ }
+.btn-save { background-color: var(--primary-color); }
+
+/* ========================================= */
+/* 17. MODAL CUSTOMIZATIONS                  */
+/* ========================================= */
+.modal-header-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.modal-header-primary .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.modal-header-danger {
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.modal-header-danger .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+

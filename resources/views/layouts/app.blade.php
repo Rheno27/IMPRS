@@ -25,7 +25,6 @@
             <img src="{{ asset('image/logo.png') }}" alt="Logo RSD Kalisat" class="logo-image">
         </a>
 
-        {{-- PERBAIKAN DI SINI: Menggunakan Auth::check() pengganti Session manual --}}
         @if (Auth::check() && (Request::is('admin/*') || Request::is('superadmin/*')))
             <div class="user-info">
                 <svg width="10" height="10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +37,6 @@
                         fill="#337354" />
                 </svg>
 
-                {{-- PERBAIKAN DI SINI: Mengambil nama user dari Auth facade --}}
                 <span class="user-name">
                     {{ Auth::user()->username ?? '---' }}
                 </span>

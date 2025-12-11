@@ -2,603 +2,16 @@
 
 @section('styles')
     <style>
-        :root {
-            --primary-green: #337354;
-            --dark-green: #004e28;
-            --light-green: #d6e3dd;
-            --text-dark: #2d2d2d;
-            --text-light: #ffffff;
-            --bg-main: #fcfcfc;
-            --border-color: rgba(51, 115, 84, 0.5);
-            --font-roboto: 'Roboto', sans-serif;
-            --font-open-sans: 'Open Sans', sans-serif;
-            --font-inter: 'Inter', sans-serif;
-            --border-color-semitransparent: rgba(51, 115, 84, 0.5);
-            --border-color-dark: #337354;
-            --primary-color: #337354;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-roboto);
-            background-color: var(--bg-main);
-            color: var(--text-dark);
-        }
-
-        .page-container {
-            max-width: 1440px;
-            margin: 0 auto;
-            background-color: var(--text-light);
-        }
-
-        .section-padding {
-            padding: 54px 72px;
-        }
-
-        @media (max-width: 768px) {
-            .section-padding {
-                padding: 30px 20px;
-            }
-        }
-
-        /* CSS from section:header */
-        .site-header {
-            display: flex;
-            position: fixed;
-            top: 0;
-            /* penting biar nempel di atas */
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--text-light);
-            border-bottom: 1px solid var(--border-color-semitransparent);
-            padding: 0 40px;
-            height: 80px;
-            /* lebih proporsional, jangan terlalu tinggi */
-            box-sizing: border-box;
-            /* biar padding gak nambah tinggi */
-        }
-
-        main {
-            margin-top: 70px;
-            /* samain dengan tinggi header */
-        }
-
-        /* Logo */
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-image {
-            height: 70px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        /* User info */
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-avatar {
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 18px;
-            /* sebanding dengan tinggi avatar/logo */
-            color: var(--primary-color);
-            white-space: nowrap;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 30px;
-            width: 30px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .logout-link:hover {
-            background: rgba(51, 115, 84, 0.1);
-        }
-
-        .logout-icon {
-            height: 28px;
-            width: 28px;
-        }
-
-        @media (max-width: 1024px) {
-            .site-header {
-                padding: 0 30px;
-                height: 120px;
-            }
-
-            .logo-text {
-                font-size: 28px;
-            }
-
-            .user-name {
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                flex-direction: column;
-                height: auto;
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .logo-text {
-                font-size: 24px;
-            }
-        }
-
-        /* CSS from section:features */
-        #features {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 72px;
-            background-color: var(--bg-main);
-            padding-top: 150px;
-        }
-
-        .main-title {
-            font-family: var(--font-roboto);
-            font-weight: 700;
-            font-size: 54px;
-            line-height: 60px;
-            text-align: center;
-            color: var(--primary-green);
-            max-width: 1296px;
-            margin: 0;
-        }
-
-        .features-grid {
-            display: block;
-            gap: 36px;
-            width: 100%;
-            max-width: 1273px;
-        }
-
-        .features-row {
-            display: flex;
-            justify-content: center;
-            gap: 36px;
-            margin-bottom: 40px;
-            flex-wrap: nowrap;
-        }
-
-        .feature-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            width: 160px;
-            /* <== ini kuncinya */
-            height: 144px;
-            padding: 16px 13px;
-            border-radius: 9px;
-            text-decoration: none;
-            color: var(--text-light);
-            font-family: var(--font-roboto);
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 28px;
-            text-align: center;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-card img,
-        .feature-card .icon-wrapper {
-            width: 45px;
-            height: 45px;
-        }
-
-        .icon-wrapper {
-            position: relative;
-        }
-
-        .icon-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .bg-color-1 {
-            background-color: #004e28;
-        }
-
-        .bg-color-2 {
-            background-color: #6f5405;
-        }
-
-        .bg-color-3 {
-            background-color: #711900;
-        }
-
-        .bg-color-4 {
-            background-color: #600831;
-        }
-
-        .bg-color-5 {
-            background-color: #023C6B;
-        }
-
-        .bg-color-6 {
-            background-color: #6F145B;
-        }
-
-        .bg-color-7 {
-            background-color: #960808;
-        }
-
-        .bg-color-8 {
-            background-color: #1E7175;
-        }
-
-        @media (max-width: 1200px) {
-            .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-
-            .main-title {
-                font-size: 40px;
-                line-height: 48px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-title {
-                font-size: 32px;
-                line-height: 40px;
-            }
-
-            #features {
-                gap: 40px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .features-row {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .feature-card {
-                flex: 1 1 140px;
-                width: auto;
-                max-width: 220px;
-            }
-        }
-
-        /* CSS from section:report */
-        /* CSS from section:report */
-        .section-padding {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 38px;
-        }
-
-        .report-controls-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 30px 48px 0;
-            gap: 28px;
-        }
-
-        /* Grup tombol kiri (year + download) */
-        .report-controls-left {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-        }
-
-        /* Tombol kanan tetap */
-        .report-controls-right {
-            display: flex;
-            align-items: center;
-        }
-
-
-        /* Gaya tombol */
-        .download-btn,
-        .year-selector,
-        .newindicator-btn {
-            border: 1px solid var(--border-color-dark);
-            border-radius: 12px;
-            padding: 9px 20px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            font-size: 21px;
-            color: var(--primary-color);
-            background-color: transparent;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-
-        .newindicator-btn {
-            background-color: var(--primary-green);
-            color: var(--text-light);
-        }
-
-        .year-picker-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-
-        .year-panel {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            width: 240px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-            padding: 12px;
-            display: none;
-            z-index: 300;
-        }
-
-        .year-panel.open {
-            display: block;
-        }
-
-        .year-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
-
-        .year-header button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 4px 8px;
-        }
-
-        .year-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-
-        .year-grid button {
-            padding: 8px;
-            border: none;
-            background: #f7f7f7;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .year-grid button:hover {
-            background: #eaeaea;
-        }
-
-        .year-grid button.active {
-            background: #337354;
-            color: #fff;
-            font-weight: bold;
-        }
-
-
-        .category-selector {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 48px;
-        }
-
-        .arrow-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-        }
-
-        .arrow-btn svg {
-            width: 48px;
-            height: 48px;
-        }
-
-        .categories {
-            display: flex;
-            align-items: center;
-            gap: 48px;
-        }
-
-        .category-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            font-size: 24px;
-            /* dikecilkan */
-            color: var(--primary-color);
-            opacity: 0.6;
-            padding: 10px 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .category-btn.active {
-            background-color: var(--primary-color);
-            /* hijau */
-            color: white;
-            border-radius: 50px;
-            padding: 15px 50px;
-            opacity: 1;
-        }
-
-        .table-container {
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--primary-green);
-        }
-
-        .table-header {
-            background-color: var(--primary-green);
-            padding: 20px;
-            text-align: center;
-        }
-
-        .table-header h3 {
-            margin: 0;
-            color: var(--text-light);
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: var(--text-light);
-        }
-
-        .report-table th,
-        .report-table td {
-            border: 1px solid var(--primary-green);
-            padding: 16px 10px;
-            text-align: center;
-            min-width: 70px;
-        }
-
-        .report-table th {
-            background-color: var(--light-green);
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .report-table th.col-no {
-            width: 45px;
-            min-width: 45px;
-        }
-
-        /* Kolom Ruangan (hanya muncul di IMPU) */
-        .report-table th.col-ruangan {
-            width: 120px;
-            min-width: 120px;
-        }
-
-        /* Kolom Judul Indikator (Lebar menyesuaikan sisa ruang atau fixed lebar) */
-        .report-table th.col-judul {
-            width: 250px;
-            /* Diperlebar agar teks panjang muat */
-            min-width: 250px;
-        }
-
-        /* Kolom Standar */
-        .report-table th.col-standar {
-            width: 100px;
-            min-width: 100px;
-        }
-
-        /* Kolom Bulan */
-        .report-table th.col-bulan {
-            min-width: 60px;
-        }
-
-        .report-table td {
-            font-family: var(--font-inter);
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--text-dark);
-            height: 56px;
-        }
-
-        @media (max-width: 1200px) {
-            .category-nav {
-                gap: 10px;
-            }
-
-            .category-link {
-                padding: 12px 30px;
-                font-size: 22px;
-            }
-
-            .action-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .category-nav {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .category-link {
-                padding: 10px;
-                font-size: 14px;
-                flex-grow: 1;
-                text-align: center;
-            }
-
-            .nav-arrow img {
-                width: 40px;
-                height: 40px;
-            }
-
-            .action-btn {
-                font-size: 20px;
-                padding: 12px 20px;
-            }
-
-            .table-header h3 {
-                font-size: 20px;
-            }
+        .features-section {
+            background-image: url('{{ asset('image/background.png') }}');
         }
     </style>
 @endsection
 
 @section('content')
-    <section id="features" class="section-padding">
+    <section class="features-section">
         <h1 class="main-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
+
         <div class="features-grid">
             <div class="features-row">
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R01']) }}" class="feature-card bg-color-1">
@@ -659,7 +72,7 @@
                             d="M28.6 21.9333H17.4C16.6347 21.9333 16 21.2986 16 20.5333C16 19.768 16.6347 19.1333 17.4 19.1333H28.6C29.3653 19.1333 30 19.768 30 20.5333C30 21.2986 29.3653 21.9333 28.6 21.9333Z"
                             fill="#FFC107" />
                     </svg>
-                    <span>Farmasi</span>
+                    <span>Ruang<br>Farmasi</span>
                 </a>
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R05']) }}" class="feature-card bg-color-6">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -957,14 +370,16 @@
                     <span>SKM</span>
                 </a>
             </div>
+
         </div>
     </section>
-    <section id="report" class="section-padding">
-        <div class="report-controls-top">
-            <div class="report-controls-left">
-                <!-- YEAR SELECTOR -->
-                <div class="year-picker-wrapper">
-                    <div class="year-selector" id="yearBtn">
+
+    <section class="report-container">
+        <div class="toolbar-container" style="padding: 0 0 30px 0;">
+            <div class="toolbar-left">
+                {{-- Year Picker Wrapper --}}
+                <div style="position: relative;">
+                    <button id="yearPickerBtn" class="btn-control" type="button">
                         <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
@@ -991,176 +406,104 @@
                                 d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
                                 fill="#FFC107" />
                         </svg>
+                        <span id="selectedYear" style="color: #333; font-weight: 600;">{{ $tahun }}</span>
+                    </button>
 
-                        <span id="selectedYear">{{ $tahun }}</span>
-                    </div>
-
-                    <div class="year-panel" id="yearPanel">
-                        <div class="year-header">
-                            <button id="prevYears">&lt;</button>
-                            <span id="yearRange">2020 - 2029</span>
-                            <button id="nextYears">&gt;</button>
+                    {{-- Panel Dropdown Tahun --}}
+                    <div id="yearPanel" class="calendar-popup" style="display:none; width: 220px; position: absolute; top: 110%; left: 0; z-index: 100;">
+                        <div class="cal-header" style="justify-content: center; padding: 10px; border-bottom: 1px solid #eee;">
+                            <span style="font-weight: bold; color: var(--primary-color);">Pilih Tahun</span>
                         </div>
-                        <div class="year-grid" id="yearGrid"></div>
+                        <div id="yearGrid" class="calendar-months" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 10px;"></div>
                     </div>
                 </div>
 
+                {{-- Download Button Form --}}
                 <form action="{{ route('superadmin.download_rekap_indikator') }}" method="GET" style="display: inline;">
-
                     <input type="hidden" name="tahun" value="{{ $tahun }}">
                     <input type="hidden" name="kategori" value="{{ $selectedKategori }}">
-
-                    <button type="submit" class="download-btn"
-                        style="background: none; border: 1px solid var(--border-color-dark); font-family: inherit;">
-                        <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="50" height="50" rx="10" fill="#FCFCFC" />
-                            <path
-                                d="M38 29.3333V35.1111C38 35.8773 37.6956 36.6121 37.1539 37.1539C36.6121 37.6956 35.8773 38 35.1111 38H14.8889C14.1227 38 13.3879 37.6956 12.8461 37.1539C12.3044 36.6121 12 35.8773 12 35.1111V29.3333M17.7778 22.1111L25 29.3333M25 29.3333L32.2222 22.1111M25 29.3333V12"
-                                stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <button type="submit" class="btn-control">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
-                        <span>Download File</span>
+                        <span style="color: var(--primary-color);">Download File</span>
                     </button>
                 </form>
             </div>
 
-            <div class="report-controls-right">
-                <a href="{{ route('superadmin.indikator_mutu.create') }}" class="newindicator-btn">
-                    <svg width="45" height="46" viewBox="0 0 45 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M14.6436 5.25H30.3564C33.5699 5.25004 36.0144 6.20395 37.6523 7.84375C39.2901 9.48351 40.2402 11.9278 40.2314 15.1406V30.8564C40.2314 34.0699 39.2772 36.5147 37.6367 38.1553C35.9962 39.7958 33.5513 40.7499 30.3379 40.75H14.6436C11.43 40.75 8.98513 39.7958 7.34473 38.1533C5.70437 36.5108 4.75008 34.0613 4.75 30.8379V15.1436C4.75004 11.93 5.7042 9.48526 7.34473 7.84473C8.88269 6.30677 11.1274 5.37163 14.0498 5.26074L14.6436 5.25Z"
-                            stroke="white" stroke-width="2" />
-                        <path
-                            d="M33.75 21.5938H23.9062V11.75C23.9062 10.9812 23.2688 10.3438 22.5 10.3438C21.7312 10.3438 21.0938 10.9812 21.0938 11.75V21.5938H11.25C10.4812 21.5938 9.84375 22.2312 9.84375 23C9.84375 23.7688 10.4812 24.4062 11.25 24.4062H21.0938V34.25C21.0938 35.0187 21.7312 35.6562 22.5 35.6562C23.2688 35.6562 23.9062 35.0187 23.9062 34.25V24.4062H33.75C34.5187 24.4062 35.1562 23.7688 35.1562 23C35.1562 22.2312 34.5187 21.5938 33.75 21.5938Z"
-                            fill="white" />
+            <div class="toolbar-right">
+                <a href="{{ route('superadmin.indikator_mutu.create') }}" class="btn-control btn-primary-action">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                     <span>Tambah Indikator Baru</span>
                 </a>
             </div>
         </div>
 
+        {{-- Category Selector --}}
+        @php
+$categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
+$keys = array_keys($categoryMap);
+$current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
+$prev = ($current - 1 + count($keys)) % count($keys);
+$next = ($current + 1) % count($keys);
+        @endphp
 
-        <!-- Category Selector -->
-        <div class="category-selector">
-            @php
-                // Array mapping: Nama Lengkap => Singkatan
-                $categoryMap = [
-                    'Indikator Mutu Prioritas Unit' => 'IMPU',
-                    'Indikator Nasional Mutu' => 'INM',
-                    'Indikator Mutu Prioritas RS' => 'IMPRS'
-                ];
-
-                $categoryKeys = array_keys($categoryMap);
-                $currentIndex = array_search($selectedKategori, $categoryKeys);
-                if ($currentIndex === false)
-                    $currentIndex = 1;
-
-                $prevIndex = ($currentIndex - 1 + count($categoryKeys)) % count($categoryKeys);
-                $nextIndex = ($currentIndex + 1) % count($categoryKeys);
-
-                // -- LOGIKA BARU UNTUK MENAMPILKAN 3 ITEM --
-                // Buat array baru yang hanya berisi 3 kategori yang akan ditampilkan
-                $displayCategories = [
-                    $categoryKeys[$prevIndex] => $categoryMap[$categoryKeys[$prevIndex]],
-                    $categoryKeys[$currentIndex] => $categoryMap[$categoryKeys[$currentIndex]],
-                    $categoryKeys[$nextIndex] => $categoryMap[$categoryKeys[$nextIndex]],
-                ];
-            @endphp
-
-            {{-- Link untuk panah kiri --}}
-            <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$prevIndex]]) }}" class="arrow-btn prev"
-                aria-label="Previous category">
-                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                        fill="white" stroke="#DC5E3A" />
-                    <path
-                        d="M23.91 34.4101L32.91 25.4101C33.78 24.5401 35.22 24.5401 36.09 25.4101C36.96 26.2801 36.96 27.7201 36.09 28.5901L30.93 33.7501H46.5C47.73 33.7501 48.75 34.7701 48.75 36.0001C48.75 37.2301 47.73 38.2501 46.5 38.2501H30.93L36.09 43.4101C36.96 44.2801 36.96 45.7201 36.09 46.5901C35.64 47.0401 35.07 47.2501 34.5 47.2501C33.93 47.2501 33.36 47.0401 32.91 46.5901L23.91 37.5901C23.04 36.7201 23.04 35.2801 23.91 34.4101Z"
-                        fill="#DC5E3A" />
-                </svg>
+        <div class="category-nav">
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$prev]]) }}" class="nav-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </a>
 
-            <div class="categories">
-                {{-- Loop melalui array baru yang hanya berisi 3 item --}}
-                @foreach ($displayCategories as $fullName => $shortName)
-                    <a href="{{ route('superadmin.dashboard', ['kategori' => $fullName]) }}"
-                        class="category-btn {{ $selectedKategori == $fullName ? 'active' : '' }}">
-                        {{ $shortName }}
+            <div class="category-items">
+                @foreach([$prev, $current, $next] as $idx)
+                    <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$idx]]) }}" 
+                        class="category-pill {{ $idx == $current ? 'active' : '' }}">
+                        {{ $categoryMap[$keys[$idx]] }}
                     </a>
                 @endforeach
             </div>
 
-            {{-- Link untuk panah kanan --}}
-            <a href="{{ route('superadmin.dashboard', ['kategori' => $categoryKeys[$nextIndex]]) }}" class="arrow-btn next"
-                aria-label="Next category">
-                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M36 6.5C19.7076 6.5 6.5 19.7076 6.5 36C6.5 52.2924 19.7076 65.5 36 65.5C52.2924 65.5 65.5 52.2924 65.5 36C65.5 19.7076 52.2924 6.5 36 6.5Z"
-                        fill="white" stroke="#DC5E3A" />
-                    <path
-                        d="M48.09 37.5899L39.09 46.5899C38.22 47.4599 36.78 47.4599 35.91 46.5899C35.04 45.7199 35.04 44.2799 35.91 43.4099L41.07 38.2499H25.5C24.27 38.2499 23.25 37.2299 23.25 35.9999C23.25 34.7699 24.27 33.7499 25.5 33.7499H41.07L35.91 28.5899C35.04 27.7199 35.04 26.2799 35.91 25.4099C36.36 24.9599 36.93 24.7499 37.5 24.7499C38.07 24.7499 38.64 24.9599 39.09 25.4099L48.09 34.4099C48.96 35.2799 48.96 36.7199 48.09 37.5899Z"
-                        fill="#DC5E3A" />
-                </svg>
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$next]]) }}" class="nav-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </a>
         </div>
 
-        <!-- Baris ketiga: tabel -->
-        <div class="table-container">
-            <div class="table-header">
+        {{-- Table --}}
+        <div class="report-table-wrapper">
+            <div class="report-header-block">
                 <h3>Rekapitulasi {{ $selectedKategori }}</h3>
             </div>
-            <div class="table-wrapper">
-                <table class="report-table">
+            <div style="overflow-x: auto;">
+                <table class="data-table">
                     <thead>
                         <tr>
-                            <th class="col-no">No.</th>
-
-                            {{-- Tampilkan Kolom Ruangan HANYA jika kategori IMPU --}}
-                            @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
-                                <th class="col-ruangan">Ruangan</th>
-                            @endif
-
-                            <th class="col-judul">Judul Indikator</th>
-                            <th class="col-standar">Standart</th>
-
-                            <th class="col-bulan">Jan</th>
-                            <th class="col-bulan">Feb</th>
-                            <th class="col-bulan">Mar</th>
-                            <th class="col-bulan">Apr</th>
-                            <th class="col-bulan">Mei</th>
-                            <th class="col-bulan">Jun</th>
-                            <th class="col-bulan">Jul</th>
-                            <th class="col-bulan">Agu</th>
-                            <th class="col-bulan">Sep</th>
-                            <th class="col-bulan">Okt</th>
-                            <th class="col-bulan">Nov</th>
-                            <th class="col-bulan">Des</th>
+                            <th style="width: 50px;">No.</th>
+                            @if($selectedKategori === 'Indikator Mutu Prioritas Unit') <th>Ruangan</th> @endif
+                            <th>Judul Indikator</th>
+                            <th>Standart</th>
+                            @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] as $m) <th>{{ $m }}</th> @endforeach
                         </tr>
                     </thead>
-                    <tbody id="report-table-body">
+                    <tbody>
                         @forelse ($indikatorData as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}.</td>
-
-                                {{-- Isi Kolom Ruangan HANYA jika kategori IMPU --}}
-                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
-                                    <td>{{ $item->ruangan }}</td>
+                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit') 
+                                    <td>{{ $item->ruangan }}</td> 
                                 @endif
-
-                                <td style="text-align: left;">{{ $item->judul }}</td>
-                                <td style="text-align: center;">{{ $item->standar }}</td>
-
-                                @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td>
-                                        {{ $item->data_bulan[$bulan] ?? '' }}
-                                    </td>
+                                <td class="text-start">{{ $item->judul }}</td>
+                                <td>{{ $item->standar }}</td>
+                                @for ($m = 1; $m <= 12; $m++) 
+                                    <td>{{ $item->data_bulan[$m] ?? '' }}</td> 
                                 @endfor
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ $selectedKategori === 'Indikator Mutu Prioritas Unit' ? '16' : '15' }}"
-                                    style="text-align: center; padding: 20px;">
-                                    Tidak ada data laporan untuk kategori ini di tahun yang dipilih.
-                                </td>
+                                <td colspan="16" style="padding: 20px;">Tidak ada data laporan.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -1172,6 +515,65 @@
 
 @push('scripts')
     <script>
-        const selectedYearFromServer = {{ $tahun }};
+        document.addEventListener('DOMContentLoaded', function () {
+            const yearBtn = document.getElementById('yearPickerBtn');
+            const yearPanel = document.getElementById('yearPanel');
+            const yearGrid = document.getElementById('yearGrid');
+
+            let currentYear = {{ $tahun }};
+
+            yearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (yearPanel.style.display === 'none' || yearPanel.style.display === '') {
+                    yearPanel.style.display = 'block';
+                    renderYears(currentYear);
+                } else {
+                    yearPanel.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!yearBtn.contains(e.target) && !yearPanel.contains(e.target)) {
+                    yearPanel.style.display = 'none';
+                }
+            });
+
+            function renderYears(activeYear) {
+                yearGrid.innerHTML = '';
+                const startYear = activeYear - 4;
+                const endYear = activeYear + 4;
+
+                for (let y = startYear; y <= endYear; y++) {
+                    let btn = document.createElement('button');
+                    btn.textContent = y;
+                    btn.type = 'button'; 
+
+                    btn.className = 'day-btn';
+                    btn.style.width = '100%';
+                    btn.style.padding = '8px';
+                    btn.style.cursor = 'pointer';
+                    btn.style.border = 'none';
+                    btn.style.borderRadius = '6px';
+                    btn.style.background = 'transparent';
+
+                    if (y === activeYear) {
+                        btn.classList.add('selected');
+                        btn.style.backgroundColor = '#337354'; 
+                        btn.style.color = '#fff';
+                    } else {
+                        btn.onmouseover = () => btn.style.backgroundColor = '#f0f0f0';
+                        btn.onmouseout = () => btn.style.backgroundColor = 'transparent';
+                    }
+
+                    btn.addEventListener('click', () => {
+                        let url = new URL(window.location.href);
+                        url.searchParams.set('tahun', y); 
+                        window.location.href = url.toString();
+                    });
+
+                    yearGrid.appendChild(btn);
+                }
+            }
+        });
     </script>
 @endpush
