@@ -1,8 +1,90 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        /* Memastikan modal overlay menutupi layar dengan animasi fade */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            /* Efek blur di belakang */
+            display: none;
+            /* Default hidden */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Modifier agar Modal tepat di tengah (override margin: 15% auto dari app.css) */
+        .modal-box.centered-alert {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            /* Reset margin dari app.css */
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            animation: popupScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Efek membal */
+        }
+
+        /* Tipografi Judul Modal */
+        .modal-title-alert {
+            font-family: 'Instrument Sans', sans-serif;
+            /* Sesuai font tema */
+            font-size: 22px;
+            font-weight: 700;
+            color: #dc3545;
+            /* Merah Error */
+            margin-bottom: 10px;
+        }
+
+        /* Text Body Modal */
+        .modal-body-text {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        /* Input yang error kita beri border merah & background tipis */
+        .input-error {
+            border-bottom: 2px solid #dc3545 !important;
+            background-color: #fff5f5 !important;
+            transition: all 0.3s;
+        }
+
+        @keyframes popupScale {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .icon-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px; /* Jarak ke judul */
+        }
+
+        /* Opsional: Membuat tombol tidak terlalu lebar agar lebih manis */
+        .btn-modal-wide {
+            width: 100%;
+            max-width: 200px; /* Batasi lebar tombol */
+        }
+    </style>
+@endsection
+
 @section('content')
     <main id="main-content" class="main-content-section">
-        {{-- Flash Messages menggunakan CSS global .alert dan .custom-alert --}}
+        {{-- Flash Messages (Menggunakan style global .custom-alert) --}}
         @if(session('info'))
             <div class="alert alert-info">{{ session('info') }}</div>
         @endif
@@ -10,42 +92,34 @@
         @if (session('success'))
             <div class="custom-alert success" role="alert">
                 <div class="alert-content">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" />
-                        <path d="M7.75 12L10.58 14.83L16.25 9.17004" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
                     </svg>
                     <span>{{ session('success') }}</span>
                 </div>
-                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 6L6 18" />
-                        <path d="M6 6L18 18" />
-                    </svg>
-                </button>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">✕</button>
             </div>
         @endif
 
         @if (session('error'))
             <div class="custom-alert error" role="alert">
                 <div class="alert-content">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" />
-                        <path d="M12 8V13" />
-                        <path d="M11.9945 16H12.0035" stroke-width="2" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
                     <span>{{ session('error') }}</span>
                 </div>
-                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 6L6 18" />
-                        <path d="M6 6L18 18" />
-                    </svg>
-                </button>
+                <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">✕</button>
             </div>
         @endif
 
+        {{-- DATE PICKER SECTION --}}
         <div class="date-picker">
             <button type="button" id="calendarTrigger" class="calendar-btn" aria-label="Pilih tanggal">
+                {{-- SVG Calendar Icon --}}
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
@@ -71,7 +145,7 @@
                     <path
                         d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
                         fill="#FFC107" />
-                    </svg>
+                </svg>
             </button>
             <span id="dateDisplay" class="date-text">--</span>
 
@@ -94,7 +168,7 @@
 
         <div class="indicator-table-container">
             <h2 class="table-title">Penilaian Indikator Mutu di Ruang {{ $user->nama_ruangan }}</h2>
-            <form method="POST" action="{{ route('admin.input_indikator.store') }}">
+            <form id="indicatorForm" method="POST" action="{{ route('admin.input_indikator.store') }}">
                 @csrf
                 <input type="hidden" name="tanggal" value="{{ $tanggal }}">
                 <div class="indicator-grid">
@@ -108,13 +182,13 @@
                         <div class="grid-cell">{{ $item->variabel ?? $item->standar }}</div>
                         <div class="grid-cell">
                             <input type="number" name="pasien_sesuai[{{ $item->id_indikator }}]" class="input-plain"
-                                placeholder="Isi jumlah pasien yang memenuhi indikator"
+                                placeholder="Isi jumlah"
                                 value="{{ isset($mutu[$item->id_indikator]) ? $mutu[$item->id_indikator]->pasien_sesuai : '' }}">
                         </div>
 
                         <div class="grid-cell">
                             <input type="number" name="total_pasien[{{ $item->id_indikator }}]" class="input-plain"
-                                placeholder="Isi total pasien hari ini"
+                                placeholder="Isi total"
                                 value="{{ isset($mutu[$item->id_indikator]) ? $mutu[$item->id_indikator]->total_pasien : '' }}">
                         </div>
                     @endforeach
@@ -126,6 +200,34 @@
                 </div>
             </form>
         </div>
+
+        {{-- MODAL VALIDASI ERROR (Menggunakan struktur app.css + Custom style kita) --}}
+        <div id="validationModal" class="modal-overlay">
+            <div class="modal-box centered-alert">
+                {{-- CONTAINER IKON: Flexbox Center --}}
+                <div class="icon-centered">
+                    {{-- Ukuran ikon disesuaikan sedikit (50px) agar proporsional --}}
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+
+                <h3 class="modal-title-alert">Data Belum Lengkap</h3>
+                <p class="modal-body-text">
+                    Mohon maaf, semua indikator wajib diisi. <br>
+                    Silakan lengkapi kolom yang berwarna merah.
+                </p>
+
+                <div class="modal-actions">
+                    {{-- Tambahkan class btn-modal-wide jika ingin tombol tidak full width --}}
+                    <button type="button" class="btn-primary btn-modal-wide" id="btnModalOk">Mengerti</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 @endsection
 
@@ -196,7 +298,6 @@
             return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         }
 
-        // --- FUNGSI BARU UNTUK FORMAT URL ---
         function formatDateForUrl(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -233,32 +334,66 @@
             calendarPopup.classList.add("hidden");
         });
 
-        // --- BAGIAN YANG DIUBAH ---
         confirmBtn.addEventListener("click", () => {
             const formattedDate = formatDateForUrl(selectedDate);
-            // Redirect ke halaman yang sama dengan parameter tanggal yang baru
             window.location.href = `{{ route('admin.input_indikator') }}?tanggal=${formattedDate}`;
         });
-        // --- AKHIR BAGIAN YANG DIUBAH ---
 
         // init
         dateDisplay.textContent = formatDateForDisplay(selectedDate);
 
-        // Validasi sebelum submit (tidak ada perubahan di sini)
-        document.querySelector('form').addEventListener('submit', function (e) {
+
+        // === VALIDASI FORM & MODAL ===
+        const indicatorForm = document.getElementById('indicatorForm');
+        const validationModal = document.getElementById('validationModal');
+        const btnModalOk = document.getElementById('btnModalOk');
+
+        // Fungsi Tutup Modal
+        function closeModal() {
+            validationModal.style.display = 'none';
+        }
+
+        btnModalOk.addEventListener('click', closeModal);
+
+        // Tutup modal jika klik di area gelap (overlay)
+        validationModal.addEventListener('click', function (e) {
+            if (e.target === validationModal) {
+                closeModal();
+            }
+        });
+
+        // Intercept Submit
+        indicatorForm.addEventListener('submit', function (e) {
             let valid = true;
-            // Cek semua input indikator
+            let firstInvalidInput = null;
+
+            // Reset style semua input dulu
+            document.querySelectorAll('.indicator-grid input[type="number"]').forEach(input => {
+                input.classList.remove('input-error');
+            });
+
+            // Cek validasi
             document.querySelectorAll('.indicator-grid input[type="number"]').forEach(function (input) {
                 if (input.value === '' || input.value === null) {
                     valid = false;
-                    input.style.borderColor = 'red';
-                } else {
-                    input.style.borderColor = '';
+                    input.classList.add('input-error'); // Tambah class error
+
+                    if (!firstInvalidInput) firstInvalidInput = input;
                 }
             });
+
             if (!valid) {
-                e.preventDefault();
-                alert('Semua indikator harus diisi!');
+                e.preventDefault(); // Stop submit
+                validationModal.style.display = 'block'; // Tampilkan Modal
+
+                // Ketika tombol OK diklik, scroll ke input yang error
+                btnModalOk.onclick = function () {
+                    closeModal();
+                    if (firstInvalidInput) {
+                        firstInvalidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstInvalidInput.focus();
+                    }
+                };
             }
         });
     </script>

@@ -1,0 +1,147 @@
+LastSessions<|||>1<|||>Database Skripsi TiDB
+LastActiveSession<|||>1<|||>Database Skripsi TiDB
+ColWidths_connform.ListSessions<|||>1<|||>163,50,50,50,50,50,10
+ColsVisible_connform.ListSessions<|||>1<|||>0,1,4,6
+ColPositions_connform.ListSessions<|||>1<|||>0,1,2,3,4,5,6
+ColSort_connform.ListSessions<|||>1<|||>0,0
+MainWinOnMonitor<|||>3<|||>0
+ColWidths_MainForm.ListDatabases<|||>1<|||>150,80,50,50,50,50,50,50,50,50,120
+ColsVisible_MainForm.ListDatabases<|||>1<|||>0,1,2,3,4,5,6,7,8,9,10
+ColPositions_MainForm.ListDatabases<|||>1<|||>0,1,2,3,4,5,6,7,8,9,10
+ColSort_MainForm.ListDatabases<|||>1<|||>0,0
+ColWidths_MainForm.ListVariables<|||>1<|||>160,200,428
+ColsVisible_MainForm.ListVariables<|||>1<|||>0,1,2
+ColPositions_MainForm.ListVariables<|||>1<|||>0,1,2
+ColSort_MainForm.ListVariables<|||>1<|||>0,0
+ColWidths_MainForm.ListStatus<|||>1<|||>160,428,100,100
+ColsVisible_MainForm.ListStatus<|||>1<|||>0,1,2,3
+ColPositions_MainForm.ListStatus<|||>1<|||>0,1,2,3
+ColSort_MainForm.ListStatus<|||>1<|||>0,0
+ColWidths_MainForm.ListProcesses<|||>1<|||>70,80,80,80,80,50,50,298
+ColsVisible_MainForm.ListProcesses<|||>1<|||>0,1,2,3,4,5,6,7
+ColPositions_MainForm.ListProcesses<|||>1<|||>0,1,2,3,4,5,6,7
+ColSort_MainForm.ListProcesses<|||>1<|||>0,1
+ColWidths_MainForm.ListCommandStats<|||>1<|||>120,100,100,100,368
+ColsVisible_MainForm.ListCommandStats<|||>1<|||>0,1,2,3,4
+ColPositions_MainForm.ListCommandStats<|||>1<|||>0,1,2,3,4
+ColSort_MainForm.ListCommandStats<|||>1<|||>1,1
+ColWidths_MainForm.ListTables<|||>1<|||>120,70,70,120,120,70,100,50,70,70,70,70,70,90,120,70,70,70,50
+ColsVisible_MainForm.ListTables<|||>1<|||>0,1,2,3,4,5,6,18
+ColPositions_MainForm.ListTables<|||>1<|||>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+ColSort_MainForm.ListTables<|||>1<|||>0,0
+MainWinWidth<|||>3<|||>993
+MainWinHeight<|||>3<|||>525
+SessionManager_WindowLeft<|||>3<|||>615
+SessionManager_WindowTop<|||>3<|||>184
+FileDialogEncoding_MainForm<|||>3<|||>0
+ColWidths_frmTableEditor.listColumns<|||>1<|||>58,100,154,90,60,65,50,117,130,140,100,100
+ColsVisible_frmTableEditor.listColumns<|||>1<|||>0,1,2,3,4,5,6,7,8,9,10,11
+ColPositions_frmTableEditor.listColumns<|||>1<|||>0,1,2,3,4,5,6,7,8,9,10,11
+ColSort_frmTableEditor.listColumns<|||>1<|||>-1,0
+ColWidths_frmTableEditor.treeIndexes<|||>1<|||>314,100,80,120
+ColsVisible_frmTableEditor.treeIndexes<|||>1<|||>0,1,2,3
+ColPositions_frmTableEditor.treeIndexes<|||>1<|||>0,1,2,3
+ColSort_frmTableEditor.treeIndexes<|||>1<|||>-1,0
+ColWidths_frmTableEditor.listForeignKeys<|||>1<|||>200,80,100,80,80,80
+ColsVisible_frmTableEditor.listForeignKeys<|||>1<|||>0,1,2,3,4,5
+ColPositions_frmTableEditor.listForeignKeys<|||>1<|||>0,1,2,3,4,5
+ColSort_frmTableEditor.listForeignKeys<|||>1<|||>-1,0
+ColWidths_frmTableEditor.listCheckConstraints<|||>1<|||>200,420
+ColsVisible_frmTableEditor.listCheckConstraints<|||>1<|||>0,1
+ColPositions_frmTableEditor.listCheckConstraints<|||>1<|||>0,1
+ColSort_frmTableEditor.listCheckConstraints<|||>1<|||>-1,0
+FilterPanel<|||>3<|||>0
+MainWinLeft<|||>3<|||>237
+MainWinTop<|||>3<|||>122
+querymemoheight<|||>3<|||>299
+sqloutheight<|||>3<|||>221
+MainWinMaximized<|||>3<|||>1
+SQLFile0<|||>1<|||>D:\laragon6\laragon\bin\heidisql\Backups\query-tab-2025-11-30_11-21-57-379.sql
+SQLFile1<|||>1<|||>D:\laragon6\laragon\bin\heidisql\Backups\query-tab-2025-11-29_14-42-57-416.sql
+SQLFile2<|||>1<|||>D:\laragon6\laragon\www\ProjectSkripsi\indikator_mutu_new_full_fixed.sql
+SQLFile3<|||>1<|||>D:\laragon6\laragon\bin\heidisql\Backups\query-tab-2025-11-27_17-24-01-158.sql
+Servers\Database Skripsi TiDB\SessionCreated<|||>1<|||>2025-11-27 17:24:31
+Servers\Database Skripsi TiDB\Host<|||>1<|||>gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+Servers\Database Skripsi TiDB\WindowsAuth<|||>3<|||>0
+Servers\Database Skripsi TiDB\CleartextPluginEnabled<|||>3<|||>0
+Servers\Database Skripsi TiDB\User<|||>1<|||>qCewVnkYCnibDFs.root
+Servers\Database Skripsi TiDB\Password<|||>1<|||>546F7072774D4E57467C67435A7C375A2
+Servers\Database Skripsi TiDB\LoginPrompt<|||>3<|||>0
+Servers\Database Skripsi TiDB\Port<|||>1<|||>4000
+Servers\Database Skripsi TiDB\NetType<|||>3<|||>0
+Servers\Database Skripsi TiDB\Compressed<|||>3<|||>0
+Servers\Database Skripsi TiDB\LocalTimeZone<|||>3<|||>0
+Servers\Database Skripsi TiDB\QueryTimeout<|||>3<|||>30
+Servers\Database Skripsi TiDB\KeepAlive<|||>3<|||>20
+Servers\Database Skripsi TiDB\FullTableStatus<|||>3<|||>1
+Servers\Database Skripsi TiDB\Databases<|||>1<|||>
+Servers\Database Skripsi TiDB\Library<|||>1<|||>libmariadb.dll
+Servers\Database Skripsi TiDB\Comment<|||>1<|||>
+Servers\Database Skripsi TiDB\StartupScriptFilename<|||>1<|||>
+Servers\Database Skripsi TiDB\TreeBackground<|||>3<|||>536870911
+Servers\Database Skripsi TiDB\SshExecutable<|||>1<|||>
+Servers\Database Skripsi TiDB\SSHtunnelHost<|||>1<|||>
+Servers\Database Skripsi TiDB\SSHtunnelHostPort<|||>3<|||>22
+Servers\Database Skripsi TiDB\SSHtunnelUser<|||>1<|||>
+Servers\Database Skripsi TiDB\SSHtunnelPassword<|||>1<|||>1
+Servers\Database Skripsi TiDB\SSHtunnelTimeout<|||>3<|||>4
+Servers\Database Skripsi TiDB\SSHtunnelPrivateKey<|||>1<|||>
+Servers\Database Skripsi TiDB\SSHtunnelPort<|||>3<|||>3307
+Servers\Database Skripsi TiDB\SSL_Active<|||>3<|||>1
+Servers\Database Skripsi TiDB\SSL_Key<|||>1<|||>
+Servers\Database Skripsi TiDB\SSL_Cert<|||>1<|||>
+Servers\Database Skripsi TiDB\SSL_CA<|||>1<|||>
+Servers\Database Skripsi TiDB\SSL_Cipher<|||>1<|||>
+Servers\Database Skripsi TiDB\IgnoreDatabasePattern<|||>1<|||>
+Servers\Database Skripsi TiDB\LogFileDdl<|||>3<|||>0
+Servers\Database Skripsi TiDB\LogFileDml<|||>3<|||>0
+Servers\Database Skripsi TiDB\LogFilePath<|||>1<|||>C:\Users\Oner\AppData\Roaming\HeidiSQL\Logs\%session\%db\%y%m%d.sql
+Servers\Database Skripsi TiDB\RefusedCount<|||>3<|||>5
+Servers\Database Skripsi TiDB\ServerVersionFull<|||>1<|||>8.0.11-TiDB-v7.5.6-serverless - TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Servers\Database Skripsi TiDB\ConnectCount<|||>3<|||>7
+Servers\Database Skripsi TiDB\ServerVersion<|||>3<|||>80011
+Servers\Database Skripsi TiDB\LastConnect<|||>1<|||>2025-12-11 18:25:45
+Servers\Database Skripsi TiDB\lastUsedDB<|||>1<|||>indikator_mutu
+Servers\Database Skripsi TiDB\QueryHistory\1<|||>1<|||>2025-11-29 14:43:12|indikator_mutu|204|-- 1. Update data Ruangan (R21 jadi Kantor)<{{{><}}}>INSERT INTO ruangan (id_ruangan, nama_ruangan) <{{{><}}}>VALUES ('R21', 'Kantor') <{{{><}}}>ON DUPLICATE KEY UPDATE nama_ruangan = 'Kantor';<{{{><}}}><{{{><}}}>-- 2. Update/Buat User (U21 jadi ruang_kantor)<{{{><}}}>INSERT INTO user (id_user, username, password, id_ruangan, nama_ruangan) <{{{><}}}>VALUES ('U21', 'ruang_kantor', 'kantor123', 'R21', 'Kantor') <{{{><}}}>ON DUPLICATE KEY UPDATE <{{{><}}}>    username = 'ruang_kantor', <{{{><}}}>    password = 'kantor123', <{{{><}}}>    id_ruangan = 'R21', <{{{><}}}>    nama_ruangan = 'Kantor';
+Servers\Database Skripsi TiDB\QueryHistory\2<|||>1<|||>2025-11-30 11:22:11|indikator_mutu|563|-- ============================================================<{{{><}}}>-- BAGIAN 1: ASSIGN INDIKATOR KE SEMUA RUANGAN (Agar dashboard muncul)<{{{><}}}>-- ============================================================<{{{><}}}><{{{><}}}>-- Indikator Spesifik (IMPU) & Umum (INM)<{{{><}}}>INSERT IGNORE INTO indikator_ruangan (id_ruangan, id_indikator, active) VALUES <{{{><}}}>('R01', 1, 1), ('R01', 21, 1), ('R01', 26, 1), ('R01', 34, 1), -- Nifas<{{{><}}}>('R02', 2, 1), ('R02', 23, 1), ('R02', 37, 1), ('R02', 5, 1),  -- Perina<{{{><}}}>('R03', 3, 1), ('R03', 23, 1), ('R03', 27, 1), ('R03', 34, 1), -- VK<{{{><}}}>('R04', 4, 1), ('R04', 30, 1), -- Farmasi<{{{><}}}>('R05', 5, 1), ('R05', 31, 1), -- Lab<{{{><}}}>('R06', 11, 1), ('R06', 21, 1), ('R06', 37, 1), -- Anak<{{{><}}}>('R07', 7, 1), -- CSSD<{{{><}}}>('R08', 6, 1), ('R08', 21, 1), -- Interna<{{{><}}}>('R09', 9, 1), ('R09', 26, 1), -- IBS<{{{><}}}>('R10', 10, 1), ('R10', 23, 1), -- ICU<{{{><}}}>('R11', 2, 1), ('R11', 22, 1), -- IGD<{{{><}}}>('R12', 12, 1), -- IPSRS<{{{><}}}>('R13', 13, 1), -- Laundry<{{{><}}}>('R14', 14, 1), ('R14', 23, 1), -- Bedah<{{{><}}}>('R15', 15, 1), -- Gizi<{{{><}}}>('R16', 16, 1), ('R16', 22, 1), ('R16', 32, 1), -- Rajal<{{{><}}}>('R17', 17, 1), ('R17', 23, 1), -- VIP<{{{><}}}>('R18', 6, 1), ('R18', 18, 1), -- RM<{{{><}}}>('R19', 19, 1), -- Radiologi<{{{><}}}>('R20', 20, 1); -- Keuangan<{{{><}}}><{{{><}}}>-- ============================================================<{{{><}}}>-- BAGIAN 2: DATA DUMMY (TANGGAL 30 & 31 OKTOBER 2025)<{{{><}}}>-- ============================================================<{{{><}}}><{{{><}}}>-- Data Tanggal 30 Oktober<{{{><}}}>INSERT INTO mutu_ruangan (tanggal, id_indikator_ruangan, total_pasien, pasien_sesuai) VALUES <{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R01' AND id_indikator=1 LIMIT 1), 15, 15),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R02' AND id_indikator=2 LIMIT 1), 10, 9),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R04' AND id_indikator=4 LIMIT 1), 25, 25),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R05' AND id_indikator=31 LIMIT 1), 30, 28),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R06' AND id_indikator=11 LIMIT 1), 12, 12),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R10' AND id_indikator=10 LIMIT 1), 8, 8),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R11' AND id_indikator=2 LIMIT 1), 20, 18),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R14' AND id_indikator=14 LIMIT 1), 15, 14),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R16' AND id_indikator=32 LIMIT 1), 40, 35),<{{{><}}}>('2025-10-30', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R20' AND id_indikator=20 LIMIT 1), 1, 1);<{{{><}}}><{{{><}}}>-- Data Tanggal 31 Oktober<{{{><}}}>INSERT INTO mutu_ruangan (tanggal, id_indikator_ruangan, total_pasien, pasien_sesuai) VALUES <{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R01' AND id_indikator=21 LIMIT 1), 20, 19),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R02' AND id_indikator=23 LIMIT 1), 15, 15),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R03' AND id_indikator=3 LIMIT 1), 10, 10),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R04' AND id_indikator=30 LIMIT 1), 30, 29),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R05' AND id_indikator=5 LIMIT 1), 25, 24),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R07' AND id_indikator=7 LIMIT 1), 50, 50),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R12' AND id_indikator=12 LIMIT 1), 1, 1),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R13' AND id_indikator=13 LIMIT 1), 100, 100),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R15' AND id_indikator=15 LIMIT 1), 60, 58),<{{{><}}}>('2025-10-31', (SELECT id_indikator_ruangan FROM indikator_ruangan WHERE id_ruangan='R19' AND id_indikator=19 LIMIT 1), 20, 20);
+Servers\Laragon.MySQL\SessionCreated<|||>1<|||>2022-09-09 20:36:07
+Servers\Laragon.MySQL\Host<|||>1<|||>127.0.0.1
+Servers\Laragon.MySQL\WindowsAuth<|||>3<|||>0
+Servers\Laragon.MySQL\CleartextPluginEnabled<|||>3<|||>0
+Servers\Laragon.MySQL\User<|||>1<|||>root
+Servers\Laragon.MySQL\Password<|||>1<|||>2
+Servers\Laragon.MySQL\LoginPrompt<|||>3<|||>0
+Servers\Laragon.MySQL\Port<|||>1<|||>3306
+Servers\Laragon.MySQL\NetType<|||>3<|||>0
+Servers\Laragon.MySQL\Compressed<|||>3<|||>0
+Servers\Laragon.MySQL\LocalTimeZone<|||>3<|||>0
+Servers\Laragon.MySQL\QueryTimeout<|||>3<|||>30
+Servers\Laragon.MySQL\KeepAlive<|||>3<|||>20
+Servers\Laragon.MySQL\FullTableStatus<|||>3<|||>1
+Servers\Laragon.MySQL\Databases<|||>1<|||>
+Servers\Laragon.MySQL\Library<|||>1<|||>libmysql.dll
+Servers\Laragon.MySQL\Comment<|||>1<|||>
+Servers\Laragon.MySQL\StartupScriptFilename<|||>1<|||>
+Servers\Laragon.MySQL\TreeBackground<|||>3<|||>536870911
+Servers\Laragon.MySQL\SshExecutable<|||>1<|||>plink.exe
+Servers\Laragon.MySQL\SSHtunnelHost<|||>1<|||>
+Servers\Laragon.MySQL\SSHtunnelHostPort<|||>3<|||>22
+Servers\Laragon.MySQL\SSHtunnelUser<|||>1<|||>
+Servers\Laragon.MySQL\SSHtunnelPassword<|||>1<|||>2
+Servers\Laragon.MySQL\SSHtunnelTimeout<|||>3<|||>4
+Servers\Laragon.MySQL\SSHtunnelPrivateKey<|||>1<|||>
+Servers\Laragon.MySQL\SSHtunnelPort<|||>3<|||>3307
+Servers\Laragon.MySQL\SSL_Active<|||>3<|||>0
+Servers\Laragon.MySQL\SSL_Key<|||>1<|||>
+Servers\Laragon.MySQL\SSL_Cert<|||>1<|||>
+Servers\Laragon.MySQL\SSL_CA<|||>1<|||>
+Servers\Laragon.MySQL\SSL_Cipher<|||>1<|||>
+Servers\Laragon.MySQL\IgnoreDatabasePattern<|||>1<|||>
+Servers\Laragon.MySQL\LogFileDdl<|||>3<|||>0
+Servers\Laragon.MySQL\LogFileDml<|||>3<|||>0
+Servers\Laragon.MySQL\LogFilePath<|||>1<|||>C:\Users\Administrator\AppData\Roaming\HeidiSQL\Logs\%session\%db\%y%m%d.sql
+Servers\Laragon.MySQL\RefusedCount<|||>3<|||>2
+Servers\Laragon.MySQL\ServerVersionFull<|||>1<|||>8.0.30 - MySQL Community Server - GPL
+Servers\Laragon.MySQL\ConnectCount<|||>3<|||>3
+Servers\Laragon.MySQL\ServerVersion<|||>3<|||>80030
+Servers\Laragon.MySQL\LastConnect<|||>1<|||>2022-09-09 20:37:19

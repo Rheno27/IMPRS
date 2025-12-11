@@ -46,8 +46,8 @@ class IndikatorRuanganController extends Controller
         if ($indikator) {
             // Jika sudah ada, cek apakah sudah aktif
             if ($indikator->active) {
-                // Jika sudah aktif, kembalikan dengan pesan error
-                return redirect()->back()->withErrors(['id_indikator_baru' => 'Indikator ini sudah aktif di ruangan ini.']);
+                return redirect()->back()
+                    ->with('error', 'Indikator ini sudah aktif di ruangan ini.');
             } else {
                 // Jika tidak aktif, aktifkan kembali
                 $indikator->active = true;
