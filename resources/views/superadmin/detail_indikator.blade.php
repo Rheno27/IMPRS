@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- Container utama toolbar --}}
     <div class="toolbar-container" style="padding-top: 40px;">
 
         <div class="toolbar-left">
@@ -45,7 +44,6 @@
                     </div>
                     <div class="calendar-months"
                         style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top:10px;">
-                        {{-- JS akan mengisi ini --}}
                     </div>
                 </div>
             </div>
@@ -128,7 +126,7 @@
         </div>
     </div>
 
-    {{-- Modal Download (Menggunakan class global .modal-overlay yang sudah dibuat sebelumnya) --}}
+    {{-- Modal Download --}}
     <div id="downloadModalSuper" class="modal-overlay">
         <div class="modal-box">
             <h3 class="modal-title">Download Rekap Ruangan</h3>
@@ -199,10 +197,9 @@
                 monthNames.forEach((m, i) => {
                     let btn = document.createElement('button');
                     btn.textContent = m;
-                    btn.className = 'day-btn'; // Reuse class day-btn from global css
+                    btn.className = 'day-btn'; 
                     btn.style.width = '100%';
 
-                    // Highlight active month
                     if (currentYear == {{ $tahun }} && (i + 1) == {{ $bulan }}) {
                         btn.classList.add('selected');
                     }

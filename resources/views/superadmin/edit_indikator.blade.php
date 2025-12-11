@@ -194,7 +194,7 @@
         </div>
     @endforeach
 
-    {{-- MODAL TAMBAH (Global di halaman ini) --}}
+    {{-- MODAL TAMBAH --}}
     <div class="modal fade" id="addIndicatorModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -238,7 +238,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Script untuk dropdown berantai (Kategori -> Indikator)
             const allMasterIndikators = @json($allMasterIndikators);
             const categorySelects = document.querySelectorAll('.category-select');
 

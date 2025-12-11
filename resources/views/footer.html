@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Footer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .footer {
+      background-color: #337354;
+      color: #ffffff;
+      padding: 36px 20px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .footer-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      gap: clamp(20px, 10vw, 417px);
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .footer-about {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 409px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      width: 26px;
+      height: 25px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.2;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .footer-description {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: justify;
+      margin: 0;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 364px;
+    }
+
+    .contact-header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-title {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      margin: 0;
+    }
+
+    .contact-subtitle {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      margin: 0;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #ffffff;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .contact-item:hover {
+      opacity: 0.8;
+    }
+
+    .icon-wrapper {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 992px) {
+      .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+      }
+
+      .footer-about,
+      .footer-contact {
+        max-width: 100%;
+      }
+
+      .contact-details {
+        flex-direction: column;
+      }
+    }
+
+    .footer-credit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 15px;
+      opacity: 0.8;
+    }
+
+    .footer-credit p {
+      font-size: 13px;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .footer-credit svg {
+      opacity: 0.75;
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <footer id="section-footer" class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-brand">
+            <div class="logo-wrapper">
+              <!-- SVG Logo -->
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.13086 13.1819C5.21879 10.1935 8.15889 4.89366 13.311 0.548828C9.61712 6.01856 7.18779 9.09172 8.32549 15.2148C7.26202 14.1154 6.6214 13.5992 5.13086 13.1819Z" fill="white"/>
+                <path d="M21.4913 10.6242C23.1351 10.3586 24.0341 10.4552 25.6056 10.963C23.8119 11.2239 22.7869 12.1791 21.3945 14.9321L21.3981 14.9117C21.6792 13.3117 21.8435 12.3765 21.4913 10.6242Z" fill="white"/>
+                <path d="M21.5495 10.6645C20.4134 5.11937 17.1405 2.81946 14.7246 0.5C18.285 5.31773 19.5926 8.1034 18.9841 12.165C19.7716 11.3203 20.3616 11.0184 21.5495 10.6645Z" fill="white"/>
+                <path d="M0 13.6657C1.90203 13.0393 3.01974 12.9083 5.13077 13.1817C5.00447 15.3232 5.01849 16.5317 5.46959 18.7964C3.47532 15.2406 2.24913 14.0055 0 13.6657Z" fill="white"/>
+                <path d="M8.27712 15.1177C7.2605 13.9581 6.55874 13.5582 5.1309 13.1816C3.57429 28.9945 20.2372 28.4476 21.0072 17.9735C17.425 21.5878 11.6586 21.4054 8.27712 15.1177Z" fill="white"/>
+                <rect x="13.0693" y="6.74365" width="2.22656" height="2.22651" fill="white"/>
+                <rect x="15.2959" y="8.97021" width="2.22656" height="2.22651" fill="white"/>
+                <rect x="10.8428" y="8.97021" width="2.22656" height="2.22651" fill="white"/>
+                <rect x="13.0693" y="11.1968" width="2.22656" height="2.22651" fill="white"/>
+                <path d="M13.0693 8.97021C14.299 8.97021 15.2959 9.96706 15.2959 11.1967H13.0693V8.97021Z" fill="white"/>
+                <path d="M18.974 12.1646C16.7417 16.3981 14.5851 17.1492 10.1162 15.7948C14.761 22.5091 23.0006 19.2621 21.5394 10.6157C20.4145 10.8255 19.8493 11.1565 18.974 12.1646Z" fill="white"/>
+              </svg>
+            </div>
+            <h3 class="brand-name">RSD KALISAT JEMBER</h3>
+          </div>
+          <p class="footer-description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a arcu quis nisi sollicitudin imperdiet. Pellentesque volutpat, arcu sagittis pellentesque sollicitudin, urna urna sodales quam, vel ultrices massa dui at ligula. Nullam porta ante ut turpis imperdiet porta ut a augue.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <div class="contact-header">
+            <h4 class="contact-title">CONTACT US</h4>
+            <p class="contact-subtitle">Hubungi salah satu kontak dibawah ini jika mengalami masalah saat menggunakan website</p>
+          </div>
+
+          <div class="contact-details">
+            <a href="tel:089682024142" class="contact-item">
+              <div class="icon-wrapper">
+                <!-- WhatsApp Icon -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" d="M6.9403 20.63C8.4303 21.5 10.1603 22 12.0003 22C17.6303 22 22.3103 17.03 21.9803 11.41C21.6403 5.60997 16.3703 1.13996 10.3003 2.13996C6.12029 2.82996 2.77029 6.21996 2.12029 10.4C1.74029 12.82 2.24031 15.11 3.33031 17L2.4403 20.31C2.2403 21.06 2.93028 21.74 3.67028 21.53L6.9403 20.63Z" fill="white"/>
+                    <path d="M17 15.17C17 15.35 16.96 15.54 16.87 15.72C16.78 15.9 16.67 16.07 16.53 16.23C16.28 16.5 16.01 16.7 15.71 16.82C15.41 16.95 15.08 17.01 14.73 17.01C14.22 17.01 13.67 16.89 13.1 16.64C12.52 16.39 11.95 16.06 11.38 15.65C10.8 15.23 10.26 14.76 9.73999 14.25C9.21999 13.73 8.76003 13.18 8.34003 12.61C7.93003 12.04 7.59999 11.47 7.35999 10.9C7.11999 10.33 7 9.77998 7 9.25998C7 8.91998 7.05999 8.58998 7.17999 8.28998C7.29999 7.97998 7.49001 7.69997 7.76001 7.44997C8.08001 7.12997 8.42999 6.97998 8.79999 6.97998C8.93999 6.97998 9.08002 7.00998 9.21002 7.06998C9.34002 7.12998 9.45999 7.21998 9.54999 7.34998L10.7 8.99998C10.79 9.12998 10.86 9.23998 10.9 9.34998C10.95 9.45998 10.97 9.55998 10.97 9.65998C10.97 9.77998 10.93 9.89997 10.86 10.02C10.79 10.14 10.7 10.26 10.58 10.38L10.2 10.78C10.14 10.84 10.12 10.9 10.12 10.98C10.12 11.02 10.13 11.06 10.14 11.1C10.16 11.14 10.17 11.17 10.18 11.2C10.27 11.37 10.43 11.58 10.65 11.84C10.88 12.1 11.12 12.37 11.38 12.63C11.65 12.9 11.91 13.14 12.18 13.37C12.44 13.59 12.66 13.74 12.83 13.83C12.86 13.84 12.89 13.86 12.92 13.87C12.96 13.89 13 13.89 13.05 13.89C13.14 13.89 13.2 13.86 13.26 13.8L13.64 13.42C13.77 13.29 13.89 13.2 14 13.14C14.12 13.07 14.23 13.03 14.36 13.03C14.46 13.03 14.56 13.05 14.67 13.1C14.78 13.15 14.9 13.21 15.02 13.3L16.68 14.48C16.81 14.57 16.9 14.68 16.96 14.8C16.97 14.91 17 15.03 17 15.17Z" fill="white"/>
+                </svg>
+              </div>
+              <span>089682024142</span>
+            </a>
+            <a href="tel:089682024142" class="contact-item">
+              <div class="icon-wrapper">
+                <!-- WhatsApp Icon -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" d="M6.9403 20.63C8.4303 21.5 10.1603 22 12.0003 22C17.6303 22 22.3103 17.03 21.9803 11.41C21.6403 5.60997 16.3703 1.13996 10.3003 2.13996C6.12029 2.82996 2.77029 6.21996 2.12029 10.4C1.74029 12.82 2.24031 15.11 3.33031 17L2.4403 20.31C2.2403 21.06 2.93028 21.74 3.67028 21.53L6.9403 20.63Z" fill="white"/>
+                    <path d="M17 15.17C17 15.35 16.96 15.54 16.87 15.72C16.78 15.9 16.67 16.07 16.53 16.23C16.28 16.5 16.01 16.7 15.71 16.82C15.41 16.95 15.08 17.01 14.73 17.01C14.22 17.01 13.67 16.89 13.1 16.64C12.52 16.39 11.95 16.06 11.38 15.65C10.8 15.23 10.26 14.76 9.73999 14.25C9.21999 13.73 8.76003 13.18 8.34003 12.61C7.93003 12.04 7.59999 11.47 7.35999 10.9C7.11999 10.33 7 9.77998 7 9.25998C7 8.91998 7.05999 8.58998 7.17999 8.28998C7.29999 7.97998 7.49001 7.69997 7.76001 7.44997C8.08001 7.12997 8.42999 6.97998 8.79999 6.97998C8.93999 6.97998 9.08002 7.00998 9.21002 7.06998C9.34002 7.12998 9.45999 7.21998 9.54999 7.34998L10.7 8.99998C10.79 9.12998 10.86 9.23998 10.9 9.34998C10.95 9.45998 10.97 9.55998 10.97 9.65998C10.97 9.77998 10.93 9.89997 10.86 10.02C10.79 10.14 10.7 10.26 10.58 10.38L10.2 10.78C10.14 10.84 10.12 10.9 10.12 10.98C10.12 11.02 10.13 11.06 10.14 11.1C10.16 11.14 10.17 11.17 10.18 11.2C10.27 11.37 10.43 11.58 10.65 11.84C10.88 12.1 11.12 12.37 11.38 12.63C11.65 12.9 11.91 13.14 12.18 13.37C12.44 13.59 12.66 13.74 12.83 13.83C12.86 13.84 12.89 13.86 12.92 13.87C12.96 13.89 13 13.89 13.05 13.89C13.14 13.89 13.2 13.86 13.26 13.8L13.64 13.42C13.77 13.29 13.89 13.2 14 13.14C14.12 13.07 14.23 13.03 14.36 13.03C14.46 13.03 14.56 13.05 14.67 13.1C14.78 13.15 14.9 13.21 15.02 13.3L16.68 14.48C16.81 14.57 16.9 14.68 16.96 14.8C16.97 14.91 17 15.03 17 15.17Z" fill="white"/>
+                </svg>
+              </div>
+              <span>089682024142</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-credit">
+      <span class="copyright-symbol">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0.5" y="0.5" width="15" height="15" rx="7.5" stroke="white" stroke-opacity="0.75"/>
+            <path d="M11.7143 6H10.6575C10.595 5.69602 10.4856 5.42898 10.3294 5.19886C10.176 4.96875 9.98846 4.77557 9.76687 4.61932C9.54812 4.46023 9.30522 4.34091 9.03817 4.26136C8.77113 4.18182 8.49272 4.14205 8.20295 4.14205C7.67454 4.14205 7.19585 4.27557 6.76687 4.54261C6.34073 4.80966 6.00124 5.20312 5.7484 5.72301C5.4984 6.2429 5.3734 6.88068 5.3734 7.63636C5.3734 8.39205 5.4984 9.02983 5.7484 9.54972C6.00124 10.0696 6.34073 10.4631 6.76687 10.7301C7.19585 10.9972 7.67454 11.1307 8.20295 11.1307C8.49272 11.1307 8.77113 11.0909 9.03817 11.0114C9.30522 10.9318 9.54812 10.8139 9.76687 10.6577C9.98846 10.4986 10.176 10.304 10.3294 10.0739C10.4856 9.84091 10.595 9.57386 10.6575 9.27273H11.7143C11.6348 9.71875 11.4899 10.1179 11.2797 10.4702C11.0694 10.8224 10.8081 11.1222 10.4956 11.3693C10.1831 11.6136 9.83221 11.7997 9.443 11.9276C9.05664 12.0554 8.64329 12.1193 8.20295 12.1193C7.45863 12.1193 6.7967 11.9375 6.21715 11.5739C5.63761 11.2102 5.18164 10.6932 4.84925 10.0227C4.51687 9.35227 4.35067 8.55682 4.35067 7.63636C4.35067 6.71591 4.51687 5.92045 4.84925 5.25C5.18164 4.57955 5.63761 4.0625 6.21715 3.69886C6.7967 3.33523 7.45863 3.15341 8.20295 3.15341C8.64329 3.15341 9.05664 3.21733 9.443 3.34517C9.83221 3.47301 10.1831 3.66051 10.4956 3.90767C10.8081 4.15199 11.0694 4.45028 11.2797 4.80256C11.4899 5.15199 11.6348 5.55114 11.7143 6Z" fill="white" fill-opacity="0.75"/>
+        </svg>
+      </span>
+      <p>RSUD Kalisat 2025</p>
+    </div>
+  </footer>
+</body>
+</html>

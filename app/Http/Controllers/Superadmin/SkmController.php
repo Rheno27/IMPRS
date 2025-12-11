@@ -11,19 +11,12 @@ use Carbon\Carbon;
 
 class SkmController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $selectedYear = $request->input('year', Carbon::now()->year);
         $selectedMonth = $request->input('month', Carbon::now()->month);
 
-        // === PERBAIKAN DI SINI ===
-        // Jangan cari kolom 'tipe_pertanyaan'.
-        // Cari ID pertanyaan yang PUNYA OPSI di tabel 'pilihan_jawaban'.
-        // Otomatis pertanyaan 'Kritik Saran' (yang tidak punya opsi A/B/C/D) tidak akan terambil.
-
+        // === Query Data Pertanyaan ===
         $listPertanyaan = DB::table('pilihan_jawaban')
             ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
             ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
@@ -44,7 +37,7 @@ class SkmController extends Controller
             )
             ->whereYear('jawaban.tanggal', $selectedYear)
             ->whereMonth('jawaban.tanggal', $selectedMonth)
-            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan) // Filter ID yang valid
+            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan) 
             ->get();
 
         $dataRekap = [];
@@ -92,67 +85,23 @@ class SkmController extends Controller
             'rataRataKolom' => $finalRataRataKolom,
             'selectedMonth' => $selectedMonth,
             'selectedYear' => $selectedYear,
-            'listPertanyaan' => $listPertanyaan // Kirim list ID pertanyaan dinamis
+            'listPertanyaan' => $listPertanyaan 
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroyPertanyaan($id)
     {
         try {
-            // 1. Cek Safety: Apakah pertanyaan ini sudah ada di tabel jawaban?
+            // 1. Cek Safety: Apakah pertanyaan ini sudah ada di tabel jawaban
             $cekResponden = DB::table('jawaban')
                 ->where('id_pertanyaan', $id)
                 ->exists();
 
             if ($cekResponden) {
-                // GAGAL: Kembalikan JSON error
                 return response()->json([
                     'status' => 'error',
                     'message' => 'GAGAL: Pertanyaan tidak bisa dihapus karena sudah memiliki data responden. Data aman.'
-                ], 400); // 400 Bad Request
+                ], 400); 
             }
 
             // 2. Jika Aman, Hapus Pilihan Jawaban (Foreign Key)
@@ -168,7 +117,6 @@ class SkmController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            // SERVER ERROR
             return response()->json([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan server: ' . $e->getMessage()
@@ -176,13 +124,8 @@ class SkmController extends Controller
         }
     }
 
-
-    /**
-     * Show the form for editing the survey questions.
-     */
     public function editPertanyaan()
     {
-        // UBAH DISINI: Order by 'urutan' dulu, baru 'id_pertanyaan'
         $dataPertanyaan = DB::table('pertanyaan')
             ->orderBy('urutan', 'asc')
             ->orderBy('id_pertanyaan', 'asc')
@@ -207,9 +150,6 @@ class SkmController extends Controller
         return view('superadmin.skm_edit2', compact('surveyData'));
     }
 
-    /**
-     * Menyimpan perubahan pada struktur pertanyaan survei.
-     */
     public function updatePertanyaan(Request $request)
     {
         $submittedQuestions = $request->input('questions', []);
@@ -219,12 +159,10 @@ class SkmController extends Controller
         try {
             DB::transaction(function () use ($submittedQuestions, &$safePertanyaanIds, &$safePilihanIds) {
 
-                // $index adalah urutan visual dari atas ke bawah (0, 1, 2...)
                 foreach ($submittedQuestions as $index => $qData) {
 
                     $pertanyaanId = null;
 
-                    // KITA SIMPAN URUTAN SESUAI POSISI DI LAYAR ($index + 1)
                     $pertanyaanData = [
                         'pertanyaan' => $qData['pertanyaan'] ?? 'Pertanyaan Kosong',
                         'urutan' => $index + 1
@@ -239,7 +177,6 @@ class SkmController extends Controller
 
                     $safePertanyaanIds[] = $pertanyaanId;
 
-                    // ... (Bagian Pilihan Jawaban SAMA PERSIS, tidak berubah) ...
                     if (isset($qData['pilihan']) && is_array($qData['pilihan'])) {
                         foreach ($qData['pilihan'] as $pData) {
                             $pilihanId = null;
@@ -259,15 +196,12 @@ class SkmController extends Controller
                     }
                 }
 
-                // ... (Bagian Hapus Pilihan & Hapus Pertanyaan SAMA PERSIS) ...
-                // Hapus Pilihan
                 $existingPilihanIds = DB::table('pilihan_jawaban')->whereIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pilihan');
                 $pilihanIdsToDelete = $existingPilihanIds->diff($safePilihanIds);
                 if ($pilihanIdsToDelete->isNotEmpty()) {
                     DB::table('pilihan_jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
                 }
 
-                // Hapus Pertanyaan
                 $questionsToDelete = DB::table('pertanyaan')->whereNotIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pertanyaan');
                 if ($questionsToDelete->isNotEmpty()) {
                     foreach ($questionsToDelete as $delId) {
@@ -283,9 +217,6 @@ class SkmController extends Controller
         return redirect()->route('superadmin.skm.edit2')->with('success', 'Struktur pertanyaan berhasil diperbarui.');
     }
 
-    /**
-     * Display the survey results with charts and lists.
-     */
     public function hasil()
     {
         // === 1. DATA DASAR ===
@@ -293,13 +224,13 @@ class SkmController extends Controller
         $totalResponden = $respondenIds->count();
         $bioResponden = DB::table('bio_pasien')->whereIn('id_pasien', $respondenIds)->get();
 
-        // === 2. PISAHKAN PERTANYAAN (PILIHAN GANDA vs ISIAN TEKS) ===
-        // Ambil ID pertanyaan yang punya Pilihan Jawaban (berarti ini untuk Grafik)
+        // === 2. PISAHKAN PERTANYAAN (PILIHAN GANDA & ISIAN TEKS) ===
+
         $idsPilihanGanda = DB::table('pilihan_jawaban')
             ->distinct()
             ->pluck('id_pertanyaan');
 
-        // Ambil Kritik Saran (Jawaban dari pertanyaan yang TIDAK punya pilihan ganda)
+        // Ambil Kritik Saran 
         $listKritikSaran = DB::table('jawaban')
             ->whereNotIn('id_pertanyaan', $idsPilihanGanda)
             ->whereNotNull('hasil_nilai')
@@ -309,8 +240,7 @@ class SkmController extends Controller
         $listNoRm = $bioResponden->pluck('no_rm');
         $listUmur = $bioResponden->pluck('umur');
 
-        // === 3. DATA DEMOGRAFI (RUANGAN, KELAMIN, PENDIDIKAN, PEKERJAAN) ===
-
+        // === 3. DATA DEMOGRAFI ===
         // Chart Nama Ruangan
         $ruanganData = DB::table('bio_pasien as bp')
             ->join('ruangan as r', 'bp.id_ruangan', '=', 'r.id_ruangan')
@@ -333,12 +263,11 @@ class SkmController extends Controller
         $pekerjaanChart = ['labels' => $pekerjaanData->keys(), 'data' => $pekerjaanData->values()];
 
 
-        // === 4. DATA HASIL SURVEI (DINAMIS) ===
-
+        // === 4. DATA HASIL SURVEI ===
         // Ambil pertanyaan yang ada di daftar $idsPilihanGanda
         $pertanyaanSurvei = DB::table('pertanyaan')
             ->whereIn('id_pertanyaan', $idsPilihanGanda)
-            ->orderBy('urutan', 'asc') // Urutkan berdasarkan posisi yang kamu atur
+            ->orderBy('urutan', 'asc') 
             ->get();
 
         $allSurveyCharts = [];
@@ -376,9 +305,6 @@ class SkmController extends Controller
         ));
     }
 
-    /**
-     * Download Rekap SKM in Excel format.
-     */
     public function downloadRekap(Request $request)
     {
         $request->validate([

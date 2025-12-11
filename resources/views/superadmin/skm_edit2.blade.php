@@ -5,7 +5,7 @@
     /* --- 1. NAVIGASI KHUSUS SKM (Tab Menu) --- */
         .survey-nav-container {
             background-color: rgba(214, 227, 221, 0.5);
-            padding: 40px 0 0; /* Adjusted padding */
+            padding: 40px 0 0; 
             text-align: center;
             margin-bottom: 40px;
         }
@@ -46,7 +46,7 @@
         .tab-item.active {
             color: var(--primary-color);
             border-bottom-color: var(--primary-color);
-            background-color: #fff; /* Tab aktif putih seolah menyatu dengan konten */
+            background-color: #fff; 
             font-weight: 700;
         }
 
@@ -68,7 +68,7 @@
         .question-block {
             background: #fff;
             border: 1px solid #e0e0e0;
-            border-left: 5px solid var(--primary-color); /* Aksen kiri */
+            border-left: 5px solid var(--primary-color); 
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
@@ -181,7 +181,7 @@
             font-size: 15px;
             font-family: inherit;
             transition: border-color 0.2s;
-            box-sizing: border-box; /* Penting agar padding tidak melebarkan input */
+            box-sizing: border-box; 
         }
 
         .form-input:focus {
@@ -257,7 +257,7 @@
 
         .btn-save-fixed {
             background-color: var(--secondary-color);
-            color: #5f4c14; /* Teks kontras */
+            color: #5f4c14; 
             padding: 14px 50px;
             border: none;
             border-radius: 12px;
@@ -275,7 +275,6 @@
 @endsection
 
 @section('content')
-    {{-- Header Navigasi --}}
     @include('superadmin.partials.skm_nav')
 
     <form id="survey-form" method="POST" action="{{ route('superadmin.skm.update_pertanyaan') }}">
@@ -310,10 +309,7 @@
             <div class="survey-page-list">
                 @forelse ($surveyData as $pertanyaan)
                     <div class="question-block">
-                        {{-- Hidden ID untuk Update --}}
                         <input type="hidden" class="hidden-id-pertanyaan" value="{{ $pertanyaan->id_pertanyaan ?? '' }}">
-
-                        {{-- HEADER KARTU --}}
                         <header class="question-header">
                             <div class="question-title-wrapper">
                                 <div class="question-number">{{ $loop->iteration }}</div>
@@ -327,7 +323,6 @@
                                 <button type="button" class="icon-btn btn-move-down" title="Geser Turun">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
                                 </button>
-                                {{-- Tombol Insert/Sisip (Opsional, tapi tetap dipertahankan) --}}
                                 <button type="button" class="icon-btn btn-add-insert" title="Sisipkan Pertanyaan Disini">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 </button>
@@ -343,11 +338,11 @@
                             <div class="form-group">
                                 <label class="form-label">Isi Pertanyaan</label>
                                 <input type="text" class="form-input question-text-input" 
-                                       value="{{ $pertanyaan->pertanyaan ?? '' }}" 
-                                       placeholder="Tulis pertanyaan survei disini...">
+                                    value="{{ $pertanyaan->pertanyaan ?? '' }}" 
+                                    placeholder="Tulis pertanyaan survei disini...">
                             </div>
 
-                            {{-- Hidden Tipe (Default Pilihan Ganda kecuali diubah logic lain) --}}
+                            {{-- Hidden Tipe --}}
                             <input type="hidden" class="hidden-tipe-input" value="{{ $pertanyaan->tipe_pertanyaan ?? 'Pilihan Ganda' }}">
 
                             {{-- Baris 2: Pilihan Jawaban --}}
@@ -363,10 +358,10 @@
                                                     <div class="option-badge">{{ chr(65 + $loop->index) }}</div>
 
                                                     <input type="text" class="form-input input-text" style="flex-grow:1;" 
-                                                           value="{{ $pilihan->pilihan ?? '' }}" placeholder="Teks Jawaban">
+                                                        value="{{ $pilihan->pilihan ?? '' }}" placeholder="Teks Jawaban">
 
                                                     <input type="number" class="form-input input-score" 
-                                                           placeholder="Nilai" value="{{ $pilihan->nilai ?? '' }}" title="Bobot Nilai SKM">
+                                                        placeholder="Nilai" value="{{ $pilihan->nilai ?? '' }}" title="Bobot Nilai SKM">
 
                                                     <button type="button" class="icon-btn btn-add-answer" title="Tambah Opsi">
                                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -383,21 +378,17 @@
                         </div>
                     </div>
                 @empty
-                    {{-- State Kosong --}}
                     <div class="question-block empty-state" style="text-align:center; color:#777;">
                         <p>Belum ada pertanyaan. Klik tombol di bawah untuk membuat baru.</p>
                     </div>
                 @endforelse
             </div>
 
-            {{-- Action Bawah --}}
             <div class="bottom-actions">
-                {{-- Tombol Tambah Besar --}}
                 <button type="button" id="btn-add-new-question-bottom" class="btn-add-big">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     Tambah Pertanyaan Baru
                 </button>
-
                 <button type="submit" class="btn-save-fixed">SIMPAN PERUBAHAN</button>
             </div>
         </main>
@@ -444,11 +435,10 @@
         </div>
     </div>
 
-    {{-- MODAL KONFIRMASI HAPUS (Dengan Ikon Warning) --}}
+    {{-- MODAL KONFIRMASI HAPUS --}}
     <div id="customConfirmModal" class="modal-overlay">
         <div class="modal-box centered-alert">
             <div class="icon-centered">
-                {{-- Ikon Sampah Merah --}}
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -469,11 +459,10 @@
         </div>
     </div>
 
-    {{-- MODAL ALERT (Untuk Error/Info - Dengan Ikon Tanda Seru) --}}
+    {{-- MODAL ALERT (Untuk Error/Info) --}}
     <div id="customAlertModal" class="modal-overlay">
         <div class="modal-box centered-alert">
             <div class="icon-centered">
-                {{-- Ikon Tanda Seru Merah --}}
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -495,7 +484,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             // --- VARIABLES ---
             const pageList = document.querySelector('.survey-page-list');
-            const templateHTML = document.getElementById('question-template').innerHTML; // Ambil HTML template
+            const templateHTML = document.getElementById('question-template').innerHTML; 
             const confirmModal = document.getElementById('customConfirmModal');
             const alertModal = document.getElementById('customAlertModal');
             let deleteCallback = null;
@@ -503,8 +492,8 @@
             // --- 1. MODAL HANDLING ---
             function openConfirmModal(callback) {
                 deleteCallback = callback;
-                confirmModal.style.display = 'block'; // Fallback style
-                confirmModal.classList.add('active'); // CSS class style
+                confirmModal.style.display = 'block';
+                confirmModal.classList.add('active'); 
             }
 
             function closeConfirmModal() {
@@ -530,14 +519,13 @@
                 alertModal.style.display = 'none';
             });
 
-            // --- 2. RENUMBERING (Penting agar UI rapi) ---
+            // --- 2. RENUMBERING  ---
             function renumberQuestions() {
                 const blocks = pageList.querySelectorAll('.question-block:not(.empty-state)');
                 blocks.forEach((block, index) => {
                     block.querySelector('.question-number').textContent = index + 1;
                     block.querySelector('.question-label').textContent = `Pertanyaan ${index + 1}`;
                 });
-                // Hapus "empty state" jika ada pertanyaan
                 const emptyState = pageList.querySelector('.empty-state');
                 if(blocks.length > 0 && emptyState) emptyState.remove();
             }
@@ -545,20 +533,18 @@
             function renumberOptions(list) {
                 const badges = list.querySelectorAll('.option-badge');
                 badges.forEach((badge, index) => {
-                    badge.textContent = String.fromCharCode(65 + index); // A, B, C...
+                    badge.textContent = String.fromCharCode(65 + index);
                 });
             }
 
             // --- 3. ADDING QUESTIONS ---
             function createNewQuestion() {
-                // Buat elemen div wrapper sementara
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = templateHTML;
                 const newBlock = tempDiv.firstElementChild;
                 return newBlock;
             }
 
-            // Tombol Tambah Besar (Di Bawah)
             document.getElementById('btn-add-new-question-bottom').addEventListener('click', function() {
                 const newBlock = createNewQuestion();
                 pageList.appendChild(newBlock);
@@ -566,11 +552,11 @@
                 renumberQuestions();
             });
 
-            // --- 4. CLICK EVENTS DELEGATION (Main Logic) ---
+            // --- 4. CLICK EVENTS DELEGATION  ---
             pageList.addEventListener('click', function(e) {
                 const target = e.target;
 
-                // A. INSERT / DUPLICATE QUESTION (Tombol di Header)
+                // A. INSERT / DUPLICATE QUESTION 
                 if(target.closest('.btn-add-insert')) {
                     const currentBlock = target.closest('.question-block');
                     const newBlock = createNewQuestion();
@@ -605,14 +591,12 @@
                     const id = idInput ? idInput.value : null;
 
                     const doDelete = () => {
-                        // Jika ID kosong (pertanyaan baru belum di-save ke DB), langsung hapus DOM
                         if(!id) {
                             currentBlock.remove();
                             renumberQuestions();
                             return;
                         }
 
-                        // Jika ID ada, panggil AJAX
                         const csrfToken = document.querySelector('input[name="_token"]').value;
 
                         fetch(`/superadmin/skm/pertanyaan/${id}`, {
@@ -638,7 +622,7 @@
                         });
                     };
 
-                    // Cek jumlah pertanyaan (Opsional: Cegah hapus semua)
+                    // Cek jumlah pertanyaan (Opsional)
                     // if(pageList.querySelectorAll('.question-block').length <= 1) {
                     //     showAlert('Perhatian', 'Minimal harus menyisakan satu pertanyaan.');
                     //     return;
@@ -652,9 +636,7 @@
                     const currentBlock = target.closest('.answer-row');
                     const list = currentBlock.parentElement;
 
-                    // Clone row
                     const newRow = currentBlock.cloneNode(true);
-                    // Bersihkan value
                     newRow.querySelector('.input-text').value = '';
                     newRow.querySelector('.input-score').value = '';
                     newRow.querySelector('.hidden-id-pilihan').value = ''; // Reset ID Pilihan
@@ -668,7 +650,6 @@
                     const currentBlock = target.closest('.answer-row');
                     const list = currentBlock.parentElement;
 
-                    // Cek jumlah jawaban
                     if (list.querySelectorAll('.answer-row').length > 1) {
                         currentBlock.remove();
                         renumberOptions(list);
@@ -680,8 +661,6 @@
 
             // --- 5. PREPARE FORM BEFORE SUBMIT ---
             document.getElementById('survey-form').addEventListener('submit', function(e) {
-                // Kita harus memberi "name" attribute yang urut (questions[0], questions[1]...)
-                // agar Laravel bisa membacanya sebagai array.
 
                 const blocks = pageList.querySelectorAll('.question-block:not(.empty-state)');
 

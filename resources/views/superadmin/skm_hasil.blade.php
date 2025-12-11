@@ -77,7 +77,7 @@
             background-color: #fff;
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 24px; /* Padding card diperbesar sedikit */
+            padding: 24px; 
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -145,28 +145,28 @@
             text-align: center;
         }
 
-        /* --- 3. CHART LAYOUT (PERBAIKAN UTAMA DISINI) --- */
+        /* --- 3. CHART LAYOUT  --- */
         .chart-card-body {
             display: flex;
-            flex-direction: row; /* Pastikan Kiri-Kanan */
-            gap: 60px; /* Jarak JAUH antara Chart dan Legend agar legend terdorong ke tengah */
-            align-items: center; /* Vertikal Center */
-            justify-content: flex-start; /* Mulai dari kiri */
+            flex-direction: row; 
+            gap: 60px; 
+            align-items: center;
+            justify-content: flex-start; 
             padding: 10px 20px;
         }
 
         .chart-container {
-            width: 220px; /* Lebar Chart Fix */
+            width: 220px; 
             height: 220px;
-            flex-shrink: 0; /* Jangan mengecil */
+            flex-shrink: 0; 
             position: relative;
         }
 
         /* Container Legend/Poin */
         .legend-wrapper {
-            flex-grow: 1; /* Isi sisa ruang */
+            flex-grow: 1; 
             display: flex;
-            justify-content: flex-start; /* Isi konten mulai dari kiri area legend */
+            justify-content: flex-start; 
         }
 
         .legend-grid, .legend-column {
@@ -177,16 +177,15 @@
             width: 100%;
         }
         
-        /* Jika item banyak, buat 2 kolom di area legend */
         .legend-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); 
-            gap: 10px 30px; /* Gap horizontal antar kolom legend lebar */
+            gap: 10px 30px; 
         }
 
         .legend-item {
             display: flex;
-            align-items: flex-start; /* Agar bullet sejajar baris pertama jika teks panjang */
+            align-items: flex-start; 
             gap: 12px;
             line-height: 1.4;
         }
@@ -196,20 +195,20 @@
             height: 16px;
             border-radius: 4px;
             flex-shrink: 0;
-            margin-top: 2px; /* Sedikit turun agar center dengan teks */
+            margin-top: 2px; 
         }
 
-        /* --- RESPONSIVE MOBILE (HP) --- */
+        /* --- RESPONSIVE MOBILE --- */
         @media (max-width: 768px) {
             .chart-card-body {
-                flex-direction: column; /* HP: Atas-Bawah */
+                flex-direction: column; 
                 gap: 30px;
                 text-align: left;
                 align-items: center;
             }
             
             .legend-grid {
-                grid-template-columns: 1fr; /* HP: 1 Kolom saja biar rapi */
+                grid-template-columns: 1fr; 
             }
             
             .chart-card-body {
@@ -220,11 +219,9 @@
 @endsection
 
 @section('content')
-    {{-- Header Navigasi (Kop) --}}
     @include('superadmin.partials.skm_nav')
 
     <div class="page-container">
-        {{-- Section 1: Data Responden --}}
         <section id="data-responden">
             <h2 class="section-title-banner">Data Responden</h2>
             <div class="cards-wrapper">
@@ -288,7 +285,7 @@
                                 <canvas id="{{ $chartItem['id'] }}"></canvas>
                             </div>
 
-                            {{-- TENGAH/KANAN: LEGEND --}}
+                            {{-- LEGEND --}}
                             <div class="legend-wrapper">
                                 <div class="{{ $chartItem['type'] == 'grid' ? 'legend-grid' : 'legend-column' }}">
                                     @foreach($chartItem['chartData']['labels'] as $index => $label)

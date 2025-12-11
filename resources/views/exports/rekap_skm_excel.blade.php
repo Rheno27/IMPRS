@@ -1,7 +1,6 @@
 <table>
     <thead>
         <tr>
-            {{-- Judul Utama (Merge cell selebar tabel) --}}
             <th colspan="{{ count($listPertanyaan) + 2 }}"
                 style="text-align: center; font-weight: bold; font-size: 14px;">
                 REKAPITULASI SURVEY KEPUASAN MASYARAKAT
@@ -12,7 +11,7 @@
                 PERIODE: {{ \Carbon\Carbon::create($tahun, $bulan, 1)->isoFormat('MMMM Y') }}
             </th>
         </tr>
-        <tr></tr> {{-- Baris Kosong --}}
+        <tr></tr> 
 
         <tr>
             <th rowspan="2"

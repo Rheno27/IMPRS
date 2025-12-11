@@ -1,14 +1,11 @@
 @extends('layouts.app')
 
 @section('styles')
-    {{-- Memuat Bootstrap CSS hanya jika belum ada di layout utama --}}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
     <main class="main-content-section">
-
-        {{-- Flash Messages (Menggunakan Global Alerts) --}}
         @if (session('success'))
             <div class="custom-alert success" role="alert">
                 <div class="alert-content">
@@ -173,7 +170,7 @@
         </div>
     </div>
 
-    {{-- LOOP MODAL EDIT & DELETE (Diluar tabel agar HTML valid) --}}
+    {{-- LOOP MODAL EDIT & DELETE --}}
     @foreach ($indikators as $items)
         @foreach ($items as $indikator)
             {{-- Modal Edit --}}

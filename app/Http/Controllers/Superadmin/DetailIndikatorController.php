@@ -15,43 +15,11 @@ use Illuminate\Support\Facades\DB;
 
 class DetailIndikatorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Request $request, Ruangan $ruangan)
     {
         $bulan = $request->input('bulan', date('n'));
         $tahun = $request->input('tahun', date('Y'));
-
-        // =========================================================================
-        // 1. DATA INDIKATOR RUANGAN (Logika Lama)
-        // =========================================================================
-
-        // Ambil data mutu ruangan
+        // 1. DATA INDIKATOR RUANGAN
         $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
             ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
                 $query->where('id_ruangan', $ruangan->id_ruangan);
@@ -107,18 +75,14 @@ class DetailIndikatorController extends Controller
             ];
         }
 
-        // =========================================================================
-        // 2. DATA SKM GLOBAL (Fitur Baru: Ditambahkan di Bawah Tabel)
-        // =========================================================================
-
-        // A. Ambil nilai MAX untuk setiap pertanyaan (sebagai Denominator/Pembagi)
-        // Contoh: Pertanyaan 1 max nilainya 5. Pertanyaan 11 max nilainya 10.
+        // 2. DATA SKM GLOBAL
+        // Ambil nilai MAX untuk setiap pertanyaan 
         $maxScores = DB::table('pilihan_jawaban')
             ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        // B. Ambil semua jawaban SKM bulan ini (Global / Semua Ruangan)
+        // Ambil semua jawaban SKM bulan ini (Global / Semua Ruangan)
         $skmAnswers = DB::table('jawaban')
             ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
@@ -126,13 +90,13 @@ class DetailIndikatorController extends Controller
             ->whereYear('jawaban.tanggal', $tahun)
             ->get();
 
-        // C. Proses Data SKM per Tanggal
+        // Proses Data SKM per Tanggal
         $skmByTanggal = [];
         $skmTotalActual = 0;
         $skmTotalMax = 0;
 
         if ($skmAnswers->isNotEmpty()) {
-            // Grouping berdasarkan tanggal (1, 2, ..., 31)
+            // Grouping berdasarkan tanggal
             $groupedSkm = $skmAnswers->groupBy(function ($item) {
                 return Carbon::parse($item->tanggal)->format('j');
             });
@@ -143,13 +107,9 @@ class DetailIndikatorController extends Controller
 
                 foreach ($answers as $ans) {
                     $dailyActual += $ans->nilai;
-                    // Tambahkan nilai maksimal yang seharusnya didapat untuk pertanyaan ini
                     $dailyMax += $maxScores[$ans->id_pertanyaan] ?? 0;
                 }
 
-                // Simpan data harian format object (biar sama dengan struktur MutuRuangan)
-                // pasien_sesuai = SKOR YANG DIDAPAT
-                // total_pasien  = SKOR MAKSIMAL (TARGET)
                 $skmByTanggal[$tgl] = (object) [
                     'pasien_sesuai' => $dailyActual,
                     'total_pasien' => $dailyMax
@@ -160,10 +120,10 @@ class DetailIndikatorController extends Controller
             }
         }
 
-        // D. Hitung Persentase Akhir SKM
+        // Hitung Persentase Akhir SKM
         $skmPersen = $skmTotalMax > 0 ? round(($skmTotalActual / $skmTotalMax) * 100, 2) : 0;
 
-        // E. Masukkan ke dalam array utama sebagai baris terakhir
+        // Masukkan ke dalam array utama sebagai baris terakhir
         $indikatorData[] = [
             'no' => count($indikatorData) + 1,
             'variabel' => 'Kepuasan Masyarakat',
@@ -185,33 +145,6 @@ class DetailIndikatorController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    /**
-     * Download Rekap Mutu Ruangan in Excel Format.
-     */
     public function downloadRekap(Request $request)
     {
         if (!Auth::check()) {

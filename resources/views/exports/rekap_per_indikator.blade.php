@@ -13,16 +13,14 @@
                 TAHUN: {{ $tahun }}
             </th>
         </tr>
-        <tr></tr> {{-- Baris kosong untuk spasi Excel --}}
+        <tr></tr> 
 
-        {{-- Header Kolom --}}
         <tr>
             <th
                 style="border: 1px solid #000000; font-weight: bold; text-align: center; vertical-align: middle; width: 5px;">
                 NO
             </th>
 
-            {{-- TAMPILKAN KOLOM RUANGAN HANYA JIKA IMPU --}}
             @if($kategori === 'Indikator Mutu Prioritas Unit')
                 <th
                     style="border: 1px solid #000000; font-weight: bold; text-align: center; vertical-align: middle; width: 20px;">
@@ -70,19 +68,15 @@
         {{-- Inisialisasi Nomor --}}
         @php $no = 1; @endphp
 
-        {{-- === LOGIKA 1: JIKA KATEGORI ADALAH IMPU (Looping Bersarang) === --}}
         @if($kategori === 'Indikator Mutu Prioritas Unit')
 
-            {{-- Loop Pertama: Per Ruangan (Key = Nama Ruangan) --}}
             @foreach($data as $namaRuangan => $items)
-                {{-- Loop Kedua: Item Indikator di dalam ruangan tersebut --}}
                 @foreach($items as $index => $item)
                     <tr>
                         <td style="border: 1px solid #000000; text-align: center; vertical-align: top;">
                             {{ $no++ }}
                         </td>
 
-                        {{-- Merge Cell Ruangan (Hanya muncul di baris pertama tiap grup) --}}
                         @if($index === 0)
                             <td rowspan="{{ count($items) }}"
                                 style="border: 1px solid #000000; text-align: center; vertical-align: middle; font-weight: bold;">
@@ -97,14 +91,12 @@
                             {{ $item->standar }}
                         </td>
 
-                        {{-- Data Bulan 1-12 --}}
                         @for($b = 1; $b <= 12; $b++)
                             <td style="border: 1px solid #000000; text-align: center;">
                                 {{ $item->data_bulan[$b] !== null ? $item->data_bulan[$b] . '%' : '' }}
                             </td>
                         @endfor
 
-                        {{-- Data Triwulan --}}
                         @for($q = 1; $q <= 4; $q++)
                             <td style="border: 1px solid #000000; text-align: center; font-weight: bold;">
                                 {{ $item->data_tw[$q] !== null ? $item->data_tw[$q] . '%' : '' }}
@@ -114,15 +106,12 @@
                 @endforeach
             @endforeach
 
-            {{-- === LOGIKA 2: JIKA KATEGORI ADALAH INM ATAU IMPRS (Looping Biasa) === --}}
         @else
             @foreach($data as $item)
                 <tr>
                     <td style="border: 1px solid #000000; text-align: center; vertical-align: top;">
                         {{ $no++ }}
                     </td>
-
-                    {{-- Tidak ada kolom Ruangan di sini --}}
 
                     <td style="border: 1px solid #000000; vertical-align: top; word-wrap: break-word;">
                         {{ $item->judul }}
@@ -131,14 +120,12 @@
                         {{ $item->standar }}
                     </td>
 
-                    {{-- Data Bulan 1-12 --}}
                     @for($b = 1; $b <= 12; $b++)
                         <td style="border: 1px solid #000000; text-align: center;">
                             {{ $item->data_bulan[$b] !== null ? $item->data_bulan[$b] . '%' : '' }}
                         </td>
                     @endfor
 
-                    {{-- Data Triwulan --}}
                     @for($q = 1; $q <= 4; $q++)
                         <td style="border: 1px solid #000000; text-align: center; font-weight: bold;">
                             {{ $item->data_tw[$q] !== null ? $item->data_tw[$q] . '%' : '' }}

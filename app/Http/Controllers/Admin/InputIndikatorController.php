@@ -11,19 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class InputIndikatorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Menampilkan form untuk membuat resource baru.
-     * Logika diubah total untuk mengambil data dari relasi yang benar.
-     */
-    public function create(Request $request) // Tambahkan Request $request di sini
+    public function create(Request $request) 
     {
         $user = Auth::user();
         $tanggal = $request->input('tanggal', date('Y-m-d'));
@@ -54,10 +42,6 @@ class InputIndikatorController extends Controller
         return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal', 'user'));
     }
 
-    /**
-     * Menyimpan resource baru ke dalam storage.
-     * Logika diubah total untuk menyimpan dengan foreign key yang benar.
-     */
     public function store(Request $request)
     {
         $user = Auth::user(); 
@@ -105,37 +89,5 @@ class InputIndikatorController extends Controller
         } else {
             return redirect()->back()->with('info', 'Tidak ada data yang diubah atau dikirim.');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

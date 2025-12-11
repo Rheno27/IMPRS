@@ -36,10 +36,8 @@ class LoginController extends Controller
             if ($user->isSuperadmin()) {
                 return redirect()->intended(route('superadmin.dashboard'));
             }
-
             return redirect()->intended(route('admin.dashboard'));
         }
-
         return back()->withErrors(['login' => 'Username atau password salah']);
     }
 

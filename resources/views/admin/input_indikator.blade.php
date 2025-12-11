@@ -2,7 +2,6 @@
 
 @section('content')
     <main id="main-content" class="main-content-section">
-        {{-- Flash Messages (Menggunakan style global .custom-alert) --}}
         @if(session('info'))
             <div class="alert alert-info">{{ session('info') }}</div>
         @endif
@@ -37,7 +36,6 @@
         {{-- DATE PICKER SECTION --}}
         <div class="date-picker">
             <button type="button" id="calendarTrigger" class="calendar-btn" aria-label="Pilih tanggal">
-                {{-- SVG Calendar Icon --}}
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M31.4067 6.675V3.75C31.4067 2.98125 30.7692 2.34375 30.0004 2.34375C29.2317 2.34375 28.5942 2.98125 28.5942 3.75V6.5625H16.4067V3.75C16.4067 2.98125 15.7692 2.34375 15.0004 2.34375C14.2317 2.34375 13.5942 2.98125 13.5942 3.75V6.675C8.53168 7.14375 6.07543 10.1625 5.70043 14.6437C5.66293 15.1875 6.11293 15.6375 6.63793 15.6375H38.3629C38.9067 15.6375 39.3567 15.1687 39.3004 14.6437C38.9254 10.1625 36.4692 7.14375 31.4067 6.675Z"
@@ -119,12 +117,10 @@
             </form>
         </div>
 
-        {{-- MODAL VALIDASI ERROR (Menggunakan struktur app.css + Custom style kita) --}}
+        {{-- MODAL VALIDASI ERROR  --}}
         <div id="validationModal" class="modal-overlay">
             <div class="modal-box centered-alert">
-                {{-- CONTAINER IKON: Flexbox Center --}}
                 <div class="icon-centered">
-                    {{-- Ukuran ikon disesuaikan sedikit (50px) agar proporsional --}}
                     <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -140,7 +136,6 @@
                 </p>
 
                 <div class="modal-actions">
-                    {{-- Tambahkan class btn-modal-wide jika ingin tombol tidak full width --}}
                     <button type="button" class="btn-primary btn-modal-wide" id="btnModalOk">Mengerti</button>
                 </div>
             </div>
@@ -273,7 +268,7 @@
 
         btnModalOk.addEventListener('click', closeModal);
 
-        // Tutup modal jika klik di area gelap (overlay)
+        // Tutup modal (overlay)
         validationModal.addEventListener('click', function (e) {
             if (e.target === validationModal) {
                 closeModal();
@@ -294,7 +289,7 @@
             document.querySelectorAll('.indicator-grid input[type="number"]').forEach(function (input) {
                 if (input.value === '' || input.value === null) {
                     valid = false;
-                    input.classList.add('input-error'); // Tambah class error
+                    input.classList.add('input-error'); 
 
                     if (!firstInvalidInput) firstInvalidInput = input;
                 }
@@ -302,9 +297,9 @@
 
             if (!valid) {
                 e.preventDefault(); // Stop submit
-                validationModal.style.display = 'block'; // Tampilkan Modal
+                validationModal.style.display = 'block'; 
 
-                // Ketika tombol OK diklik, scroll ke input yang error
+                // Ketika tombol OK diklik
                 btnModalOk.onclick = function () {
                     closeModal();
                     if (firstInvalidInput) {

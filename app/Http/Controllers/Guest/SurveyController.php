@@ -9,31 +9,18 @@ use Carbon\Carbon;
 
 class SurveyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         // 1. Ambil semua pertanyaan (kecuali ID 16/Kritik Saran) & URUTKAN BERDASARKAN 'urutan'
-        // TAMBAHAN: ->orderBy('urutan', 'asc')
         $pertanyaan = DB::table('pertanyaan')
             ->where('id_pertanyaan', '!=', 16)
-            ->orderBy('urutan', 'asc') // <--- INI KUNCINYA
+            ->orderBy('urutan', 'asc')
             ->get();
 
         // 2. Ambil pertanyaan spesifik untuk kritik dan saran (ID 16)
         $pertanyaanKritikSaran = DB::table('pertanyaan')->where('id_pertanyaan', 16)->first();
 
         // 3. Ambil semua pilihan jawaban dan kelompokkan berdasarkan id_pertanyaan
-        // (Opsional: Kita urutkan juga pilihan A, B, C, D nya biar rapi)
         $pilihanJawaban = DB::table('pilihan_jawaban')
             ->orderBy('id_pilihan', 'asc')
             ->get()
@@ -46,9 +33,6 @@ class SurveyController extends Controller
         return view('guest.skm1', compact('pertanyaan', 'pilihanJawaban', 'ruangan', 'pertanyaanKritikSaran'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validasi data responden
@@ -92,46 +76,13 @@ class SurveyController extends Controller
                 DB::table('jawaban')->insert([
                     'tanggal' => Carbon::now(),
                     'id_pasien' => $pasienId,
-                    'id_pertanyaan' => 16, // ID untuk kritik dan saran
+                    'id_pertanyaan' => 16, 
                     'id_pilihan' => null,
                     'hasil_nilai' => $request->kritik_saran,
                 ]);
             }
         });
 
-        // Redirect ke halaman survei selesai sesuai route-mu
         return redirect()->route('guest.survei-done')->with('success', 'Terima kasih telah mengisi survei!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -12,25 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class IndikatorRuanganController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -66,17 +47,6 @@ class IndikatorRuanganController extends Controller
             ->with('success', 'Indikator baru berhasil ditambahkan ke ruangan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Ruangan $ruangan)
     {
         $activeIndikators = IndikatorRuangan::where('id_ruangan', $ruangan->id_ruangan)
@@ -86,20 +56,16 @@ class IndikatorRuanganController extends Controller
 
         $allMasterIndikators = IndikatorMutu::orderBy('variabel')->get();
 
-        // Pastikan baris ini ada:
         $allKategoris = Kategori::all();
 
         return view('superadmin.edit_indikator', [
             'ruangan' => $ruangan,
             'activeIndikators' => $activeIndikators,
             'allMasterIndikators' => $allMasterIndikators,
-            'allKategoris' => $allKategoris, // Dan dikirim ke view
+            'allKategoris' => $allKategoris, 
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         // Validasi input
@@ -138,14 +104,6 @@ class IndikatorRuanganController extends Controller
             ->with('success', 'Indikator berhasil diganti!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function deactivate(Request $request)
     {
         $request->validate([
@@ -153,9 +111,6 @@ class IndikatorRuanganController extends Controller
         ]);
 
         $indikatorRuangan = IndikatorRuangan::findOrFail($request->id_indikator_ruangan);
-
-        // Cek apakah indikator ini memang milik ruangan yang sedang diedit (optional tapi bagus untuk keamanan)
-        // if ($indikatorRuangan->id_ruangan != $request->id_ruangan) { ... }
 
         $indikatorRuangan->active = false;
         $indikatorRuangan->save();

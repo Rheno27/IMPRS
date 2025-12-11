@@ -3,7 +3,6 @@
 @section('content')
     <main>
         <section class="form-section">
-            {{-- Error Message Block (Style sudah menggunakan class custom-alert dari refactor sebelumnya) --}}
             @if ($errors->any())
                 <div class="custom-alert error" style="display: block; margin-bottom: 20px;">
                     <ul style="margin: 0; padding-left: 20px;">

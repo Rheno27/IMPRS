@@ -15,14 +15,9 @@ use Carbon\Carbon;
 
 class SDashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        // Ambil tahun dari request, default ke tahun saat ini
         $tahun = $request->input('tahun', date('Y'));
-        // Ambil kategori, default ke INM
         $selectedKategori = $request->input('kategori', 'Indikator Nasional Mutu');
 
         $results = collect();
@@ -61,9 +56,8 @@ class SDashboardController extends Controller
             });
 
         }
-        // --- LOGIKA 2: JIKA KATEGORI ADALAH INM ATAU IMPRS (Gabung/Agregat) ---
+        // --- LOGIKA 2: JIKA KATEGORI ADALAH INM ATAU IMPRS (Gabung) ---
         else {
-            // 1. Ambil semua Indikator Master sesuai kategori
             $masterIndicators = IndikatorMutu::query()
                 ->whereHas('kategori', function ($q) use ($selectedKategori) {
                     $q->where('kategori', $selectedKategori);
@@ -94,8 +88,7 @@ class SDashboardController extends Controller
                 ];
             });
 
-            // === TAMBAHAN: HITUNG SKM JIKA KATEGORI ADALAH INM ===
-            // Ini akan menambahkan baris "Kepuasan Masyarakat" di bawah tabel INM
+            // menambahkan baris "Kepuasan Masyarakat" di bawah tabel INM
             if ($selectedKategori === 'Indikator Nasional Mutu') {
                 $skmObject = $this->calculateGlobalSkmYearly($tahun);
                 if ($skmObject) {
@@ -113,7 +106,7 @@ class SDashboardController extends Controller
 
     private function calculateGlobalSkmYearly($year)
     {
-        // 1. Cari Data Indikator di DB (Untuk Judul & Standar)
+        // 1. Cari Data Indikator di DB 
         $skmIndicatorDB = DB::table('indikator_mutu')
             ->where('variabel', 'LIKE', '%Kepuasan Masyarakat%')
             ->first();
@@ -121,7 +114,7 @@ class SDashboardController extends Controller
         $judulSKM = $skmIndicatorDB ? $skmIndicatorDB->variabel : 'Kepuasan Masyarakat';
         $standarSKM = $skmIndicatorDB ? $skmIndicatorDB->standar : '> 76.61';
 
-        // 2. Ambil Nilai Max per Pertanyaan (Denominator)
+        // 2. Ambil Nilai Max per Pertanyaan 
         $maxScores = DB::table('pilihan_jawaban')
             ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
             ->groupBy('id_pertanyaan')
@@ -176,10 +169,6 @@ class SDashboardController extends Controller
         ];
     }
 
-    /**
-     * Helper function untuk menghitung persentase bulanan
-     * Mencegah duplikasi kode hitungan
-     */
     private function calculateMonthlyStats($groupedData)
     {
         $monthlyAverages = [];
@@ -202,57 +191,6 @@ class SDashboardController extends Controller
         return $monthlyAverages;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    /**
-     * Download Rekap Indikator Mutu per Kategori in Excel Format.
-     */
     public function downloadRekapIndikator(Request $request)
     {
         if (!Auth::check()) {

@@ -5,7 +5,6 @@
             background-image: url('{{ asset('image/background.png') }}');
         }
 
-        /* Tambahan agar area kontrol rapi tanpa class report-section */
         .dashboard-controls {
             padding: 20px 36px;
             display: flex;
@@ -17,7 +16,6 @@
 @endsection
 
 @section('content')
-    {{-- 1. HERO SECTION (TETAP) --}}
     <section id="hero" class="hero-section">
         <div class="hero-content">
             <h1 class="hero-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
@@ -38,10 +36,8 @@
     </section>
 
     {{-- 2. WRAPPER UNTUK KONTROL (Download, Tahun, Bulan) --}}
-    {{-- Kita lepas dari 'report-section' agar tidak kena efek flex-center yang bikin gepeng --}}
     <div class="dashboard-controls">
 
-        {{-- Baris Tombol Download & Tahun --}}
         <div class="report-controls-top" style="justify-content: flex-end; padding: 0; width: 100%; max-width: 1440px;">
             <button type="button" class="download-btn"
                 onclick="document.getElementById('downloadModal').style.display='block'">
@@ -174,8 +170,7 @@
         </div>
     </div>
 
-    {{-- 3. BAGIAN TABEL (STRUKTUR SAMA PERSIS DENGAN SUPERADMIN) --}}
-    {{-- Menggunakan class .report-container (block element) menggantikan .report-section (flex element) --}}
+    {{-- 3. BAGIAN TABEL  --}}
     <div class="report-container">
         <div class="report-table-wrapper">
             {{-- Header Block Hijau --}}
@@ -187,7 +182,6 @@
 
             {{-- Tabel Data --}}
             <div style="overflow-x: auto;">
-                {{-- TIDAK PERLU min-width, karena parent .report-container mengizinkan overflow --}}
                 <table class="data-table">
                     <thead>
                         <tr>
