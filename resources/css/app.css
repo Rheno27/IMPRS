@@ -420,7 +420,11 @@ main {
 /* 6. PAGE: INPUT INDICATOR SPECIFIC         */
 /* ========================================= */
 .main-content-section {
-    display: flex; flex-direction: column; align-items: flex-end; padding: 0 54px; gap: 24px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-end; 
+    padding: 0 54px 54px;
+    gap: 24px;
 }
 
 .date-picker {
