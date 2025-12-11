@@ -278,9 +278,9 @@ class SkmController extends Controller
                 }
             });
         } catch (\Exception $e) {
-            return redirect()->route('superadmin.skm_edit2')->with('error', $e->getMessage());
+            return redirect()->route('superadmin.skm.edit2')->with('error', $e->getMessage());
         }
-        return redirect()->route('superadmin.skm_edit2')->with('success', 'Struktur pertanyaan berhasil diperbarui.');
+        return redirect()->route('superadmin.skm.edit2')->with('success', 'Struktur pertanyaan berhasil diperbarui.');
     }
 
     /**

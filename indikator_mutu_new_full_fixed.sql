@@ -56,7 +56,7 @@ CREATE TABLE bio_pasien (
     id_pasien INT AUTO_INCREMENT PRIMARY KEY,
     id_ruangan VARCHAR(255) NOT NULL,
     no_rm VARCHAR(100) NOT NULL,
-    umur INT NOT NULL,bio_pasien
+    umur INT NOT NULL,
     jenis_kelamin VARCHAR(50) NOT NULL,
     pendidikan VARCHAR(50) NOT NULL,
     pekerjaan VARCHAR(100) NOT NULL,
