@@ -2,277 +2,276 @@
 
 @section('styles')
     <style>
-        /* --- 1. NAVIGASI KHUSUS SKM (Tab Menu) --- */
-            .survey-nav-container {
-                background-color: rgba(214, 227, 221, 0.5);
-                padding: 40px 0 0; /* Adjusted padding */
-                text-align: center;
-                margin-bottom: 40px;
-            }
+    /* --- 1. NAVIGASI KHUSUS SKM (Tab Menu) --- */
+        .survey-nav-container {
+            background-color: rgba(214, 227, 221, 0.5);
+            padding: 40px 0 0; /* Adjusted padding */
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-            .survey-title {
-                font-family: 'Instrument Sans', sans-serif;
-                font-weight: 700;
-                font-size: 28px;
-                color: var(--primary-color);
-                margin: 0 0 30px 0;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
+        .survey-title {
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--primary-color);
+            margin: 0 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-            .survey-tabs {
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-                border-bottom: 1px solid #77a28d;
-            }
+        .survey-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 1px solid #77a28d;
+        }
 
-            .tab-item {
-                font-weight: 600;
-                font-size: 16px;
-                color: #888;
-                text-decoration: none;
-                padding: 12px 30px;
-                border-bottom: 3px solid transparent;
-                transition: all 0.3s;
-                border-radius: 8px 8px 0 0;
-            }
+        .tab-item {
+            font-weight: 600;
+            font-size: 16px;
+            color: #888;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            border-radius: 8px 8px 0 0;
+        }
 
-            .tab-item:hover {
-                background-color: rgba(51, 115, 84, 0.05);
-                color: var(--primary-color);
-            }
+        .tab-item:hover {
+            background-color: rgba(51, 115, 84, 0.05);
+            color: var(--primary-color);
+        }
 
-            .tab-item.active {
-                color: var(--primary-color);
-                border-bottom-color: var(--primary-color);
-                background-color: #fff; /* Tab aktif putih seolah menyatu dengan konten */
-                font-weight: 700;
-            }
+        .tab-item.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background-color: #fff; /* Tab aktif putih seolah menyatu dengan konten */
+            font-weight: 700;
+        }
 
-            /* --- 2. EDITOR SURVEI CONTAINER --- */
-            .survey-editor-container {
-                max-width: 900px;
-                margin: 0 auto;
-                padding-bottom: 100px;
-            }
+        /* --- 2. EDITOR SURVEI CONTAINER --- */
+        .survey-editor-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
 
-            /* Header Control (Preview Button) */
-            .editor-controls {
-                display: flex;
-                justify-content: flex-end;
-                margin-bottom: 20px;
-            }
+        /* Header Control (Preview Button) */
+        .editor-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
 
-            /* --- 3. KARTU PERTANYAAN (QUESTION BLOCK) --- */
-            .question-block {
-                background: #fff;
-                border: 1px solid #e0e0e0;
-                border-left: 5px solid var(--primary-color); /* Aksen kiri */
-                border-radius: 12px;
-                padding: 25px;
-                margin-bottom: 30px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-                transition: transform 0.2s, box-shadow 0.2s;
-                position: relative;
-            }
+        /* --- 3. KARTU PERTANYAAN (QUESTION BLOCK) --- */
+        .question-block {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid var(--primary-color); /* Aksen kiri */
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
 
-            .question-block:hover {
-                box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-                border-color: #cbd5e0;
-            }
+        .question-block:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-color: #cbd5e0;
+        }
 
-            /* Header Pertanyaan (Judul & Tombol Aksi) */
-            .question-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 20px;
-                padding-bottom: 15px;
-                border-bottom: 1px solid #f0f0f0;
-            }
+        /* Header Pertanyaan (Judul & Tombol Aksi) */
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
 
-            .question-title-wrapper {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+        .question-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            .question-number {
-                background-color: var(--primary-color);
-                color: #fff;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                font-size: 14px;
-            }
+        .question-number {
+            background-color: var(--primary-color);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
 
-            .question-label {
-                font-size: 18px;
-                font-weight: 700;
-                color: var(--text-dark);
-                margin: 0;
-            }
+        .question-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
 
-            /* Group Tombol Aksi (Geser, Hapus) */
-            .action-icons {
-                display: flex;
-                gap: 8px;
-            }
+        /* Group Tombol Aksi (Geser, Hapus) */
+        .action-icons {
+            display: flex;
+            gap: 8px;
+        }
 
-            .icon-btn {
-                width: 34px;
-                height: 34px;
-                border-radius: 8px;
-                border: 1px solid #ddd;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #555;
-                background: #fff;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-            .icon-btn:hover {
-                background-color: #f5f5f5;
-                color: var(--primary-color);
-                border-color: var(--primary-color);
-            }
+        .icon-btn:hover {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
 
-            .icon-btn svg {
-                width: 18px; height: 18px;
-                stroke-width: 2;
-            }
+        .icon-btn svg {
+            width: 18px; height: 18px;
+            stroke-width: 2;
+        }
 
-            .icon-btn.danger {
-                color: #dc3545;
-                border-color: #ffcccc;
-                background-color: #fff5f5;
-            }
-            .icon-btn.danger:hover {
-                background-color: #dc3545;
-                color: #fff;
-                border-color: #dc3545;
-            }
+        .icon-btn.danger {
+            color: #dc3545;
+            border-color: #ffcccc;
+            background-color: #fff5f5;
+        }
+        .icon-btn.danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
 
-            /* --- 4. FORM INPUT --- */
-            .form-group {
-                margin-bottom: 20px;
-            }
+        /* --- 4. FORM INPUT --- */
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-            .form-label {
-                display: block;
-                font-weight: 600;
-                font-size: 14px;
-                color: var(--text-dark);
-                margin-bottom: 8px;
-            }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
 
-            .form-input {
-                width: 100%;
-                padding: 12px 15px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 15px;
-                font-family: inherit;
-                transition: border-color 0.2s;
-                box-sizing: border-box; /* Penting agar padding tidak melebarkan input */
-            }
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            box-sizing: border-box; /* Penting agar padding tidak melebarkan input */
+        }
 
-            .form-input:focus {
-                outline: none;
-                border-color: var(--primary-color);
-                box-shadow: 0 0 0 3px rgba(51, 115, 84, 0.1);
-            }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(51, 115, 84, 0.1);
+        }
 
-            /* --- 5. PILIHAN JAWABAN --- */
-            .answers-wrapper {
-                background-color: #fafafa;
-                padding: 15px;
-                border-radius: 8px;
-                border: 1px dashed #ccc;
-            }
+        /* --- 5. PILIHAN JAWABAN --- */
+        .answers-wrapper {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+        }
 
-            .answer-row {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                margin-bottom: 10px;
-            }
+        .answer-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-            .option-badge {
-                width: 36px;
-                height: 36px;
-                background: #e0e0e0;
-                color: #555;
-                border-radius: 6px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                flex-shrink: 0;
-            }
+        .option-badge {
+            width: 36px;
+            height: 36px;
+            background: #e0e0e0;
+            color: #555;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
 
-            .input-score {
-                width: 80px;
-                text-align: center;
-            }
+        .input-score {
+            width: 80px;
+            text-align: center;
+        }
 
-            /* --- 6. FOOTER ACTIONS --- */
-            .bottom-actions {
-                margin-top: 40px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
+        /* --- 6. FOOTER ACTIONS --- */
+        .bottom-actions {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
 
-            .btn-add-big {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                background: #fff;
-                border: 2px dashed var(--primary-color);
-                color: var(--primary-color);
-                padding: 12px 30px;
-                border-radius: 30px;
-                font-weight: 600;
-                font-size: 16px;
-                cursor: pointer;
-                transition: all 0.2s;
-                width: 100%;
-                justify-content: center;
-                max-width: 400px;
-            }
+        .btn-add-big {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 2px dashed var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            justify-content: center;
+            max-width: 400px;
+        }
 
-            .btn-add-big:hover {
-                background: #f0f7f4;
-                transform: translateY(-2px);
-            }
+        .btn-add-big:hover {
+            background: #f0f7f4;
+            transform: translateY(-2px);
+        }
 
-            .btn-save-fixed {
-                background-color: var(--secondary-color);
-                color: #5f4c14; /* Teks kontras */
-                padding: 14px 50px;
-                border: none;
-                border-radius: 12px;
-                font-weight: 700;
-                font-size: 18px;
-                cursor: pointer;
-                box-shadow: 0 4px 15px rgba(255, 187, 0, 0.3);
-                transition: transform 0.2s;
-            }
-            .btn-save-fixed:hover {
-                transform: scale(1.05);
-                background-color: #e6a800;
-            }
-
-        </style>
+        .btn-save-fixed {
+            background-color: var(--secondary-color);
+            color: #5f4c14; /* Teks kontras */
+            padding: 14px 50px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 187, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-save-fixed:hover {
+            transform: scale(1.05);
+            background-color: #e6a800;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -445,25 +444,47 @@
         </div>
     </div>
 
-    {{-- Modal Konfirmasi --}}
+    {{-- MODAL KONFIRMASI HAPUS (Dengan Ikon Warning) --}}
     <div id="customConfirmModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 class="modal-title">Hapus Pertanyaan?</h3>
-            <p style="margin-bottom: 20px; color: #666;">Data yang dihapus tidak bisa dikembalikan.</p>
+        <div class="modal-box centered-alert">
+            <div class="icon-centered">
+                {{-- Ikon Sampah Merah --}}
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            </div>
+            <h3 class="modal-title-alert">Hapus Pertanyaan?</h3>
+            <p class="modal-body-text">
+                Apakah Anda yakin ingin menghapus pertanyaan ini?<br>
+                <small style="color: #dc3545;">Data yang dihapus tidak bisa dikembalikan.</small>
+            </p>
             <div class="modal-actions">
-                <button type="button" class="btn-secondary" id="closeModalBtn">Batal</button>
-                <button type="button" class="btn-control btn-danger-outline" id="confirmDeleteBtn" style="background: #ffe6e6;">Ya, Hapus</button>
+                <button type="button" class="btn-modal secondary" id="closeModalBtn">Batal</button>
+                <button type="button" class="btn-modal danger" id="confirmDeleteBtn">Ya, Hapus</button>
             </div>
         </div>
     </div>
 
-    {{-- Modal Alert --}}
+    {{-- MODAL ALERT (Untuk Error/Info - Dengan Ikon Tanda Seru) --}}
     <div id="customAlertModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 class="modal-title" id="alertTitle">Info</h3>
-            <p style="margin-bottom: 20px; color: #666;" id="alertMessage">...</p>
+        <div class="modal-box centered-alert">
+            <div class="icon-centered">
+                {{-- Ikon Tanda Seru Merah --}}
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h3 class="modal-title-alert" id="alertTitle">Perhatian</h3>
+            <p class="modal-body-text" id="alertMessage">...</p>
             <div class="modal-actions">
-                <button type="button" class="btn-primary" id="btnAlertOk">OK</button>
+                <button type="button" class="btn-modal primary" id="btnAlertOk">Mengerti</button>
             </div>
         </div>
     </div>
@@ -643,15 +664,16 @@
                 }
 
                 // F. DELETE ANSWER OPTION
-                else if(target.closest('.btn-delete-answer')) {
+                else if (target.closest('.btn-delete-answer')) {
                     const currentBlock = target.closest('.answer-row');
                     const list = currentBlock.parentElement;
 
-                    if(list.querySelectorAll('.answer-row').length > 1) {
+                    // Cek jumlah jawaban
+                    if (list.querySelectorAll('.answer-row').length > 1) {
                         currentBlock.remove();
                         renumberOptions(list);
                     } else {
-                        alert("Minimal satu pilihan jawaban harus ada.");
+                        showAlert('Tidak Bisa Dihapus', 'Minimal satu pilihan jawaban harus tersedia.');
                     }
                 }
             });
