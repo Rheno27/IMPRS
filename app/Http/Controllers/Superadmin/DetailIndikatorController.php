@@ -17,8 +17,9 @@ class DetailIndikatorController extends Controller
 {
     public function show(Request $request, Ruangan $ruangan)
     {
-        $bulan = $request->input('bulan', date('n'));
-        $tahun = $request->input('tahun', date('Y'));
+        $bulan = (int) $request->input('bulan', date('n'));
+        $tahun = (int) $request->input('tahun', date('Y'));
+
         // 1. DATA INDIKATOR RUANGAN
         $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
             ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
@@ -28,7 +29,6 @@ class DetailIndikatorController extends Controller
             ->whereYear('tanggal', $tahun)
             ->get();
 
-        // Ambil daftar indikator aktif
         $indikators = IndikatorRuangan::where('id_ruangan', $ruangan->id_ruangan)
             ->where('active', true)
             ->with('indikatorMutu')
@@ -75,63 +75,14 @@ class DetailIndikatorController extends Controller
             ];
         }
 
-        // 2. DATA SKM GLOBAL
-        // Ambil nilai MAX untuk setiap pertanyaan 
-        $maxScores = DB::table('pilihan_jawaban')
-            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
-            ->groupBy('id_pertanyaan')
-            ->pluck('max_nilai', 'id_pertanyaan');
+        // 2. DATA SKM GLOBAL (Panggil fungsi private)
+        $skmData = $this->getSkmData($bulan, $tahun);
 
-        // Ambil semua jawaban SKM bulan ini (Global / Semua Ruangan)
-        $skmAnswers = DB::table('jawaban')
-            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
-            ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
-            ->whereMonth('jawaban.tanggal', $bulan)
-            ->whereYear('jawaban.tanggal', $tahun)
-            ->get();
-
-        // Proses Data SKM per Tanggal
-        $skmByTanggal = [];
-        $skmTotalActual = 0;
-        $skmTotalMax = 0;
-
-        if ($skmAnswers->isNotEmpty()) {
-            // Grouping berdasarkan tanggal
-            $groupedSkm = $skmAnswers->groupBy(function ($item) {
-                return Carbon::parse($item->tanggal)->format('j');
-            });
-
-            foreach ($groupedSkm as $tgl => $answers) {
-                $dailyActual = 0;
-                $dailyMax = 0;
-
-                foreach ($answers as $ans) {
-                    $dailyActual += $ans->nilai;
-                    $dailyMax += $maxScores[$ans->id_pertanyaan] ?? 0;
-                }
-
-                $skmByTanggal[$tgl] = (object) [
-                    'pasien_sesuai' => $dailyActual,
-                    'total_pasien' => $dailyMax
-                ];
-
-                $skmTotalActual += $dailyActual;
-                $skmTotalMax += $dailyMax;
-            }
-        }
-
-        // Hitung Persentase Akhir SKM
-        $skmPersen = $skmTotalMax > 0 ? round(($skmTotalActual / $skmTotalMax) * 100, 2) : 0;
-
-        // Masukkan ke dalam array utama sebagai baris terakhir
-        $indikatorData[] = [
-            'no' => count($indikatorData) + 1,
-            'variabel' => 'Kepuasan Masyarakat',
-            'byTanggal' => $skmByTanggal,
-            'jumlah_total' => $skmTotalMax, 
-            'jumlah_sesuai' => $skmTotalActual,
-            'persen' => $skmPersen
-        ];
+        // Gabungkan nomor urut + data SKM
+        $indikatorData[] = array_merge(
+            ['no' => count($indikatorData) + 1],
+            $skmData
+        );
 
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
@@ -164,5 +115,60 @@ class DetailIndikatorController extends Controller
         $namaFile = 'Rekap_Mutu_' . $ruanganId . '_' . $bulan . '-' . $tahun . '.xlsx';
 
         return Excel::download(new RekapMutuRuanganExport($ruanganId, $bulan, $tahun), $namaFile);
+    }
+
+    private function getSkmData($bulan, $tahun)
+    {
+        // Ambil nilai MAX untuk setiap pertanyaan
+        $maxScores = DB::table('pilihan_jawaban')
+            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
+            ->groupBy('id_pertanyaan')
+            ->pluck('max_nilai', 'id_pertanyaan');
+
+        // Ambil semua jawaban SKM bulan ini
+        $skmAnswers = DB::table('jawaban')
+            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
+            ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
+            ->whereMonth('jawaban.tanggal', $bulan)
+            ->whereYear('jawaban.tanggal', $tahun)
+            ->get();
+
+        $skmByTanggal = [];
+        $skmTotalActual = 0;
+        $skmTotalMax = 0;
+
+        if ($skmAnswers->isNotEmpty()) {
+            $groupedSkm = $skmAnswers->groupBy(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j');
+            });
+
+            foreach ($groupedSkm as $tgl => $answers) {
+                $dailyActual = 0;
+                $dailyMax = 0;
+
+                foreach ($answers as $ans) {
+                    $dailyActual += $ans->nilai;
+                    $dailyMax += $maxScores[$ans->id_pertanyaan] ?? 0;
+                }
+
+                $skmByTanggal[$tgl] = (object) [
+                    'pasien_sesuai' => $dailyActual,
+                    'total_pasien' => $dailyMax
+                ];
+
+                $skmTotalActual += $dailyActual;
+                $skmTotalMax += $dailyMax;
+            }
+        }
+
+        $skmPersen = $skmTotalMax > 0 ? round(($skmTotalActual / $skmTotalMax) * 100, 2) : 0;
+
+        return [
+            'variabel' => 'Kepuasan Masyarakat',
+            'byTanggal' => $skmByTanggal,
+            'jumlah_total' => $skmTotalMax,
+            'jumlah_sesuai' => $skmTotalActual,
+            'persen' => $skmPersen
+        ];
     }
 }

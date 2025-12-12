@@ -176,7 +176,7 @@
             {{-- Header Block Hijau --}}
             <div class="report-header-block">
                 <h3>Penilaian Indikator Mutu di Ruang {{ $user->nama_ruangan }}<br>
-                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[$bulan] ?? '' }} - RSD KALISAT</span>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD KALISAT</span>
                 </h3>
             </div>
 

@@ -33,7 +33,9 @@
                             d="M29.0625 34.6875C28.575 34.6875 28.0875 34.4812 27.7313 34.1437C27.3938 33.7875 27.1875 33.3 27.1875 32.8125C27.1875 32.325 27.3938 31.8375 27.7313 31.4813C28.425 30.7875 29.7 30.7875 30.3937 31.4813C30.7312 31.8375 30.9375 32.325 30.9375 32.8125C30.9375 33.3 30.7312 33.7875 30.3937 34.1437C30.0375 34.4812 29.55 34.6875 29.0625 34.6875Z"
                             fill="#FFC107" />
                     </svg>
-                    <span id="monthYear" style="color: var(--text-dark);">{{ $namaBulan[$bulan] }} {{ $tahun }}</span>
+                    <span id="monthYear" style="color: var(--text-dark);">
+                        {{ $namaBulan[(int) $bulan] ?? '' }} {{ $tahun }}
+                    </span>
                 </button>
 
                 <div id="calendarPanel" class="calendar-popup" style="display: none; width: 280px; left: 0; right: auto;">
@@ -80,7 +82,7 @@
         <div class="report-table-wrapper">
             <div class="report-header-block">
                 <h3>Penilaian Indikator Mutu di Ruang {{ $ruangan->nama_ruangan }}<br>
-                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[$bulan] ?? '' }} - RSD KALISAT</span>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD KALISAT</span>
                 </h3>
             </div>
 

@@ -18,8 +18,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $id_ruangan = $user->id_ruangan;
 
-        $bulan = $request->input('bulan', date('n'));
-        $tahun = $request->input('tahun', date('Y'));
+        $bulan = (int) $request->input('bulan', date('n'));
+        $tahun = (int) $request->input('tahun', date('Y'));
 
         // 1. LOGIKA BARU: Ambil dulu DAFTAR INDIKATOR yang aktif untuk ruangan ini
         $indikators = IndikatorRuangan::where('id_ruangan', $id_ruangan)
