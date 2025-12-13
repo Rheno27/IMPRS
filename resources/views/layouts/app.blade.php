@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body>
     <header class="site-header">
         <a href="
                 @if(Request::is('admin/*'))

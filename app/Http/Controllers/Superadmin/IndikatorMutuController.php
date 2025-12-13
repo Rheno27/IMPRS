@@ -83,25 +83,20 @@ class IndikatorMutuController extends Controller
 
     public function destroy(string $id)
     {
-        // 1. Cek apakah indikator ini sedang digunakan di tabel 'indikator_ruangan'
         $isInUse = DB::table('indikator_ruangan')->where('id_indikator', $id)->exists();
 
         if ($isInUse) {
-            // 2. JIKA DIPAKAI: Jangan hapus. Kembalikan dengan pesan error.
             return redirect()->route('superadmin.indikator_mutu.create')
                 ->with('error', 'Indikator ini tidak dapat dihapus karena sedang digunakan oleh satu atau lebih ruangan.');
         }
 
-        // 3. JIKA TIDAK DIPAKAI: Lanjutkan proses hapus
         try {
             DB::table('indikator_mutu')->where('id_indikator', $id)->delete();
 
-            // 4. Kembalikan dengan pesan sukses
             return redirect()->route('superadmin.indikator_mutu.create')
                 ->with('success', 'Indikator mutu berhasil dihapus.');
 
         } catch (\Exception $e) {
-            // 5. Tangkap jika ada error database lain
             return redirect()->route('superadmin.indikator_mutu.create')
                 ->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
         }

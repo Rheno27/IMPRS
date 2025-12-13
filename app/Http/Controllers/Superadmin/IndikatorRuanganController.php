@@ -8,10 +8,17 @@ use App\Models\Ruangan;
 use App\Models\IndikatorRuangan;
 use App\Models\IndikatorMutu;
 use App\Models\Kategori;
-use Illuminate\Support\Facades\DB;
+use App\Services\MutuService; 
 
 class IndikatorRuanganController extends Controller
 {
+    protected $mutuService;
+
+    public function __construct(MutuService $mutuService)
+    {
+        $this->mutuService = $mutuService;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -19,32 +26,18 @@ class IndikatorRuanganController extends Controller
             'id_indikator_baru' => 'required|exists:indikator_mutu,id_indikator',
         ]);
 
-        // Cek dulu apakah indikator ini sudah pernah ditugaskan ke ruangan ini
-        $indikator = IndikatorRuangan::where('id_ruangan', $request->id_ruangan)
-            ->where('id_indikator', $request->id_indikator_baru)
-            ->first();
+        // Panggil Service
+        $result = $this->mutuService->assignIndikatorToRuangan(
+            $request->id_ruangan,
+            $request->id_indikator_baru
+        );
 
-        if ($indikator) {
-            // Jika sudah ada, cek apakah sudah aktif
-            if ($indikator->active) {
-                return redirect()->back()
-                    ->with('error', 'Indikator ini sudah aktif di ruangan ini.');
-            } else {
-                // Jika tidak aktif, aktifkan kembali
-                $indikator->active = true;
-                $indikator->save();
-            }
-        } else {
-            // Jika belum ada sama sekali, buat data baru
-            IndikatorRuangan::create([
-                'id_ruangan' => $request->id_ruangan,
-                'id_indikator' => $request->id_indikator_baru,
-                'active' => true,
-            ]);
+        if ($result['status'] === 'error') {
+            return redirect()->back()->with('error', $result['message']);
         }
 
         return redirect()->route('superadmin.ruangan.edit_indikator', ['ruangan' => $request->id_ruangan])
-            ->with('success', 'Indikator baru berhasil ditambahkan ke ruangan.');
+            ->with('success', $result['message']);
     }
 
     public function edit(Ruangan $ruangan)
@@ -55,50 +48,29 @@ class IndikatorRuanganController extends Controller
             ->get();
 
         $allMasterIndikators = IndikatorMutu::orderBy('variabel')->get();
-
         $allKategoris = Kategori::all();
 
         return view('superadmin.edit_indikator', [
             'ruangan' => $ruangan,
             'activeIndikators' => $activeIndikators,
             'allMasterIndikators' => $allMasterIndikators,
-            'allKategoris' => $allKategoris, 
+            'allKategoris' => $allKategoris,
         ]);
     }
 
     public function update(Request $request)
     {
-        // Validasi input
         $request->validate([
             'id_ruangan' => 'required|exists:ruangan,id_ruangan',
             'id_indikator_ruangan_lama' => 'required|exists:indikator_ruangan,id_indikator_ruangan',
             'id_indikator_baru' => 'required|exists:indikator_mutu,id_indikator',
         ]);
 
-        DB::transaction(function () use ($request) {
-            // 1. Selalu nonaktifkan indikator yang lama
-            IndikatorRuangan::where('id_indikator_ruangan', $request->id_indikator_ruangan_lama)
-                ->update(['active' => false]);
-
-            // 2. CEK: Apakah indikator baru ini sudah ada untuk ruangan ini tapi dalam status nonaktif?
-            $existingInactive = IndikatorRuangan::where('id_ruangan', $request->id_ruangan)
-                ->where('id_indikator', $request->id_indikator_baru)
-                ->where('active', false)
-                ->first();
-
-            if ($existingInactive) {
-                // 3. JIKA ADA: Aktifkan kembali record yang sudah ada (UPDATE)
-                $existingInactive->active = true;
-                $existingInactive->save();
-            } else {
-                // 4. JIKA TIDAK ADA: Buat record baru (CREATE)
-                IndikatorRuangan::create([
-                    'id_ruangan' => $request->id_ruangan,
-                    'id_indikator' => $request->id_indikator_baru,
-                    'active' => true,
-                ]);
-            }
-        });
+        $this->mutuService->switchIndikatorRuangan(
+            $request->id_ruangan,
+            $request->id_indikator_ruangan_lama,
+            $request->id_indikator_baru
+        );
 
         return redirect()->route('superadmin.ruangan.edit_indikator', ['ruangan' => $request->id_ruangan])
             ->with('success', 'Indikator berhasil diganti!');
@@ -110,10 +82,7 @@ class IndikatorRuanganController extends Controller
             'id_indikator_ruangan' => 'required|exists:indikator_ruangan,id_indikator_ruangan',
         ]);
 
-        $indikatorRuangan = IndikatorRuangan::findOrFail($request->id_indikator_ruangan);
-
-        $indikatorRuangan->active = false;
-        $indikatorRuangan->save();
+        $this->mutuService->deactivateIndikator($request->id_indikator_ruangan);
 
         return redirect()->back()
             ->with('success', 'Indikator berhasil dinonaktifkan dari ruangan ini.');
