@@ -2,54 +2,6 @@
 
 @section('styles')
     <style>
-    /* --- 1. NAVIGASI KHUSUS SKM (Tab Menu) --- */
-        .survey-nav-container {
-            background-color: rgba(214, 227, 221, 0.5);
-            padding: 40px 0 0; 
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .survey-title {
-            font-family: 'Instrument Sans', sans-serif;
-            font-weight: 700;
-            font-size: 28px;
-            color: var(--primary-color);
-            margin: 0 0 30px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .survey-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            border-bottom: 1px solid #77a28d;
-        }
-
-        .tab-item {
-            font-weight: 600;
-            font-size: 16px;
-            color: #888;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .tab-item:hover {
-            background-color: rgba(51, 115, 84, 0.05);
-            color: var(--primary-color);
-        }
-
-        .tab-item.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-            background-color: #fff; 
-            font-weight: 700;
-        }
-
         /* --- 2. EDITOR SURVEI CONTAINER --- */
         .survey-editor-container {
             max-width: 900px;

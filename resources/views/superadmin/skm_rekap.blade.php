@@ -2,51 +2,6 @@
 
 @section('styles')
     <style>
-        /* --- 1. CSS KHUSUS NAVIGASI (KOP) --- */
-        .survey-nav-container {
-            background-color: rgba(214, 227, 221, 0.5);
-            padding: 100px 0 0;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .survey-title {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 700;
-            font-size: 28px;
-            color: var(--primary-color);
-            margin: 0 0 30px 0;
-            text-transform: uppercase;
-        }
-
-        .survey-tabs {
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid #77a28d;
-        }
-
-        .tab-item {
-            font-weight: 600;
-            font-size: 16px;
-            color: #aaa;
-            text-decoration: none;
-            padding: 12px 24px;
-            text-align: center;
-            min-width: 200px;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .tab-item:hover {
-            color: var(--primary-color);
-        }
-
-        .tab-item.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-            font-weight: 700;
-        }
-
         /* --- 2. CSS KHUSUS TABEL SKM (Mengikuti Gaya Detail) --- */
         * --- CSS TABEL SKM --- */
         .skm-table-wrapper {
