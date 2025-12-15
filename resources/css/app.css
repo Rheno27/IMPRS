@@ -2123,7 +2123,7 @@ main {
 
 @media screen and (min-width: 1024px) and (max-width: 1550px) {
     html {
-        zoom: 0.8;
+        zoom: 1;
     }
 
     body {
