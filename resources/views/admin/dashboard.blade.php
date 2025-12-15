@@ -20,9 +20,9 @@
         <div class="hero-content">
             <h1 class="hero-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
             <p class="hero-subtitle">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a arcu quis nisi sollicitudin imperdiet.
-                Pellentesque volutpat, arcu sagittis pellentesque sollicitudin, urna urna sodales quam, vel ultrices massa
-                dui at ligula. Nullam porta ante ut turpis imperdiet porta ut a augue.
+                Website Pelaporan Indikator Mutu dan Keselamatan Pasien merupakan sebuah sistem berbasis web
+                yang dirancang untuk memfasilitasi proses pencatatan, pelaporan, dan pemantauan indikator mutu 
+                serta keselamatan pasien secara terpusat.
             </p>
             <a href="{{ route('admin.input_indikator') }}" class="cta-button">
                 <span>Isi Laporan</span>
