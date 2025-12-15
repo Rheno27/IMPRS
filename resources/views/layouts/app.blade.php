@@ -93,8 +93,9 @@
                             <h3 class="brand-name">RSD KALISAT JEMBER</h3>
                         </div>
                         <p class="footer-description">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a arcu quis nisi sollicitudin
-                            imperdiet. Pellentesque volutpat, arcu sagittis pellentesque sollicitudin, urna urna sodales quam.
+                            Website Pelaporan Indikator Mutu dan Keselamatan Pasien merupakan sebuah sistem berbasis web 
+                            yang dirancang untuk memfasilitasi proses pencatatan, pelaporan, dan pemantauan indikator mutu
+                            serta keselamatan pasien secara terpusat.
                         </p>
                     </div>
         
