@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Exports\RekapSkmExport;
+use App\Services\SkmService;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon; 
 
 class SkmController extends Controller
 {
+    protected $skmService;
+
+    public function __construct(SkmService $skmService)
+    {
+        $this->skmService = $skmService;
+    }
+
     public function index(Request $request)
     {
         $selectedYear = $request->input('year', Carbon::now()->year);
@@ -42,7 +50,7 @@ class SkmController extends Controller
 
         $dataRekap = [];
 
-        // Siapkan array rata-rata (Default 0)
+        // array rata-rata (Default 0)
         $rataRataKolom = [];
         foreach ($listPertanyaan as $id) {
             $rataRataKolom[$id] = ['total' => 0, 'count' => 0];
@@ -92,35 +100,20 @@ class SkmController extends Controller
     public function destroyPertanyaan($id)
     {
         try {
-            // 1. Cek Safety: Apakah pertanyaan ini sudah ada di tabel jawaban
-            $cekResponden = DB::table('jawaban')
-                ->where('id_pertanyaan', $id)
-                ->exists();
+            $this->skmService->deleteSinglePertanyaan($id);
 
-            if ($cekResponden) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'GAGAL: Pertanyaan tidak bisa dihapus karena sudah memiliki data responden. Data aman.'
-                ], 400); 
-            }
-
-            // 2. Jika Aman, Hapus Pilihan Jawaban (Foreign Key)
-            DB::table('pilihan_jawaban')->where('id_pertanyaan', $id)->delete();
-
-            // 3. Hapus Pertanyaan
-            DB::table('pertanyaan')->where('id_pertanyaan', $id)->delete();
-
-            // SUKSES: Kembalikan JSON success
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pertanyaan berhasil dihapus.'
             ]);
 
         } catch (\Exception $e) {
+            $status = str_contains($e->getMessage(), 'GAGAL') ? 400 : 500;
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan server: ' . $e->getMessage()
-            ], 500);
+                'message' => $e->getMessage()
+            ], $status);
         }
     }
 
@@ -153,68 +146,17 @@ class SkmController extends Controller
     public function updatePertanyaan(Request $request)
     {
         $submittedQuestions = $request->input('questions', []);
-        $safePertanyaanIds = [];
-        $safePilihanIds = [];
 
         try {
-            DB::transaction(function () use ($submittedQuestions, &$safePertanyaanIds, &$safePilihanIds) {
-
-                foreach ($submittedQuestions as $index => $qData) {
-
-                    $pertanyaanId = null;
-
-                    $pertanyaanData = [
-                        'pertanyaan' => $qData['pertanyaan'] ?? 'Pertanyaan Kosong',
-                        'urutan' => $index + 1
-                    ];
-
-                    if (!empty($qData['id_pertanyaan'])) {
-                        $pertanyaanId = $qData['id_pertanyaan'];
-                        DB::table('pertanyaan')->where('id_pertanyaan', $pertanyaanId)->update($pertanyaanData);
-                    } else {
-                        $pertanyaanId = DB::table('pertanyaan')->insertGetId($pertanyaanData);
-                    }
-
-                    $safePertanyaanIds[] = $pertanyaanId;
-
-                    if (isset($qData['pilihan']) && is_array($qData['pilihan'])) {
-                        foreach ($qData['pilihan'] as $pData) {
-                            $pilihanId = null;
-                            $pilihanData = [
-                                'id_pertanyaan' => $pertanyaanId,
-                                'pilihan' => $pData['pilihan'] ?? '',
-                                'nilai' => isset($pData['nilai']) ? intval($pData['nilai']) : 0
-                            ];
-                            if (!empty($pData['id_pilihan'])) {
-                                $pilihanId = $pData['id_pilihan'];
-                                DB::table('pilihan_jawaban')->where('id_pilihan', $pData['id_pilihan'])->update($pilihanData);
-                            } else {
-                                $pilihanId = DB::table('pilihan_jawaban')->insertGetId($pilihanData);
-                            }
-                            $safePilihanIds[] = $pilihanId;
-                        }
-                    }
-                }
-
-                $existingPilihanIds = DB::table('pilihan_jawaban')->whereIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pilihan');
-                $pilihanIdsToDelete = $existingPilihanIds->diff($safePilihanIds);
-                if ($pilihanIdsToDelete->isNotEmpty()) {
-                    DB::table('pilihan_jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
-                }
-
-                $questionsToDelete = DB::table('pertanyaan')->whereNotIn('id_pertanyaan', $safePertanyaanIds)->pluck('id_pertanyaan');
-                if ($questionsToDelete->isNotEmpty()) {
-                    foreach ($questionsToDelete as $delId) {
-                        DB::table('jawaban')->where('id_pertanyaan', $delId)->delete();
-                        DB::table('pilihan_jawaban')->where('id_pertanyaan', $delId)->delete();
-                        DB::table('pertanyaan')->where('id_pertanyaan', $delId)->delete();
-                    }
-                }
-            });
+            $this->skmService->syncPertanyaan($submittedQuestions);
+            
+            return redirect()->route('superadmin.skm.edit2')
+                ->with('success', 'Struktur pertanyaan berhasil diperbarui.');
+                
         } catch (\Exception $e) {
-            return redirect()->route('superadmin.skm.edit2')->with('error', $e->getMessage());
+            return redirect()->route('superadmin.skm.edit2')
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-        return redirect()->route('superadmin.skm.edit2')->with('success', 'Struktur pertanyaan berhasil diperbarui.');
     }
 
     public function hasil()

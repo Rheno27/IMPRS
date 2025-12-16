@@ -19,19 +19,28 @@
             </div>
         @endif
 
-        @if (session('error'))
-            <div class="custom-alert error" role="alert">
-                <div class="alert-content">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        @if ($errors->any())
+            <div class="custom-alert error" role="alert" style="align-items: flex-start;">
+                <div class="alert-content" style="align-items: flex-start;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="margin-top: 2px;">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    <span>{{ session('error') }}</span>
+
+                    <div style="margin-left: 8px;">
+                        <strong>Gagal Menyimpan Data!</strong>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
                 <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">✕</button>
             </div>
         @endif
+        {{-- BATAS TAMBAHAN --}}
 
         {{-- DATE PICKER SECTION --}}
         <div class="date-picker">

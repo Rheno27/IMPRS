@@ -8,6 +8,7 @@ use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\RekapMutuRuanganExport;
+use App\Services\MutuService; 
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,12 +16,18 @@ use Illuminate\Support\Facades\DB;
 
 class DetailIndikatorController extends Controller
 {
+    protected $mutuService;
+
+    public function __construct(MutuService $mutuService)
+    {
+        $this->mutuService = $mutuService;
+    }
+
     public function show(Request $request, Ruangan $ruangan)
     {
         $bulan = (int) $request->input('bulan', date('n'));
         $tahun = (int) $request->input('tahun', date('Y'));
 
-        // 1. DATA INDIKATOR RUANGAN
         $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
             ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
                 $query->where('id_ruangan', $ruangan->id_ruangan);
@@ -33,6 +40,15 @@ class DetailIndikatorController extends Controller
             ->where('active', true)
             ->with('indikatorMutu')
             ->get();
+
+        $indikatorData = $this->mutuService->calculateDailyStats($indikators, $mutu);
+
+        $skmData = $this->getSkmData($bulan, $tahun);
+
+        $indikatorData[] = array_merge(
+            ['no' => count($indikatorData) + 1],
+            $skmData
+        );
 
         $namaBulan = [
             1 => 'Januari',
@@ -48,42 +64,6 @@ class DetailIndikatorController extends Controller
             11 => 'November',
             12 => 'Desember'
         ];
-
-        $indikatorData = [];
-
-        // Loop Indikator Ruangan
-        foreach ($indikators as $i => $item) {
-            $dataMutu = $mutu->filter(function ($m) use ($item) {
-                return $m->id_indikator_ruangan == $item->id_indikator_ruangan;
-            });
-
-            $byTanggal = $dataMutu->keyBy(function ($d) {
-                return Carbon::parse($d->tanggal)->format('j');
-            });
-
-            $jumlah_total = $dataMutu->sum('total_pasien');
-            $jumlah_sesuai = $dataMutu->sum('pasien_sesuai');
-            $persen = $jumlah_total > 0 ? round($jumlah_sesuai / $jumlah_total * 100, 2) : 0;
-
-            $indikatorData[] = [
-                'no' => $i + 1,
-                'variabel' => $item->indikatorMutu->variabel,
-                'byTanggal' => $byTanggal,
-                'jumlah_total' => $jumlah_total,
-                'jumlah_sesuai' => $jumlah_sesuai,
-                'persen' => $persen,
-            ];
-        }
-
-        // 2. DATA SKM GLOBAL (Panggil fungsi private)
-        $skmData = $this->getSkmData($bulan, $tahun);
-
-        // Gabungkan nomor urut + data SKM
-        $indikatorData[] = array_merge(
-            ['no' => count($indikatorData) + 1],
-            $skmData
-        );
-
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
         return view('superadmin.detail_indikator', [
