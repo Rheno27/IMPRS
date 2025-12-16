@@ -23,18 +23,23 @@ class SkmController extends Controller
     {
         $selectedYear = $request->input('year', Carbon::now()->year);
         $selectedMonth = $request->input('month', Carbon::now()->month);
+        $selectedRuangan = $request->input('ruangan'); // Tambahan: Ambil input ruangan
 
-        // === Query Data Pertanyaan ===
+        $listRuangan = DB::table('ruangan')
+            ->select('id_ruangan', 'nama_ruangan')
+            ->where('nama_ruangan', '!=', 'Super Admin') 
+            ->get();
+
         $listPertanyaan = DB::table('pilihan_jawaban')
             ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
             ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
             ->distinct()
             ->orderBy('pertanyaan.urutan', 'asc')
-            ->get() 
+            ->get()
             ->pluck('id_pertanyaan');
 
-        // === Query Data Jawaban ===
-        $jawabanPasien = DB::table('jawaban')
+        // === Query Data Jawaban (Diupdate) ===
+        $queryJawaban = DB::table('jawaban')
             ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
             ->leftJoin('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select(
@@ -45,12 +50,15 @@ class SkmController extends Controller
             )
             ->whereYear('jawaban.tanggal', $selectedYear)
             ->whereMonth('jawaban.tanggal', $selectedMonth)
-            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan) 
-            ->get();
+            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan);
+
+        if ($selectedRuangan) {
+            $queryJawaban->where('bio_pasien.id_ruangan', $selectedRuangan);
+        }
+
+        $jawabanPasien = $queryJawaban->get();
 
         $dataRekap = [];
-
-        // array rata-rata (Default 0)
         $rataRataKolom = [];
         foreach ($listPertanyaan as $id) {
             $rataRataKolom[$id] = ['total' => 0, 'count' => 0];
@@ -73,12 +81,10 @@ class SkmController extends Controller
             }
         }
 
-        // Hitung total per pasien
         foreach ($dataRekap as $id_pasien => $data) {
             $dataRekap[$id_pasien]['total_nilai_ikm'] = array_sum($data['jawaban']);
         }
 
-        // Hitung rata-rata per kolom (pertanyaan)
         $finalRataRataKolom = [];
         foreach ($listPertanyaan as $id) {
             if ($rataRataKolom[$id]['count'] > 0) {
@@ -93,7 +99,9 @@ class SkmController extends Controller
             'rataRataKolom' => $finalRataRataKolom,
             'selectedMonth' => $selectedMonth,
             'selectedYear' => $selectedYear,
-            'listPertanyaan' => $listPertanyaan 
+            'listPertanyaan' => $listPertanyaan,
+            'listRuangan' => $listRuangan,
+            'selectedRuangan' => $selectedRuangan
         ]);
     }
 
@@ -256,9 +264,15 @@ class SkmController extends Controller
 
         $bulan = $request->month;
         $tahun = $request->year;
+        $ruanganId = $request->ruangan; 
 
-        $namaFile = 'Rekap_SKM_' . $bulan . '-' . $tahun . '.xlsx';
+        $namaFile = 'Rekap_SKM_' . $bulan . '-' . $tahun;
+        if ($ruanganId) {
+            $namaRuangan = DB::table('ruangan')->where('id_ruangan', $ruanganId)->value('nama_ruangan');
+            $namaFile .= '_' . str_replace(' ', '_', $namaRuangan);
+        }
+        $namaFile .= '.xlsx';
 
-        return Excel::download(new RekapSkmExport($bulan, $tahun), $namaFile);
+        return Excel::download(new RekapSkmExport($bulan, $tahun, $ruanganId), $namaFile);
     }
 }

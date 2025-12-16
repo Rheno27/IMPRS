@@ -83,15 +83,59 @@
                                 style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top:10px;"></div>
                         </div>
                     </div>
+                    <div style="position: relative;" id="roomDropdownContainer">
+                        <form id="filterRuanganForm" action="{{ route('superadmin.skm.rekap') }}" method="GET">
+                            <input type="hidden" name="month" value="{{ $selectedMonth }}">
+                            <input type="hidden" name="year" value="{{ $selectedYear }}">
+                            <input type="hidden" name="ruangan" id="inputRuangan" value="{{ $selectedRuangan }}">
+                        </form>
+
+                        <button id="roomBtn" class="btn-control" style="min-width: 200px; justify-content: space-between; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-color);">
+                                    <path d="M3 21h18M5 21V7l8-4 8 4v14M8 21v-2a2 2 0 0 1 4 0v2"></path>
+                                </svg>
+                                
+                                <span id="selectedRoomText" style="color: var(--primary-color); font-weight: 600;">
+                                    @if($selectedRuangan)
+                                        @php
+    $namaRuangan = $listRuangan->firstWhere('id_ruangan', $selectedRuangan)->nama_ruangan ?? 'Ruangan Tidak Ditemukan';
+                                        @endphp
+                                        {{ $namaRuangan }}
+                                    @else
+                                        Semua Ruangan
+                                    @endif
+                                </span>
+                            </div>
+
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+
+                        <div id="roomPanel" class="room-popup">
+                            <button type="button" class="room-option {{ !$selectedRuangan ? 'active' : '' }}" onclick="selectRoom('')">
+                                -- Semua Ruangan --
+                            </button>
+
+                            @foreach($listRuangan as $r)
+                                <button type="button" 
+                                        class="room-option {{ $selectedRuangan == $r->id_ruangan ? 'active' : '' }}" 
+                                        onclick="selectRoom('{{ $r->id_ruangan }}')">
+                                    {{ $r->nama_ruangan }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
                 <div class="toolbar-right">
                     <form action="{{ route('superadmin.skm.download') }}" method="GET" style="display: inline;">
                         <input type="hidden" name="month" value="{{ $selectedMonth }}">
                         <input type="hidden" name="year" value="{{ $selectedYear }}">
+                        <input type="hidden" name="ruangan" value="{{ $selectedRuangan }}">
                         <button type="submit" class="btn-control">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="7 10 12 15 17 10"></polyline>
                                 <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -150,11 +194,11 @@
                                         colspan="{{ count($listPertanyaan) + 1 }}">Rata-Rata Total</td>
                                     <td style="font-weight: bold; background-color: #eaf5f0;">
                                         @php
-    $rataRataIKMTotal = 0;
-    if (count($dataRekap) > 0) {
-        $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
-        $rataRataIKMTotal = $totalIKM / count($dataRekap);
-    }
+$rataRataIKMTotal = 0;
+if (count($dataRekap) > 0) {
+    $totalIKM = array_sum(array_column($dataRekap, 'total_nilai_ikm'));
+    $rataRataIKMTotal = $totalIKM / count($dataRekap);
+}
                                         @endphp
                                         {{ number_format($rataRataIKMTotal, 2) }}
                                     </td>
@@ -200,7 +244,8 @@
                     b.addEventListener('click', () => {
                         const selectedMonth = index + 1;
                         const baseUrl = "{{ route('superadmin.skm.rekap') }}";
-                        window.location.href = `${baseUrl}?month=${selectedMonth}&year=${currentYear}`;
+                        const selectedRuangan = document.querySelector('select[name="ruangan"]').value;
+                        window.location.href = `${baseUrl}?month=${selectedMonth}&year=${currentYear}&ruangan=${selectedRuangan}`;
                     });
                     monthsContainer.appendChild(b);
                 });
@@ -223,5 +268,41 @@
 
             monthYearEl.textContent = monthNames[currentMonthIndex] + " " + currentYear;
         })();
+    </script>
+    <script>
+        // === LOGIC CUSTOM DROPDOWN RUANGAN ===
+        const roomBtn = document.getElementById('roomBtn');
+        const roomPanel = document.getElementById('roomPanel');
+        const roomContainer = document.getElementById('roomDropdownContainer');
+        const inputRuangan = document.getElementById('inputRuangan');
+        const formRuangan = document.getElementById('filterRuanganForm');
+
+        // Toggle Tampilkan/Sembunyikan Panel
+        roomBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Mencegah event bubbling
+            // Tutup kalender jika terbuka (opsional, biar rapi)
+            document.getElementById('calendarPanel').style.display = 'none';
+
+            // Toggle class open
+            if (roomPanel.style.display === 'block') {
+                roomPanel.style.display = 'none';
+            } else {
+                roomPanel.style.display = 'block';
+            }
+        });
+
+        // Fungsi saat opsi dipilih
+        window.selectRoom = function (id) {
+            inputRuangan.value = id; // Set nilai ke hidden input
+            roomPanel.style.display = 'none'; // Tutup panel
+            formRuangan.submit(); // Submit form otomatis
+        }
+
+        // Tutup panel jika klik di luar area
+        document.addEventListener('click', (e) => {
+            if (!roomContainer.contains(e.target)) {
+                roomPanel.style.display = 'none';
+            }
+        });
     </script>
 @endpush

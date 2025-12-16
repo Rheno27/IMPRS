@@ -918,7 +918,7 @@ main {
 /* 9. SKM SURVEY FORM STYLES                 */
 /* ========================================= */
 .form-section {
-    padding: 54px;
+    padding: 0;
 }
 
 .form-wrapper {
@@ -1294,7 +1294,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 48px 0;
+    padding: 30px 60px 0;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -2386,4 +2386,102 @@ main {
     .chart-card-body {
         padding: 0;
     }
+}
+
+/* ========================================= */
+/* 24. SKM REKAP TABLE STYLES                */
+/* ========================================= */
+.skm-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 0   ;
+}
+
+.data-table.skm-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table.skm-table th, 
+.data-table.skm-table td {
+    white-space: nowrap; 
+    padding: 12px 8px; 
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.data-table.skm-table th {
+    background-color: var(--bg-table-header);
+    font-weight: 600;
+}
+
+/* ========================================= */
+/* 25. SKM LIST CUSTOM ROOM DROPDOWN         */
+/* ========================================= */
+
+.room-popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #ffffff;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1200;
+    width: 240px; 
+    padding: 5px 0;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto; 
+}
+
+.room-popup.open {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+}
+
+.room-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: background 0.2s;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.room-option:last-child {
+    border-bottom: none;
+}
+
+.room-option:hover {
+    background-color: rgba(51, 115, 84, 0.08);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.room-option.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Scrollbar cantik untuk panel ruangan */
+.room-popup::-webkit-scrollbar {
+    width: 6px;
+}
+.room-popup::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.room-popup::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+.room-popup::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }

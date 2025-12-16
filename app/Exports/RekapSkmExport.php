@@ -15,11 +15,13 @@ class RekapSkmExport implements FromView, WithTitle, WithEvents
 {
     protected $bulan;
     protected $tahun;
+    protected $ruanganId;
 
-    public function __construct($bulan, $tahun)
+    public function __construct($bulan, $tahun, $ruanganId = null)
     {
         $this->bulan = $bulan;
         $this->tahun = $tahun;
+        $this->ruanganId = $ruanganId;
     }
 
     public function title(): string
@@ -33,42 +35,30 @@ class RekapSkmExport implements FromView, WithTitle, WithEvents
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet;
 
-                // 1. List ID Pertanyaan untuk menghitung jumlah kolom
                 $listPertanyaan = DB::table('pilihan_jawaban')
+                    ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
+                    ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
                     ->distinct()
-                    ->orderBy('id_pertanyaan')
-                    ->pluck('id_pertanyaan');
+                    ->orderBy('pertanyaan.urutan', 'asc')
+                    ->pluck('pilihan_jawaban.id_pertanyaan');
 
                 $totalKolom = count($listPertanyaan);
 
-                // Huruf kolom terakhir (Awal kolom C + jumlah pertanyaan + 1 untuk Total)
-                // Kolom A=No, Kolom B=No akan dilewati (karena data mulai B? Tidak, data kita mulai A)
-                // Struktur: A(No), B(Q1), C(Q2)... Z(Qn), AA(Total)
-    
-                // Hitung huruf kolom terakhir
-                $lastColumnIndex = 1 + $totalKolom + 1; // 1(No) + Qs + 1(Total)
+                $lastColumnIndex = 1 + $totalKolom + 1;
                 $lastColumn = Coordinate::stringFromColumnIndex($lastColumnIndex);
 
-                // 2. Styling Header (Baris 4 dan 5)
-                $sheet->getStyle('A4:' . $lastColumn . '5')->getFont()->setBold(true);
-                $sheet->getStyle('A4:' . $lastColumn . '5')->getAlignment()->setHorizontal('center');
-                $sheet->getStyle('A4:' . $lastColumn . '5')->getAlignment()->setVertical('center');
+                $sheet->getStyle('A4:' . $lastColumn . '6')->getFont()->setBold(true);
+                $sheet->getStyle('A4:' . $lastColumn . '6')->getAlignment()->setHorizontal('center');
+                $sheet->getStyle('A4:' . $lastColumn . '6')->getAlignment()->setVertical('center');
 
-                // 3. Border untuk seluruh tabel
-                // Kita cari baris terakhir data
                 $highestRow = $sheet->getHighestRow();
                 $sheet->getStyle('A4:' . $lastColumn . $highestRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
-                // 4. Lebar Kolom
-                $sheet->getColumnDimension('A')->setWidth(5); // No
-    
-                // Loop kolom pertanyaan (Mulai index 2 / Kolom B)
+                $sheet->getColumnDimension('A')->setWidth(5); 
                 for ($i = 2; $i <= $lastColumnIndex; $i++) {
                     $colLetter = Coordinate::stringFromColumnIndex($i);
                     $sheet->getColumnDimension($colLetter)->setWidth(8);
                 }
-
-                // Kolom Terakhir (Rata-rata IKM) agak lebar
                 $sheet->getColumnDimension($lastColumn)->setWidth(15);
             },
         ];
@@ -76,14 +66,14 @@ class RekapSkmExport implements FromView, WithTitle, WithEvents
 
     public function view(): View
     {
-        // 1. Ambil List Pertanyaan (Dinamis)
         $listPertanyaan = DB::table('pilihan_jawaban')
+            ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
+            ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
             ->distinct()
-            ->orderBy('id_pertanyaan')
-            ->pluck('id_pertanyaan');
+            ->orderBy('pertanyaan.urutan', 'asc')
+            ->pluck('pilihan_jawaban.id_pertanyaan');
 
-        // 2. Ambil Data Jawaban
-        $jawabanPasien = DB::table('jawaban')
+        $queryJawaban = DB::table('jawaban')
             ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
             ->leftJoin('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select(
@@ -93,12 +83,15 @@ class RekapSkmExport implements FromView, WithTitle, WithEvents
             )
             ->whereYear('jawaban.tanggal', $this->tahun)
             ->whereMonth('jawaban.tanggal', $this->bulan)
-            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan)
-            ->get();
+            ->whereIn('jawaban.id_pertanyaan', $listPertanyaan);
 
-        // 3. Olah Data
+        if ($this->ruanganId) {
+            $queryJawaban->where('bio_pasien.id_ruangan', $this->ruanganId);
+        }
+
+        $jawabanPasien = $queryJawaban->get();
+
         $dataRekap = [];
-
         foreach ($jawabanPasien as $jawaban) {
             if (!isset($dataRekap[$jawaban->id_pasien])) {
                 $dataRekap[$jawaban->id_pasien] = [
@@ -109,16 +102,21 @@ class RekapSkmExport implements FromView, WithTitle, WithEvents
             $dataRekap[$jawaban->id_pasien]['jawaban'][$jawaban->id_pertanyaan] = $jawaban->nilai;
         }
 
-        // Hitung Total per Pasien
         foreach ($dataRekap as $id_pasien => $data) {
             $dataRekap[$id_pasien]['total_nilai_ikm'] = array_sum($data['jawaban']);
+        }
+
+        $namaRuangan = 'Semua Ruangan';
+        if ($this->ruanganId) {
+            $namaRuangan = DB::table('ruangan')->where('id_ruangan', $this->ruanganId)->value('nama_ruangan');
         }
 
         return view('exports.rekap_skm_excel', [
             'dataRekap' => $dataRekap,
             'listPertanyaan' => $listPertanyaan,
             'bulan' => $this->bulan,
-            'tahun' => $this->tahun
+            'tahun' => $this->tahun,
+            'namaRuangan' => $namaRuangan // Kirim variable baru
         ]);
     }
 }

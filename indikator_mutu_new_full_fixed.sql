@@ -135,7 +135,7 @@ INSERT INTO ruangan (id_ruangan, nama_ruangan) VALUES
 ('R18', 'RM'),
 ('R19', 'Radiologi'),
 ('R20', 'Keuangan'),
-('R21', 'Kantor');
+('R21', 'Nicu');
 
 -- kategori indikator
 INSERT INTO kategori (kategori) VALUES
@@ -256,7 +256,7 @@ INSERT INTO `user` (id_user, username, password, id_ruangan, nama_ruangan) VALUE
 ('U18', 'ruang_rm', 'rm123', 'R18', 'RM'),
 ('U19', 'ruang_radiologi', 'radiologi123', 'R19', 'Radiologi'),
 ('U20', 'ruang_keuangan', 'keuangan123', 'R20', 'Keuangan'),
-('U21', 'ruang_kantor', 'kantor123', 'R21', 'Kantor');
+('U21', 'ruang_nicu', 'nicu123', 'R21', 'Nicu');
 
 -- biodata pasien
 

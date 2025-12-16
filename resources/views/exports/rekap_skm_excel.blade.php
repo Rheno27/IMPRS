@@ -11,8 +11,12 @@
                 PERIODE: {{ \Carbon\Carbon::create($tahun, $bulan, 1)->isoFormat('MMMM Y') }}
             </th>
         </tr>
-        <tr></tr> 
-
+        <tr>
+            <th colspan="{{ count($listPertanyaan) + 2 }}" style="text-align: center; font-weight: bold;">
+                RUANGAN: {{ $namaRuangan ?? 'Semua Ruangan' }}
+            </th>
+        </tr>
+        <tr></tr>
         <tr>
             <th rowspan="2"
                 style="border: 1px solid #000000; font-weight: bold; text-align: center; vertical-align: middle;">No

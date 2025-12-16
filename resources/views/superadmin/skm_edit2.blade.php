@@ -4,7 +4,7 @@
     <style>
         /* --- 2. EDITOR SURVEI CONTAINER --- */
         .survey-editor-container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding-bottom: 100px;
         }
@@ -42,6 +42,7 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #f0f0f0;
+            padding: 10px 10px 10px 10px;
         }
 
         .question-title-wrapper {
@@ -123,6 +124,7 @@
             font-size: 14px;
             color: var(--text-dark);
             margin-bottom: 8px;
+            padding: 10px 10px 10px 10px;
         }
 
         .form-input {

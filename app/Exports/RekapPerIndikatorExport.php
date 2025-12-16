@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use App\Models\IndikatorRuangan;
 use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
-use Illuminate\Support\Facades\DB; // Tambahkan ini
+use Illuminate\Support\Facades\DB; 
 use Carbon\Carbon;
 
 class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
@@ -35,7 +35,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
     {
         $data = collect();
 
-        // --- LOGIKA 1: IMPU (Tampilkan Per Ruangan) ---
         if ($this->kategori === 'Indikator Mutu Prioritas Unit') {
 
             $rawIndicators = IndikatorRuangan::query()
@@ -53,7 +52,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 ->orderBy('id_ruangan', 'asc')
                 ->get();
 
-            // Grouping by Nama Ruangan untuk Tampilan IMPU
             $data = $rawIndicators->groupBy(function ($item) {
                 return $item->ruangan->nama_ruangan;
             })->map(function ($items) {
@@ -72,7 +70,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
             });
 
         }
-        // --- LOGIKA 2: INM & IMPRS (Agregat / Gabungan RS) ---
         else {
             $masterIndicators = IndikatorMutu::query()
                 ->whereHas('kategori', function ($q) {
@@ -101,7 +98,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 ];
             });
 
-            // === TAMBAHAN: HITUNG SKM JIKA KATEGORI ADALAH INM ===
             if ($this->kategori === 'Indikator Nasional Mutu') {
                 $skmObject = $this->calculateGlobalSkmYearly($this->tahun);
                 if ($skmObject) {
@@ -117,28 +113,20 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
         ]);
     }
 
-    /**
-     * Helper: Hitung SKM Global Setahun Penuh (Bulanan & Triwulan)
-     */
     private function calculateGlobalSkmYearly($year)
     {
-        // 1. Cari data Indikator SKM di Database untuk mengambil Judul & Standar
-        // Kita cari yang namanya mengandung kata "Kepuasan Masyarakat"
         $skmIndicatorDB = DB::table('indikator_mutu')
             ->where('variabel', 'LIKE', '%Kepuasan Masyarakat%')
             ->first();
 
-        // Default jika di DB belum diinput (Fallback)
         $judulSKM = $skmIndicatorDB ? $skmIndicatorDB->variabel : 'Kepuasan Masyarakat';
         $standarSKM = $skmIndicatorDB ? $skmIndicatorDB->standar : '> 76.61';
 
-        // 2. Ambil Nilai Max per Pertanyaan (Denominator)
         $maxScores = DB::table('pilihan_jawaban')
             ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        // 3. Ambil Jawaban SKM Tahun Ini
         $skmAnswers = DB::table('jawaban')
             ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
@@ -146,7 +134,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
             ->get();
 
         if ($skmAnswers->isEmpty()) {
-            // Tetap kembalikan object kosong agar barisnya muncul di Excel (dengan nilai 0/kosong)
             return (object) [
                 'judul' => $judulSKM,
                 'standar' => $standarSKM,
@@ -155,7 +142,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
             ];
         }
 
-        // 4. Grouping Per Bulan
         $answersByMonth = $skmAnswers->groupBy(function ($item) {
             return (int) Carbon::parse($item->tanggal)->format('n');
         });
@@ -181,7 +167,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
             }
         }
 
-        // 5. Hitung Triwulan SKM
         $twStats = [];
         $quarters = [
             1 => [1, 2, 3],
@@ -207,16 +192,13 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
         }
 
         return (object) [
-            'judul' => $judulSKM,     // Ambil dari DB
-            'standar' => $standarSKM, // Ambil dari DB
+            'judul' => $judulSKM, 
+            'standar' => $standarSKM,
             'data_bulan' => $monthlyStats,
             'data_tw' => $twStats,
         ];
     }
 
-    /**
-     * Helper: Hitung % Bulanan
-     */
     private function calculateMonthlyStats($groupedData)
     {
         $monthlyAverages = [];
@@ -236,9 +218,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
         return $monthlyAverages;
     }
 
-    /**
-     * Helper: Hitung % Triwulan (Agregat 3 Bulan)
-     */
     private function calculateTriwulanStats($groupedData)
     {
         $twStats = [];
@@ -271,9 +250,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
         return $twStats;
     }
 
-    /**
-     * Styling Excel
-     */
     public function registerEvents(): array
     {
         return [
@@ -282,13 +258,12 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 $isImpu = ($this->kategori === 'Indikator Mutu Prioritas Unit');
                 $highestRow = $sheet->getHighestRow();
 
-                // 1. ATUR LEBAR KOLOM
-                $sheet->getColumnDimension('A')->setWidth(5);  // No
+                $sheet->getColumnDimension('A')->setWidth(5); 
     
                 if ($isImpu) {
-                    $sheet->getColumnDimension('B')->setWidth(20); // Ruangan
-                    $sheet->getColumnDimension('C')->setWidth(50); // Judul
-                    $sheet->getColumnDimension('D')->setWidth(15); // Standar
+                    $sheet->getColumnDimension('B')->setWidth(20); 
+                    $sheet->getColumnDimension('C')->setWidth(50); 
+                    $sheet->getColumnDimension('D')->setWidth(15); 
     
                     $startBulan = 'E';
                     $endBulan = 'P';
@@ -300,8 +275,8 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                     $sheet->getStyle('B5:B' . $highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
                 } else {
-                    $sheet->getColumnDimension('B')->setWidth(50); // Judul
-                    $sheet->getColumnDimension('C')->setWidth(15); // Standar
+                    $sheet->getColumnDimension('B')->setWidth(50);
+                    $sheet->getColumnDimension('C')->setWidth(15); 
     
                     $startBulan = 'D';
                     $endBulan = 'O';
@@ -323,7 +298,6 @@ class RekapPerIndikatorExport implements FromView, WithTitle, WithEvents
                 $sheet->getStyle("A4:{$lastCol}4")->getFont()->setBold(true);
                 $sheet->getStyle("A4:{$lastCol}1000")->getAlignment()->setVertical('center');
 
-                // Pewarnaan TW
                 $colTw1 = $startTW;
                 $colTw2 = ++$startTW;
                 $colTw3 = ++$startTW;
