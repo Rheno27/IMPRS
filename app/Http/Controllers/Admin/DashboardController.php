@@ -42,7 +42,19 @@ class DashboardController extends Controller
             ->whereYear('tanggal', $tahun)
             ->get();
 
+        // Hitung data Indikator Ruangan biasa
         $indikatorData = $this->mutuService->calculateDailyStats($indikators, $mutu);
+
+        // --- TAMBAHAN KODE DI SINI ---
+
+        // Hitung data SKM dari Service
+        $skmData = $this->mutuService->getSkmData($bulan, $tahun);
+
+        // Gabungkan SKM ke array indikatorData
+        $indikatorData[] = array_merge(
+            ['no' => count($indikatorData) + 1],
+            $skmData
+        );
 
         $namaBulan = [
             1 => 'Januari',

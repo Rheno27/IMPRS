@@ -133,4 +133,57 @@ class MutuService
         $item->active = false;
         $item->save();
     }
+
+    public function getSkmData($bulan, $tahun)
+    {
+        $maxScores = DB::table('pilihan_jawaban')
+            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
+            ->groupBy('id_pertanyaan')
+            ->pluck('max_nilai', 'id_pertanyaan');
+
+        $skmAnswers = DB::table('jawaban')
+            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
+            ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
+            ->whereMonth('jawaban.tanggal', $bulan)
+            ->whereYear('jawaban.tanggal', $tahun)
+            ->get();
+
+        $skmByTanggal = [];
+        $skmTotalActual = 0;
+        $skmTotalMax = 0;
+
+        if ($skmAnswers->isNotEmpty()) {
+            $groupedSkm = $skmAnswers->groupBy(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j');
+            });
+
+            foreach ($groupedSkm as $tgl => $answers) {
+                $dailyActual = 0;
+                $dailyMax = 0;
+
+                foreach ($answers as $ans) {
+                    $dailyActual += $ans->nilai;
+                    $dailyMax += $maxScores[$ans->id_pertanyaan] ?? 0;
+                }
+
+                $skmByTanggal[$tgl] = (object) [
+                    'pasien_sesuai' => $dailyActual,
+                    'total_pasien' => $dailyMax
+                ];
+
+                $skmTotalActual += $dailyActual;
+                $skmTotalMax += $dailyMax;
+            }
+        }
+
+        $skmPersen = $skmTotalMax > 0 ? round(($skmTotalActual / $skmTotalMax) * 100, 2) : 0;
+
+        return [
+            'variabel' => 'Kepuasan Masyarakat',
+            'byTanggal' => $skmByTanggal,
+            'jumlah_total' => $skmTotalMax,
+            'jumlah_sesuai' => $skmTotalActual,
+            'persen' => $skmPersen
+        ];
+    }
 }

@@ -40,7 +40,7 @@
 
         <div class="report-controls-top" style="justify-content: flex-end; padding: 0; width: 100%; max-width: 1440px;">
             <button type="button" class="download-btn"
-                onclick="document.getElementById('downloadModal').style.display='block'">
+                onclick="document.getElementById('downloadModal').style.display='flex'">
                 <svg width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="50" height="50" rx="10" fill="#FCFCFC" />
                     <path
