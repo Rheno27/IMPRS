@@ -167,21 +167,37 @@ class SkmController extends Controller
         }
     }
 
-    public function hasil()
+    public function hasil(Request $request) 
     {
-        // === 1. DATA DASAR ===
-        $respondenIds = DB::table('jawaban')->distinct()->pluck('id_pasien');
-        $totalResponden = $respondenIds->count();
-        $bioResponden = DB::table('bio_pasien')->whereIn('id_pasien', $respondenIds)->get();
+        $selectedYear = $request->input('year', Carbon::now()->year);
+        $selectedMonth = $request->input('month', Carbon::now()->month);
+        $selectedRuangan = $request->input('ruangan');
 
-        // === 2. PISAHKAN PERTANYAAN (PILIHAN GANDA & ISIAN TEKS) ===
+        $listRuangan = DB::table('ruangan')
+            ->select('id_ruangan', 'nama_ruangan')
+            ->where('nama_ruangan', '!=', 'Super Admin')
+            ->get();
+
+        $queryResponden = DB::table('jawaban')
+            ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
+            ->whereYear('jawaban.tanggal', $selectedYear)
+            ->whereMonth('jawaban.tanggal', $selectedMonth);
+
+        if ($selectedRuangan) {
+            $queryResponden->where('bio_pasien.id_ruangan', $selectedRuangan);
+        }
+
+        $respondenIds = $queryResponden->distinct()->pluck('jawaban.id_pasien');
+        $totalResponden = $respondenIds->count();
+
+        $bioResponden = DB::table('bio_pasien')->whereIn('id_pasien', $respondenIds)->get();
 
         $idsPilihanGanda = DB::table('pilihan_jawaban')
             ->distinct()
             ->pluck('id_pertanyaan');
 
-        // Ambil Kritik Saran 
         $listKritikSaran = DB::table('jawaban')
+            ->whereIn('id_pasien', $respondenIds) 
             ->whereNotIn('id_pertanyaan', $idsPilihanGanda)
             ->whereNotNull('hasil_nilai')
             ->pluck('hasil_nilai');
@@ -190,7 +206,6 @@ class SkmController extends Controller
         $listNoRm = $bioResponden->pluck('no_rm');
         $listUmur = $bioResponden->pluck('umur');
 
-        // === 3. DATA DEMOGRAFI ===
         // Chart Nama Ruangan
         $ruanganData = DB::table('bio_pasien as bp')
             ->join('ruangan as r', 'bp.id_ruangan', '=', 'r.id_ruangan')
@@ -212,12 +227,9 @@ class SkmController extends Controller
         $pekerjaanData = $bioResponden->countBy('pekerjaan');
         $pekerjaanChart = ['labels' => $pekerjaanData->keys(), 'data' => $pekerjaanData->values()];
 
-
-        // === 4. DATA HASIL SURVEI ===
-        // Ambil pertanyaan yang ada di daftar $idsPilihanGanda
         $pertanyaanSurvei = DB::table('pertanyaan')
             ->whereIn('id_pertanyaan', $idsPilihanGanda)
-            ->orderBy('urutan', 'asc') 
+            ->orderBy('urutan', 'asc')
             ->get();
 
         $allSurveyCharts = [];
@@ -226,7 +238,7 @@ class SkmController extends Controller
             $data = DB::table('jawaban as j')
                 ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
                 ->where('j.id_pertanyaan', $pertanyaan->id_pertanyaan)
-                ->whereIn('j.id_pasien', $respondenIds)
+                ->whereIn('j.id_pasien', $respondenIds) 
                 ->select('pj.pilihan', 'pj.nilai', DB::raw('count(*) as total'))
                 ->groupBy('pj.pilihan', 'pj.nilai')
                 ->orderBy('pj.nilai')
@@ -251,7 +263,11 @@ class SkmController extends Controller
             'jenisKelaminChart',
             'pendidikanChart',
             'pekerjaanChart',
-            'allSurveyCharts'
+            'allSurveyCharts',
+            'selectedYear',   
+            'selectedMonth',  
+            'selectedRuangan',
+            'listRuangan'     
         ));
     }
 

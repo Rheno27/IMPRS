@@ -2214,7 +2214,6 @@ main {
 /* ========================================= */
 /* 23. HALAMAN HASIL SURVEI (Refactored)     */
 /* ========================================= */
-
 .section-title-banner {
     background-color: var(--primary-color);
     color: #fff;
@@ -2224,11 +2223,9 @@ main {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    
-    /* FIX ALIGNMENT: Samakan dengan card */
-    max-width: 1000px;      
-    width: 95%;            /* Agar ada jarak di layar HP */
-    margin: 0 auto 25px;   /* Auto kiri-kanan agar di tengah */
+        max-width: none;   
+    width: auto;  
+    margin: 0 60px 25px;   
     box-sizing: border-box;
 }
 
@@ -2237,11 +2234,9 @@ main {
     flex-direction: column;    
     gap: 24px;                 
     padding-bottom: 40px;
-    
-    /* FIX ALIGNMENT: Samakan dengan banner */
-    max-width: 1000px;         
-    width: 95%;            /* Agar ada jarak di layar HP */
-    margin: 0 auto;        /* Auto kiri-kanan agar di tengah */
+    max-width: none; 
+    width: auto;     
+    margin: 0 60px;       
     box-sizing: border-box;
 }
 
