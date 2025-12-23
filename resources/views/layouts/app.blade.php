@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="@yield('body-class')">
     <header class="site-header">
         <a href="
                 @if(Request::is('admin/*'))
@@ -56,8 +56,8 @@
         @yield('content')
     </main>
 
-    @if (!Request::is('login'))
-        <footer id="section-footer" class="site-footer">
+    @if (!Request::is('login') && !Request::is('SKM*'))        
+    <footer id="section-footer" class="site-footer">
             <div class="footer-container">
                 <div class="footer-content">
                     <div class="footer-about">

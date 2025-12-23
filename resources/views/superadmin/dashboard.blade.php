@@ -153,7 +153,7 @@
                             d="M29.9997 41.7946C29.4397 41.7946 28.917 41.4586 28.693 40.9172C28.413 40.2079 28.749 39.3866 29.477 39.0879C33.0797 37.6319 36.0104 35.0933 37.9517 31.7333C39.8557 28.4479 40.6023 24.7145 40.0983 20.9439C40.005 20.1785 40.5463 19.4693 41.3117 19.3759C42.0583 19.2826 42.7863 19.824 42.8797 20.5893C43.4397 24.976 42.581 29.3253 40.3783 33.152C38.1197 37.072 34.7037 40.0212 30.5037 41.7199C30.3543 41.7572 30.1863 41.7946 29.9997 41.7946Z"
                             fill="#FFC107" />
                     </svg>
-                <span>Ruang<br>IBS</span>
+                    <span>Ruang<br>IBS</span>
                 </a>
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R10']) }}" class="feature-card bg-color-3">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +167,7 @@
                             d="M22.9995 32.2C22.7568 32.2 22.5141 32.144 22.2901 32.0506C22.0475 31.9573 21.8608 31.8267 21.6741 31.6587C21.5061 31.472 21.3755 31.2667 21.2635 31.0427C21.1702 30.8187 21.1328 30.576 21.1328 30.3333C21.1328 29.848 21.3194 29.3626 21.6741 29.008C21.8608 28.84 22.0475 28.7094 22.2901 28.616C22.9808 28.3174 23.8022 28.4853 24.3249 29.008C24.4929 29.1946 24.6234 29.3813 24.7168 29.624C24.8101 29.848 24.8661 30.0907 24.8661 30.3333C24.8661 30.576 24.8101 30.8187 24.7168 31.0427C24.6234 31.2667 24.4929 31.472 24.3249 31.6587C23.9702 32.0134 23.5035 32.2 22.9995 32.2Z"
                             fill="#FFC107" />
                     </svg>
-                <span>Ruang<br>ICU</span>
+                    <span>Ruang<br>ICU</span>
                 </a>
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R11']) }}" class="feature-card bg-color-6">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -247,7 +247,7 @@
                             d="M27.4398 31.2666H12.5064C11.7411 31.2666 11.1064 30.6319 11.1064 29.8666C11.1064 29.1012 11.7411 28.4666 12.5064 28.4666H27.4398C28.2051 28.4666 28.8398 29.1012 28.8398 29.8666C28.8398 30.6319 28.2051 31.2666 27.4398 31.2666Z"
                             fill="#A97F06" />
                     </svg>
-                <span>Gizi</span>
+                    <span>Gizi</span>
                 </a>
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => 'R16']) }}" class="feature-card bg-color-4">
                     <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -350,7 +350,7 @@
                             d="M33.0929 23.38C32.6379 22.855 31.9729 22.5575 31.2904 22.5575H25.0254C21.9454 22.5575 19.4429 20.055 19.4429 16.975V10.71C19.4429 10.0275 19.1454 9.36252 18.6204 8.90752C18.1129 8.45252 17.4129 8.24252 16.7479 8.33002C12.6354 8.85502 8.85543 11.1125 6.38793 14.5075C3.90293 17.92 2.99293 22.085 3.78043 26.25C4.91793 32.27 9.73043 37.0825 15.7679 38.22C16.7304 38.4125 17.6929 38.5 18.6554 38.5C21.8229 38.5 24.8854 37.52 27.4929 35.6125C30.8879 33.145 33.1454 29.365 33.6704 25.2525C33.7579 24.57 33.5479 23.8875 33.0929 23.38Z"
                             fill="#FFBB00" />
                     </svg>
-                    <span>Kantor</span>
+                    <span>Ruang NICU</span>
                 </a>
                 <a href="{{ route('superadmin.skm.rekap') }}" class="feature-card bg-color-8">
                     <svg width="46" height="45" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -404,11 +404,14 @@
                     </button>
 
                     {{-- Panel Dropdown Tahun --}}
-                    <div id="yearPanel" class="calendar-popup" style="display:none; width: 220px; position: absolute; top: 110%; left: 0; z-index: 100;">
-                        <div class="cal-header" style="justify-content: center; padding: 10px; border-bottom: 1px solid #eee;">
+                    <div id="yearPanel" class="calendar-popup"
+                        style="display:none; width: 220px; position: absolute; top: 110%; left: 0; z-index: 100;">
+                        <div class="cal-header"
+                            style="justify-content: center; padding: 10px; border-bottom: 1px solid #eee;">
                             <span style="font-weight: bold; color: var(--primary-color);">Pilih Tahun</span>
                         </div>
-                        <div id="yearGrid" class="calendar-months" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 10px;"></div>
+                        <div id="yearGrid" class="calendar-months"
+                            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 10px;"></div>
                     </div>
                 </div>
 
@@ -417,7 +420,8 @@
                     <input type="hidden" name="tahun" value="{{ $tahun }}">
                     <input type="hidden" name="kategori" value="{{ $selectedKategori }}">
                     <button type="submit" class="btn-control">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -429,7 +433,8 @@
 
             <div class="toolbar-right">
                 <a href="{{ route('superadmin.indikator_mutu.create') }}" class="btn-control btn-primary-action">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
@@ -440,21 +445,24 @@
 
         {{-- Category Selector --}}
         @php
-$categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
-$keys = array_keys($categoryMap);
-$current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
-$prev = ($current - 1 + count($keys)) % count($keys);
-$next = ($current + 1) % count($keys);
+            $categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
+            $keys = array_keys($categoryMap);
+            $current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
+            $prev = ($current - 1 + count($keys)) % count($keys);
+            $next = ($current + 1) % count($keys);
         @endphp
 
         <div class="category-nav">
             <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$prev]]) }}" class="nav-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
             </a>
 
             <div class="category-items">
                 @foreach([$prev, $current, $next] as $idx)
-                    <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$idx]]) }}" 
+                    <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$idx]]) }}"
                         class="category-pill {{ $idx == $current ? 'active' : '' }}">
                         {{ $categoryMap[$keys[$idx]] }}
                     </a>
@@ -462,7 +470,10 @@ $next = ($current + 1) % count($keys);
             </div>
 
             <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$next]]) }}" class="nav-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
             </a>
         </div>
 
@@ -476,23 +487,25 @@ $next = ($current + 1) % count($keys);
                     <thead>
                         <tr>
                             <th style="width: 50px;">No.</th>
-                            @if($selectedKategori === 'Indikator Mutu Prioritas Unit') <th>Ruangan</th> @endif
+                            @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
+                            <th>Ruangan</th> @endif
                             <th>Judul Indikator</th>
                             <th>Standart</th>
-                            @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] as $m) <th>{{ $m }}</th> @endforeach
+                            @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] as $m)
+                            <th>{{ $m }}</th> @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($indikatorData as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}.</td>
-                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit') 
-                                    <td>{{ $item->ruangan }}</td> 
+                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
+                                    <td>{{ $item->ruangan }}</td>
                                 @endif
                                 <td class="text-start">{{ $item->judul }}</td>
                                 <td>{{ $item->standar }}</td>
-                                @for ($m = 1; $m <= 12; $m++) 
-                                    <td>{{ $item->data_bulan[$m] ?? '' }}</td> 
+                                @for ($m = 1; $m <= 12; $m++)
+                                    <td>{{ $item->data_bulan[$m] ?? '' }}</td>
                                 @endfor
                             </tr>
                         @empty
@@ -540,7 +553,7 @@ $next = ($current + 1) % count($keys);
                 for (let y = startYear; y <= endYear; y++) {
                     let btn = document.createElement('button');
                     btn.textContent = y;
-                    btn.type = 'button'; 
+                    btn.type = 'button';
 
                     btn.className = 'day-btn';
                     btn.style.width = '100%';
@@ -552,7 +565,7 @@ $next = ($current + 1) % count($keys);
 
                     if (y === activeYear) {
                         btn.classList.add('selected');
-                        btn.style.backgroundColor = '#337354'; 
+                        btn.style.backgroundColor = '#337354';
                         btn.style.color = '#fff';
                     } else {
                         btn.onmouseover = () => btn.style.backgroundColor = '#f0f0f0';
@@ -561,7 +574,7 @@ $next = ($current + 1) % count($keys);
 
                     btn.addEventListener('click', () => {
                         let url = new URL(window.location.href);
-                        url.searchParams.set('tahun', y); 
+                        url.searchParams.set('tahun', y);
                         window.location.href = url.toString();
                     });
 

@@ -127,9 +127,9 @@ li {
 
 main {
     margin-top: 50px;
-    flex: 1;           
-    width: 100%;       
-    box-sizing: border-box; 
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
@@ -847,49 +847,55 @@ main {
 /* 8. GUEST / LANDING PAGE HERO SECTION      */
 /* ========================================= */
 .hero-section {
-    position: relative;
+    position: fixed; 
+    top: 60px; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: calc(100vh - 60px); 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 150px 32px 80px;
+    padding: 0 20px;
     text-align: center;
     overflow: hidden;
-    min-height: 60vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    z-index: 50; 
 }
 
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 51;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 24px;
     color: var(--primary-color);
+    max-width: 1000px;
+    width: 100%;
 }
 
 .hero-title {
     font-weight: 750;
     font-size: 46px;
-    line-height: 54px;
+    line-height: 1.2;
     color: var(--primary-color);
     margin: 0;
-    max-width: 1000px;
 }
 
 .hero-subtitle {
     font-weight: 400;
     font-size: 18px;
-    line-height: 30px;
+    line-height: 1.6;
     color: var(--primary-color);
     margin: 0;
     max-width: 800px;
 }
 
-/* CTA Button */
 .cta-button {
     display: inline-flex;
     align-items: center;
@@ -903,6 +909,7 @@ main {
     border-radius: 35px;
     text-decoration: none;
     transition: background-color 0.2s;
+    margin-top: 10px;
 }
 
 .cta-button:hover {
@@ -912,6 +919,18 @@ main {
 .cta-button svg {
     width: 20px;
     height: 20px;
+}
+
+@media (max-height: 550px), (max-width: 768px) {
+    .hero-section {
+        position: relative; /* Lepas kunci posisi */
+        height: auto;
+        min-height: calc(100vh - 60px);
+        top: 0;
+        overflow-y: auto; /* Izinkan scroll */
+        padding: 40px 20px;
+        z-index: 1;
+    }
 }
 
 /* ========================================= */
@@ -926,7 +945,9 @@ main {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    /* UPDATE DUA BARIS DI BAWAH INI */
+    gap: 20px; /* Dikurangi dari 40px agar tombol lebih dekat ke Form */
+    margin-bottom: 80px; /* Ditambah agar tombol punya jarak jauh dari Footer */
 }
 
 .form-card {
@@ -1108,6 +1129,9 @@ main {
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.2s, transform 0.1s;
+    /* TAMBAHKAN BARIS INI: */
+    min-width: 160px; /* Memastikan lebar minimum sama untuk kedua tombol */
+    text-align: center;
 }
 
 .nav-button:active {
@@ -1121,7 +1145,7 @@ main {
 
 .submit-button {
     background-color: var(--secondary-color);
-    color: #6f5405;
+    color: --text-dark;
 }
 
 /* ========================================= */
@@ -1665,13 +1689,17 @@ main {
 /* ========================================= */
 
 .modal-overlay {
-    display: none; 
+    display: none;
     position: fixed;
-    z-index: 99999; 
-    justify-content: center;    
-    align-items: center;        
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: auto; height: auto;
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(2px);
     transition: opacity 0.3s ease;
@@ -1685,9 +1713,9 @@ main {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 400px;
-    position: relative; 
-    margin: 0; 
-    transform: none; 
+    position: relative;
+    margin: 0;
+    transform: none;
 }
 
 .modal-box.centered-alert {
@@ -1808,9 +1836,12 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px;
+    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
+    padding: 20px; 
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden; 
 }
 
 .login-card {
@@ -1946,6 +1977,13 @@ main {
         padding: 9px;
         font-size: 13px;
     }
+}
+
+/* CLASS KHUSUS UNTUK HALAMAN FULL SCREEN (NO SCROLL) */
+.no-scroll-page {
+    overflow: hidden !important;
+    height: 100vh !important;
+    margin: 0;
 }
 
 /* ========================================= */
@@ -2127,26 +2165,26 @@ main {
         width: 100% !important;
         max-width: 100% !important;
         overflow-x: hidden;
-        min-height: 125vh; 
+        min-height: 125vh;
     }
 
     .modal-overlay,
     .modal-backdrop {
         position: fixed !important;
         z-index: 1040 !important;
-        
+
         top: -50vh !important;
         left: -50vw !important;
         width: 200vw !important;
         height: 200vh !important;
-        
+
         background-color: rgba(0, 0, 0, 0.5) !important;
         bottom: auto !important;
         right: auto !important;
     }
 
     .modal-dialog {
-        margin-top: 10vh !important; 
+        margin-top: 10vh !important;
     }
 
     /* Style container lainnya tetap sama */
@@ -2169,13 +2207,13 @@ main {
 /* ========================================= */
 .survey-nav-container {
     background-color: rgba(214, 227, 221, 0.5);
-    padding: 60px 0 0; 
+    padding: 60px 0 0;
     text-align: center;
     margin-bottom: 30px;
 }
 
 .survey-title {
-    font-family: var(--font-sans); 
+    font-family: var(--font-sans);
     font-weight: 700;
     font-size: 28px;
     color: var(--primary-color);
@@ -2222,21 +2260,21 @@ main {
     text-align: center;
     padding: 15px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        max-width: none;   
-    width: auto;  
-    margin: 0 60px 25px;   
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: none;
+    width: auto;
+    margin: 0 60px 25px;
     box-sizing: border-box;
 }
 
 .cards-wrapper {
-    display: flex;             
-    flex-direction: column;    
-    gap: 24px;                 
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     padding-bottom: 40px;
-    max-width: none; 
-    width: auto;     
-    margin: 0 60px;       
+    max-width: none;
+    width: auto;
+    margin: 0 60px;
     box-sizing: border-box;
 }
 
@@ -2245,18 +2283,18 @@ main {
     background-color: #fff;
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 24px; 
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    width: 100%; 
+    width: 100%;
     box-sizing: border-box;
 }
 
 /* Header Card */
 .card-header {
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2281,30 +2319,30 @@ main {
 /* Chart Layout Styles */
 .chart-card-body {
     display: flex;
-    flex-direction: row; 
-    gap: 60px; 
+    flex-direction: row;
+    gap: 60px;
     align-items: center;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     padding: 10px 20px;
 }
 
 .chart-container {
-    width: 220px; 
+    width: 220px;
     height: 220px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
     position: relative;
 }
 
 .legend-wrapper {
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
 }
 
 .legend-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 10px 30px; 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 30px;
     width: 100%;
 }
 
@@ -2317,7 +2355,7 @@ main {
 
 .legend-item {
     display: flex;
-    align-items: flex-start; 
+    align-items: flex-start;
     gap: 12px;
     line-height: 1.4;
     font-size: 14px;
@@ -2328,7 +2366,7 @@ main {
     height: 16px;
     border-radius: 4px;
     flex-shrink: 0;
-    margin-top: 2px; 
+    margin-top: 2px;
 }
 
 /* List Data Text */
@@ -2370,13 +2408,13 @@ main {
 /* Responsive Chart */
 @media (max-width: 768px) {
     .chart-card-body {
-        flex-direction: column; 
+        flex-direction: column;
         gap: 30px;
         text-align: left;
         align-items: center;
     }
     .legend-grid {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
     .chart-card-body {
         padding: 0;
@@ -2389,7 +2427,7 @@ main {
 .skm-table-wrapper {
     overflow-x: auto;
     width: 100%;
-    padding-bottom: 0   ;
+    padding-bottom: 0;
 }
 
 .data-table.skm-table {
@@ -2397,10 +2435,10 @@ main {
     border-collapse: collapse;
 }
 
-.data-table.skm-table th, 
+.data-table.skm-table th,
 .data-table.skm-table td {
-    white-space: nowrap; 
-    padding: 12px 8px; 
+    white-space: nowrap;
+    padding: 12px 8px;
     vertical-align: middle;
     text-align: center;
     border: 1px solid var(--border-color);
@@ -2424,11 +2462,11 @@ main {
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     z-index: 1200;
-    width: 240px; 
+    width: 240px;
     padding: 5px 0;
     display: none;
     max-height: 300px;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
 .room-popup.open {

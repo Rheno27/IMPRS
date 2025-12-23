@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('body-class', 'no-scroll-page')
 @section('styles')
     <style>
         .hero-section {
