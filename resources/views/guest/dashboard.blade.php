@@ -2,14 +2,14 @@
 @section('body-class', 'no-scroll-page')
 @section('styles')
     <style>
-        .hero-section {
+        .hero-section.landing-hero {
             background-image: url('{{ asset('image/background.png') }}');
         }
     </style>
 @endsection
 
 @section('content')
-    <section id="hero" class="hero-section">
+    <section id="hero" class="hero-section landing-hero">
         <div class="hero-content">
             <h1 class="hero-title">SURVEI KEPUASAN MASYARAKAT</h1>
             <p class="hero-subtitle">
