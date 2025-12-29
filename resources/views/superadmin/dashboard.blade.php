@@ -453,7 +453,7 @@
         @endphp
 
         <div class="category-nav">
-            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$prev]]) }}" class="nav-arrow">
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$prev], 'tahun' => $tahun]) }}" class="nav-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
@@ -462,14 +462,14 @@
 
             <div class="category-items">
                 @foreach([$prev, $current, $next] as $idx)
-                    <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$idx]]) }}"
+                    <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$idx], 'tahun' => $tahun]) }}"
                         class="category-pill {{ $idx == $current ? 'active' : '' }}">
                         {{ $categoryMap[$keys[$idx]] }}
                     </a>
                 @endforeach
             </div>
 
-            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$next]]) }}" class="nav-arrow">
+            <a href="{{ route('superadmin.dashboard', ['kategori' => $keys[$next], 'tahun' => $tahun]) }}" class="nav-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>

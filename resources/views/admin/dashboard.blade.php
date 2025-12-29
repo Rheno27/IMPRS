@@ -135,7 +135,7 @@
                 $nextIndex = ($bulanAktif + 1 > 12) ? 1 : $bulanAktif + 1;
             @endphp
 
-            <a href="{{ route('admin.dashboard', ['bulan' => $prevIndex, 'tahun' => date('Y')]) }}" class="arrow-btn prev"
+            <a href="{{ route('admin.dashboard', ['bulan' => $prevIndex, 'tahun' => $tahun]) }}" class="arrow-btn prev"
                 aria-label="Previous month">
                 <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -149,14 +149,14 @@
 
             <div class="months">
                 @foreach ([$prevIndex => $namaBulanLengkap[$prevIndex], $bulanAktif => $namaBulanLengkap[$bulanAktif], $nextIndex => $namaBulanLengkap[$nextIndex]] as $indexBulan => $namaBulanItem)
-                    <a href="{{ route('admin.dashboard', ['bulan' => $indexBulan, 'tahun' => date('Y')]) }}"
+                    <a href="{{ route('admin.dashboard', ['bulan' => $indexBulan, 'tahun' => $tahun]) }}"
                         class="month-btn {{ $bulanAktif == $indexBulan ? 'active' : '' }}">
                         {{ $namaBulanItem }}
                     </a>
                 @endforeach
             </div>
 
-            <a href="{{ route('admin.dashboard', ['bulan' => $nextIndex, 'tahun' => date('Y')]) }}" class="arrow-btn next"
+            <a href="{{ route('admin.dashboard', ['bulan' => $nextIndex, 'tahun' => $tahun]) }}" class="arrow-btn next"
                 aria-label="Next month">
                 <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
