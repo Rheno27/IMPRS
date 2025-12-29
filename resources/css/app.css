@@ -227,6 +227,70 @@ main {
 }
 
 /* ========================================= */
+/* 4. COMPONENTS: MODAL (Reusable)           */
+/* ========================================= */
+
+.modal-box {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 25px;
+    width: 320px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+    color: var(--text-dark);
+    margin-top: 0;
+}
+
+.form-label-sm {
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+    display: block;
+}
+
+.form-select-full {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-secondary {
+    padding: 10px 20px;
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #333;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+/* ========================================= */
 /* 5. PAGE: DASHBOARD SPECIFIC               */
 /* ========================================= */
 .hero-section {
