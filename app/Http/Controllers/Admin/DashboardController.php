@@ -25,8 +25,18 @@ class DashboardController extends Controller
         $user = Auth::user();
         $id_ruangan = $user->id_ruangan;
 
-        $bulan = (int) $request->input('bulan', date('n'));
-        $tahun = (int) $request->input('tahun', date('Y'));
+        $reqBulan = (int) $request->input('bulan', date('n'));
+        $reqTahun = (int) $request->input('tahun', date('Y'));
+
+        $bulan = ($reqBulan < 1 || $reqBulan > 12) ? (int) date('n') : $reqBulan;
+        $tahun = ($reqTahun < 2000 || $reqTahun > 3000) ? (int) date('Y') : $reqTahun;
+
+        if ($reqBulan !== $bulan || $reqTahun !== $tahun) {
+            return redirect()->route('admin.dashboard', [
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ]);
+        }
 
         // Ambil Indikator Aktif
         $indikators = IndikatorRuangan::where('id_ruangan', $id_ruangan)
@@ -42,15 +52,10 @@ class DashboardController extends Controller
             ->whereYear('tanggal', $tahun)
             ->get();
 
-        // Hitung data Indikator Ruangan biasa
         $indikatorData = $this->mutuService->calculateDailyStats($indikators, $mutu);
 
-        // --- TAMBAHAN KODE DI SINI ---
-
-        // Hitung data SKM dari Service
         $skmData = $this->mutuService->getSkmData($bulan, $tahun);
 
-        // Gabungkan SKM ke array indikatorData
         $indikatorData[] = array_merge(
             ['no' => count($indikatorData) + 1],
             $skmData

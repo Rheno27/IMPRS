@@ -42,10 +42,26 @@ class IndikatorRuanganController extends Controller
 
     public function edit(Ruangan $ruangan)
     {
-        $activeIndikators = IndikatorRuangan::where('id_ruangan', $ruangan->id_ruangan)
+        $rawIndikators = IndikatorRuangan::where('id_ruangan', $ruangan->id_ruangan)
             ->where('active', true)
             ->with('indikatorMutu.kategori')
             ->get();
+
+        $activeIndikators = $rawIndikators->sortBy(function ($item) {
+            $namaKategori = $item->indikatorMutu->kategori->kategori ?? '';
+
+            if (stripos($namaKategori, 'Prioritas Unit') !== false) {
+                return 1;
+            }
+            if (stripos($namaKategori, 'Nasional Mutu') !== false) {
+                return 2; 
+            }
+            if (stripos($namaKategori, 'Prioritas RS') !== false) {
+                return 3; 
+            }
+
+            return 4; 
+        })->values(); 
 
         $allMasterIndikators = IndikatorMutu::orderBy('variabel')->get();
         $allKategoris = Kategori::all();
