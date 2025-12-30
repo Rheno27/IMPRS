@@ -1,7 +1,55 @@
 @extends('layouts.app')
 
 @section('styles')
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .main-content-section {
+            padding-top: 40px !important;
+            align-items: stretch !important;
+        }
+        .toolbar-container {
+            padding: 0 !important;
+            margin-bottom: 0;
+            width: 100%;
+        }
+        .crud-table-wrapper {
+            width: 100%;
+            border: 1px solid var(--primary-color);
+            border-radius: 12px;
+            overflow-x: auto;
+            background: #fff;
+        }
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            height: 42px;
+            padding: 8px 16px 8px 40px;
+            border: 1px solid var(--primary-color);
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            color: var(--text-dark);
+            width: 300px;
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(51, 115, 84, 0.15);
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--primary-color);
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+        }
+        .modal {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -46,15 +94,26 @@
         @endif
 
         {{-- Toolbar: Tombol Tambah --}}
-        <div class="toolbar">
-            <button class="btn-add-outline" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="16"></line>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                </svg>
-                <span>Tambah Indikator Baru</span>
-            </button>
+        <div class="toolbar-container">
+            <div class="toolbar-left">
+                <div class="search-container">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Cari variabel atau kategori...">
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <button class="btn-add-outline" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <span>Tambah Indikator Baru</span>
+                </button>
+            </div>
         </div>
 
         {{-- Tabel Data --}}
@@ -267,6 +326,27 @@
                         originalStandar.trim() === currentStandar.trim()) {
                         event.preventDefault();
                         alert('Harus ada minimal 1 perubahan untuk menyimpan data.');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('.crud-table tbody tr');
+
+            searchInput.addEventListener('keyup', function (e) {
+                const term = e.target.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const variabel = row.children[1].textContent.toLowerCase();
+                    const kategori = row.children[2].textContent.toLowerCase();
+
+                    if (variabel.includes(term) || kategori.includes(term)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none'; 
                     }
                 });
             });
