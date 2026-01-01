@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\IndikatorRuangan;
-use App\Models\IndikatorMutu;
-use App\Models\MutuRuangan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\RekapPerIndikatorExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
+use App\Models\IndikatorRuangan;
+use App\Models\IndikatorMutu;
+use App\Models\MutuRuangan;
+use App\Models\PilihanJawaban;
+use App\Models\Jawaban;
+use Illuminate\Support\Facades\DB; 
 
 class SDashboardController extends Controller
 {
@@ -22,7 +24,6 @@ class SDashboardController extends Controller
 
         $results = collect();
 
-        // --- LOGIKA 1: JIKA KATEGORI ADALAH IMPU (Tampilkan per Ruangan) ---
         if ($selectedKategori === 'Indikator Mutu Prioritas Unit') {
 
             $relevantIndicators = IndikatorRuangan::query()
@@ -56,7 +57,6 @@ class SDashboardController extends Controller
             });
 
         }
-        // --- LOGIKA 2: JIKA KATEGORI ADALAH INM ATAU IMPRS (Gabung) ---
         else {
             $masterIndicators = IndikatorMutu::query()
                 ->whereHas('kategori', function ($q) use ($selectedKategori) {
@@ -88,7 +88,6 @@ class SDashboardController extends Controller
                 ];
             });
 
-            // menambahkan baris "Kepuasan Masyarakat" di bawah tabel INM
             if ($selectedKategori === 'Indikator Nasional Mutu') {
                 $skmObject = $this->calculateGlobalSkmYearly($tahun);
                 if ($skmObject) {
@@ -106,23 +105,17 @@ class SDashboardController extends Controller
 
     private function calculateGlobalSkmYearly($year)
     {
-        // 1. Cari Data Indikator di DB 
-        $skmIndicatorDB = DB::table('indikator_mutu')
-            ->where('variabel', 'LIKE', '%Kepuasan Masyarakat%')
+        $skmIndicatorDB = IndikatorMutu::where('variabel', 'LIKE', '%Kepuasan Masyarakat%')
             ->first();
 
         $judulSKM = $skmIndicatorDB ? $skmIndicatorDB->variabel : 'Kepuasan Masyarakat';
         $standarSKM = $skmIndicatorDB ? $skmIndicatorDB->standar : '> 76.61';
 
-        // 2. Ambil Nilai Max per Pertanyaan 
-        $maxScores = DB::table('pilihan_jawaban')
-            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
+        $maxScores = PilihanJawaban::select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        // 3. Ambil Jawaban SKM Tahun Ini
-        $skmAnswers = DB::table('jawaban')
-            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
+        $skmAnswers = Jawaban::join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
             ->whereYear('jawaban.tanggal', $year)
             ->get();

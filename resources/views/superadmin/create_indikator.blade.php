@@ -163,7 +163,7 @@
                                         {{ ($indikators->currentPage() - 1) * $indikators->perPage() + $loop->iteration }}.
                                     </td>
                                     <td class="text-start">{{ $indikator->variabel }}</td>
-                                    <td class="text-start">{{ $indikator->kategori }}</td>
+                                    <td class="text-start">{{ $indikator->kategori->kategori ?? '-' }}</td>
                                     <td class="text-center">{{ $indikator->standar }}</td>
                                     <td>
                                         <div class="action-group">

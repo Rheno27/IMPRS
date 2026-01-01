@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\RekapSkmExport;
 use App\Services\SkmService;
 use Maatwebsite\Excel\Facades\Excel;
-use Carbon\Carbon; 
+use Carbon\Carbon;
+use App\Models\Ruangan;
+use App\Models\PilihanJawaban;
+use App\Models\Jawaban;
+use App\Models\Pertanyaan;
+use App\Models\BioPasien;
 
 class SkmController extends Controller
 {
@@ -23,24 +28,20 @@ class SkmController extends Controller
     {
         $selectedYear = $request->input('year', Carbon::now()->year);
         $selectedMonth = $request->input('month', Carbon::now()->month);
-        $selectedRuangan = $request->input('ruangan'); // Tambahan: Ambil input ruangan
+        $selectedRuangan = $request->input('ruangan');
 
-        $listRuangan = DB::table('ruangan')
-            ->select('id_ruangan', 'nama_ruangan')
-            ->where('nama_ruangan', '!=', 'Super Admin') 
+        $listRuangan = Ruangan::select('id_ruangan', 'nama_ruangan')
+            ->where('nama_ruangan', '!=', 'Super Admin')
             ->get();
 
-        $listPertanyaan = DB::table('pilihan_jawaban')
-            ->join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
+        $listPertanyaan = PilihanJawaban::join('pertanyaan', 'pilihan_jawaban.id_pertanyaan', '=', 'pertanyaan.id_pertanyaan')
             ->select('pilihan_jawaban.id_pertanyaan', 'pertanyaan.urutan')
             ->distinct()
             ->orderBy('pertanyaan.urutan', 'asc')
             ->get()
             ->pluck('id_pertanyaan');
 
-        // === Query Data Jawaban (Diupdate) ===
-        $queryJawaban = DB::table('jawaban')
-            ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
+        $queryJawaban = Jawaban::join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
             ->leftJoin('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
             ->select(
                 'bio_pasien.id_pasien',
@@ -127,13 +128,11 @@ class SkmController extends Controller
 
     public function editPertanyaan()
     {
-        $dataPertanyaan = DB::table('pertanyaan')
-            ->orderBy('urutan', 'asc')
+        $dataPertanyaan = Pertanyaan::orderBy('urutan', 'asc')
             ->orderBy('id_pertanyaan', 'asc')
             ->get();
 
-        $dataPilihan = DB::table('pilihan_jawaban')
-            ->orderBy('id_pilihan', 'asc')
+        $dataPilihan = PilihanJawaban::orderBy('id_pilihan', 'asc')
             ->get()
             ->groupBy('id_pertanyaan');
 
@@ -157,29 +156,27 @@ class SkmController extends Controller
 
         try {
             $this->skmService->syncPertanyaan($submittedQuestions);
-            
+
             return redirect()->route('superadmin.skm.edit2')
                 ->with('success', 'Struktur pertanyaan berhasil diperbarui.');
-                
+
         } catch (\Exception $e) {
             return redirect()->route('superadmin.skm.edit2')
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
-    public function hasil(Request $request) 
+    public function hasil(Request $request)
     {
         $selectedYear = $request->input('year', Carbon::now()->year);
         $selectedMonth = $request->input('month', Carbon::now()->month);
         $selectedRuangan = $request->input('ruangan');
 
-        $listRuangan = DB::table('ruangan')
-            ->select('id_ruangan', 'nama_ruangan')
+        $listRuangan = Ruangan::select('id_ruangan', 'nama_ruangan')
             ->where('nama_ruangan', '!=', 'Super Admin')
             ->get();
 
-        $queryResponden = DB::table('jawaban')
-            ->join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
+        $queryResponden = Jawaban::join('bio_pasien', 'jawaban.id_pasien', '=', 'bio_pasien.id_pasien')
             ->whereYear('jawaban.tanggal', $selectedYear)
             ->whereMonth('jawaban.tanggal', $selectedMonth);
 
@@ -190,14 +187,12 @@ class SkmController extends Controller
         $respondenIds = $queryResponden->distinct()->pluck('jawaban.id_pasien');
         $totalResponden = $respondenIds->count();
 
-        $bioResponden = DB::table('bio_pasien')->whereIn('id_pasien', $respondenIds)->get();
+        $bioResponden = BioPasien::whereIn('id_pasien', $respondenIds)->get();
 
-        $idsPilihanGanda = DB::table('pilihan_jawaban')
-            ->distinct()
+        $idsPilihanGanda = PilihanJawaban::distinct()
             ->pluck('id_pertanyaan');
 
-        $listKritikSaran = DB::table('jawaban')
-            ->whereIn('id_pasien', $respondenIds) 
+        $listKritikSaran = Jawaban::whereIn('id_pasien', $respondenIds)
             ->whereNotIn('id_pertanyaan', $idsPilihanGanda)
             ->whereNotNull('hasil_nilai')
             ->pluck('hasil_nilai');
@@ -206,10 +201,8 @@ class SkmController extends Controller
         $listNoRm = $bioResponden->pluck('no_rm');
         $listUmur = $bioResponden->pluck('umur');
 
-        // Chart Nama Ruangan
-        $ruanganData = DB::table('bio_pasien as bp')
-            ->join('ruangan as r', 'bp.id_ruangan', '=', 'r.id_ruangan')
-            ->whereIn('bp.id_pasien', $respondenIds)
+        $ruanganData = BioPasien::join('ruangan as r', 'bio_pasien.id_ruangan', '=', 'r.id_ruangan')
+            ->whereIn('bio_pasien.id_pasien', $respondenIds)
             ->select('r.nama_ruangan', DB::raw('count(*) as total'))
             ->groupBy('r.nama_ruangan')
             ->pluck('total', 'nama_ruangan');
@@ -227,18 +220,17 @@ class SkmController extends Controller
         $pekerjaanData = $bioResponden->countBy('pekerjaan');
         $pekerjaanChart = ['labels' => $pekerjaanData->keys(), 'data' => $pekerjaanData->values()];
 
-        $pertanyaanSurvei = DB::table('pertanyaan')
-            ->whereIn('id_pertanyaan', $idsPilihanGanda)
+        $pertanyaanSurvei = Pertanyaan::whereIn('id_pertanyaan', $idsPilihanGanda)
             ->orderBy('urutan', 'asc')
             ->get();
 
         $allSurveyCharts = [];
 
         foreach ($pertanyaanSurvei as $pertanyaan) {
-            $data = DB::table('jawaban as j')
+            $data = Jawaban::from('jawaban as j') 
                 ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
                 ->where('j.id_pertanyaan', $pertanyaan->id_pertanyaan)
-                ->whereIn('j.id_pasien', $respondenIds) 
+                ->whereIn('j.id_pasien', $respondenIds)
                 ->select('pj.pilihan', 'pj.nilai', DB::raw('count(*) as total'))
                 ->groupBy('pj.pilihan', 'pj.nilai')
                 ->orderBy('pj.nilai')
@@ -264,10 +256,10 @@ class SkmController extends Controller
             'pendidikanChart',
             'pekerjaanChart',
             'allSurveyCharts',
-            'selectedYear',   
-            'selectedMonth',  
+            'selectedYear',
+            'selectedMonth',
             'selectedRuangan',
-            'listRuangan'     
+            'listRuangan'
         ));
     }
 
@@ -280,11 +272,11 @@ class SkmController extends Controller
 
         $bulan = $request->month;
         $tahun = $request->year;
-        $ruanganId = $request->ruangan; 
+        $ruanganId = $request->ruangan;
 
         $namaFile = 'Rekap_SKM_' . $bulan . '-' . $tahun;
         if ($ruanganId) {
-            $namaRuangan = DB::table('ruangan')->where('id_ruangan', $ruanganId)->value('nama_ruangan');
+            $namaRuangan = Ruangan::where('id_ruangan', $ruanganId)->value('nama_ruangan');
             $namaFile .= '_' . str_replace(' ', '_', $namaRuangan);
         }
         $namaFile .= '.xlsx';

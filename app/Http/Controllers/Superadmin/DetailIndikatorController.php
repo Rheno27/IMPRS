@@ -8,11 +8,13 @@ use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\RekapMutuRuanganExport;
-use App\Services\MutuService; 
+use App\Services\MutuService;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\PilihanJawaban;
+use App\Models\Jawaban;
+use Illuminate\Support\Facades\DB; 
 
 class DetailIndikatorController extends Controller
 {
@@ -85,7 +87,7 @@ class DetailIndikatorController extends Controller
         $request->validate([
             'bulan' => 'required',
             'tahun' => 'required',
-            'ruangan_id' => 'required' 
+            'ruangan_id' => 'required'
         ]);
 
         $ruanganId = $request->ruangan_id;
@@ -99,18 +101,13 @@ class DetailIndikatorController extends Controller
 
     private function getSkmData($bulan, $tahun)
     {
-        // Ambil nilai MAX untuk setiap pertanyaan
-        $maxScores = DB::table('pilihan_jawaban')
-            ->select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
+        $maxScores = PilihanJawaban::select('id_pertanyaan', DB::raw('MAX(nilai) as max_nilai'))
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        // Ambil semua jawaban SKM bulan ini
-        $skmAnswers = DB::table('jawaban')
-            ->join('pilihan_jawaban', 'jawaban.id_pilihan', '=', 'pilihan_jawaban.id_pilihan')
-            ->select('jawaban.tanggal', 'jawaban.id_pertanyaan', 'pilihan_jawaban.nilai')
-            ->whereMonth('jawaban.tanggal', $bulan)
-            ->whereYear('jawaban.tanggal', $tahun)
+        $skmAnswers = Jawaban::with('pilihanJawaban') 
+            ->whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
             ->get();
 
         $skmByTanggal = [];
@@ -127,7 +124,9 @@ class DetailIndikatorController extends Controller
                 $dailyMax = 0;
 
                 foreach ($answers as $ans) {
-                    $dailyActual += $ans->nilai;
+                    $nilai = $ans->pilihanJawaban ? $ans->pilihanJawaban->nilai : 0;
+
+                    $dailyActual += $nilai;
                     $dailyMax += $maxScores[$ans->id_pertanyaan] ?? 0;
                 }
 

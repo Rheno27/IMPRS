@@ -14,11 +14,8 @@ class Kategori extends Model
 
     // Mendefinisikan primary key secara eksplisit
     protected $primaryKey = 'id_kategori';
-
-    /**
-     * Mendefinisikan relasi "hasMany" ke model IndikatorMutu.
-     * Satu Kategori bisa memiliki banyak Indikator Mutu.
-     */
+    public $timestamps = false;
+    
     public function indikatorMutus()
     {
         // Parameter kedua ('id_kategori') adalah foreign key di tabel 'indikator_mutu'
