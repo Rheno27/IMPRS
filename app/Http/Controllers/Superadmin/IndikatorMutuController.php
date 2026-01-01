@@ -8,19 +8,23 @@ use Illuminate\Support\Facades\DB;
 
 class IndikatorMutuController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        // 1. Ambil semua kategori untuk dropdown di modal
         $kategoris = DB::table('kategori')->orderBy('id_kategori')->get();
 
-        // 2. Ambil semua indikator mutu yang ada, join dengan kategori,
+        $limit = $request->input('limit', 10);
+
         $indikators = DB::table('indikator_mutu as im')
             ->join('kategori as k', 'im.id_kategori', '=', 'k.id_kategori')
             ->select('im.id_indikator', 'im.variabel', 'im.standar', 'k.kategori', 'im.id_kategori')
             ->orderBy('k.id_kategori')
             ->orderBy('im.id_indikator')
-            ->get()
-            ->groupBy('kategori');
+            ->when($request->input('search'), function ($query, $search) {
+                return $query->where('im.variabel', 'like', "%{$search}%")
+                            ->orWhere('k.kategori', 'like', "%{$search}%");
+            })
+            ->paginate($limit)
+            ->withQueryString(); 
 
         return view('superadmin.create_indikator', compact('kategoris', 'indikators'));
     }
