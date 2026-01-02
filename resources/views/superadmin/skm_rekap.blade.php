@@ -216,8 +216,8 @@ if (count($dataRekap) > 0) {
     <script>
         (function () {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Juli", "Ags", "Sep", "Okt", "Nov", "Des"];
-            let currentYear = {{ $selectedYear }};
-            let currentMonthIndex = {{ $selectedMonth }} - 1;
+            let currentYear = parseInt("{{ $selectedYear }}");
+            let currentMonthIndex = parseInt("{{ $selectedMonth }}") - 1;
 
             const monthYearEl = document.getElementById('monthYear');
             const panel = document.getElementById('calendarPanel');
@@ -226,6 +226,10 @@ if (count($dataRekap) > 0) {
             const monthsContainer = document.querySelector('.calendar-months');
             const prevYearBtn = document.getElementById('prevYear');
             const nextYearBtn = document.getElementById('nextYear');
+
+            const formFilter = document.getElementById('filterRuanganForm');
+            const inputMonth = formFilter.querySelector('input[name="month"]');
+            const inputYear = formFilter.querySelector('input[name="year"]');
 
             function renderMonths() {
                 yearEl.textContent = currentYear;
@@ -237,15 +241,19 @@ if (count($dataRekap) > 0) {
                     b.style.borderRadius = "6px";
                     b.style.border = "none";
                     b.style.cursor = "pointer";
-                    b.style.background = (index === currentMonthIndex && currentYear == {{ $selectedYear }}) ? "var(--primary-color)" : "#f7f7f7";
-                    b.style.color = (index === currentMonthIndex && currentYear == {{ $selectedYear }}) ? "#fff" : "inherit";
-                    b.style.fontWeight = (index === currentMonthIndex && currentYear == {{ $selectedYear }}) ? "bold" : "normal";
 
-                    b.addEventListener('click', () => {
-                        const selectedMonth = index + 1;
-                        const baseUrl = "{{ route('superadmin.skm.rekap') }}";
-                        const selectedRuangan = document.querySelector('select[name="ruangan"]').value;
-                        window.location.href = `${baseUrl}?month=${selectedMonth}&year=${currentYear}&ruangan=${selectedRuangan}`;
+                    const isActive = (index === currentMonthIndex && currentYear == {{ $selectedYear }});
+                    b.style.background = isActive ? "var(--primary-color)" : "#f7f7f7";
+                    b.style.color = isActive ? "#fff" : "inherit";
+                    b.style.fontWeight = isActive ? "bold" : "normal";
+
+                    b.addEventListener('click', (e) => {
+                        e.preventDefault(); 
+
+                        inputMonth.value = index + 1;
+                        inputYear.value = currentYear;
+
+                        formFilter.submit();
                     });
                     monthsContainer.appendChild(b);
                 });

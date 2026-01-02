@@ -208,7 +208,9 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold">1. Pilih Jenis Indikator (Kategori)</label>
                                 <select class="form-select category-select"
-                                    data-target-indicator-select="#indicator-select-{{ $item->id_indikator_ruangan }}" required>
+                                    data-target-indicator-select="#indicator-select-{{ $item->id_indikator_ruangan }}" 
+                                    data-current-indicator-id="{{ $item->indikatorMutu->id_indikator }}"
+                                    required>
                                     <option value="" selected>-- Pilih Kategori --</option>
                                     @foreach ($allKategoris as $kategori)
                                         <option value="{{ $kategori->id_kategori }}">{{ $kategori->kategori }}</option>
@@ -306,6 +308,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const allMasterIndikators = @json($allMasterIndikators);
+            const usedIndicatorIds = @json($usedIndicatorIds ?? []); 
             const categorySelects = document.querySelectorAll('.category-select');
 
             categorySelects.forEach(select => {
@@ -313,6 +316,7 @@
                     const selectedCategoryId = event.target.value;
                     const targetIndicatorSelectId = event.target.dataset.targetIndicatorSelect;
                     const indicatorSelect = document.querySelector(targetIndicatorSelectId);
+                    const currentIndicatorId = event.target.dataset.currentIndicatorId;
 
                     indicatorSelect.innerHTML = '';
                     indicatorSelect.disabled = true;
@@ -334,6 +338,14 @@
                                 let option = document.createElement('option');
                                 option.value = indicator.id_indikator;
                                 option.textContent = indicator.variabel;
+                                if (usedIndicatorIds.includes(indicator.id_indikator)) {
+                                    if (indicator.id_indikator != currentIndicatorId) {
+                                        option.disabled = true;
+                                        option.textContent += ' (Sudah Aktif)';
+                                        option.style.color = '#ccc';
+                                    }
+                                }
+
                                 indicatorSelect.appendChild(option);
                             });
                             indicatorSelect.disabled = false;

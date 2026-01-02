@@ -95,7 +95,7 @@
 
         {{-- Toolbar: Search, Limit, dan Tambah --}}
         <div class="toolbar-container">
-            <form method="GET" action="{{ route('superadmin.indikator_mutu.create') }}" class=" d-flex justify-content-between
+            <form id="searchForm" method="GET" action="{{ route('superadmin.indikator_mutu.create') }}" class=" d-flex justify-content-between
                 align-items-center w-100 flex-wrap gap-2">
 
                 <div class="d-flex align-items-center gap-2">
@@ -116,8 +116,8 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" name="search" value="{{ request('search') }}" class="search-input"
-                            placeholder="Cari variabel/kategori..." onblur="this.form.submit()">
+                        <input type="text" id="serverSearchInput" name="search" value="{{ request('search') }}" 
+                            class="search-input" placeholder="Cari variabel/kategori...">
                     </div>
                 </div>
 
@@ -354,23 +354,24 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('searchInput');
-            const tableRows = document.querySelectorAll('.crud-table tbody tr');
+            let timeout = null;
+            const searchInput = document.getElementById('serverSearchInput');
+            const searchForm = document.getElementById('searchForm');
 
-            searchInput.addEventListener('keyup', function (e) {
-                const term = e.target.value.toLowerCase();
+            if (searchInput && searchForm) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(timeout);
 
-                tableRows.forEach(row => {
-                    const variabel = row.children[1].textContent.toLowerCase();
-                    const kategori = row.children[2].textContent.toLowerCase();
-
-                    if (variabel.includes(term) || kategori.includes(term)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none'; 
-                    }
+                    timeout = setTimeout(function() {
+                        searchForm.submit();
+                    }, 600);
                 });
-            });
+                
+                const val = searchInput.value;
+                searchInput.focus();
+                searchInput.value = ''; 
+                searchInput.value = val;
+            }
         });
     </script>
 @endpush
