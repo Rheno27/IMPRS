@@ -27,6 +27,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $casts = [
+        'password' => 'hashed',
+    ];
+    
     public $timestamps = false;
 
     public function isSuperadmin()

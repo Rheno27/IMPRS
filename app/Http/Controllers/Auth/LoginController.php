@@ -26,12 +26,14 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password
+        ];
 
-        if ($user && $user->password === $request->password) {
-
-            Auth::login($user);
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::user();
 
             if ($user->isSuperadmin()) {
                 return redirect()->intended(route('superadmin.dashboard'));
