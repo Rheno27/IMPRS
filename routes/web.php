@@ -12,26 +12,6 @@ use App\Http\Controllers\Superadmin\SkmController;
 use App\Http\Controllers\Guest\SurveyController;
 use App\Http\Controllers\Superadmin\IndikatorMutuController;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-Route::get('/update-password-sekarang', function () {
-    // Ambil semua user
-    $users = User::all();
-    $count = 0;
-
-    foreach ($users as $user) {
-        // Cek jika password belum di-hash (panjangnya < 60 karakter)
-        if (strlen($user->password) < 60) {
-            // Update langsung ke database
-            User::where('id_user', $user->id_user)->update([
-                'password' => Hash::make($user->password)
-            ]);
-            $count++;
-        }
-    }
-    return "BERHASIL! {$count} user sudah di-aman-kan (Hashing). Silakan coba login.";
-});
-
 Route::get('/cek-error', function () {
     return view('errors.error');
 });
