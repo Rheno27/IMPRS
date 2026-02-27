@@ -38,7 +38,8 @@
             <td rowspan="2" style="border: 1px solid #000000; vertical-align: middle; text-align: center;">{{ $row['no'] }}
             </td>
             <td rowspan="2" style="border: 1px solid #000000; vertical-align: middle; word-wrap: break-word;">
-                {{ $row['variabel'] }}</td>
+                {{ $row['variabel'] }}
+            </td>
 
             @for($i = 1; $i <= $jumlahHari; $i++)
                 <td style="border: 1px solid #000000; text-align: center;">
@@ -47,9 +48,11 @@
             @endfor
 
             <td rowspan="2" style="border: 1px solid #000000; vertical-align: middle; text-align: center;">
-                {{ $row['total_num'] }}</td>
+                {{ $row['total_num'] }}
+            </td>
             <td rowspan="2" style="border: 1px solid #000000; vertical-align: middle; text-align: center;">
-                {{ $row['persentase'] }}%</td>
+                {{ $row['persentase'] }}%
+            </td>
         </tr>
         <tr>
             @for($i = 1; $i <= $jumlahHari; $i++)
