@@ -8,7 +8,7 @@ use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
 use App\Models\IndikatorRuangan;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreInputMutuRequest; 
+use App\Http\Requests\StoreInputMutuRequest;
 use App\Services\MutuService;
 
 class InputIndikatorController extends Controller
@@ -20,14 +20,14 @@ class InputIndikatorController extends Controller
         $this->mutuService = $mutuService;
     }
 
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         $user = Auth::user();
         $tanggal = $request->input('tanggal', date('Y-m-d'));
 
         $indikatorRuanganAktif = IndikatorRuangan::where('id_ruangan', $user->id_ruangan)
             ->where('active', true)
-            ->with('indikatorMutu') 
+            ->with('indikatorMutu')
             ->get();
 
         $indikator = $indikatorRuanganAktif->pluck('indikatorMutu')->filter();

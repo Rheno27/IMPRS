@@ -12,6 +12,7 @@ use App\Http\Controllers\Superadmin\SkmController;
 use App\Http\Controllers\Guest\SurveyController;
 use App\Http\Controllers\Superadmin\IndikatorMutuController;
 
+
 Route::get('/cek-error', function () {
     return view('errors.error');
 });

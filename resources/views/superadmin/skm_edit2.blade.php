@@ -20,17 +20,17 @@
         .question-block {
             background: #fff;
             border: 1px solid #e0e0e0;
-            border-left: 5px solid var(--primary-color); 
+            border-left: 5px solid var(--primary-color);
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
         }
 
         .question-block:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
             border-color: #cbd5e0;
         }
 
@@ -98,7 +98,8 @@
         }
 
         .icon-btn svg {
-            width: 18px; height: 18px;
+            width: 18px;
+            height: 18px;
             stroke-width: 2;
         }
 
@@ -107,6 +108,7 @@
             border-color: #ffcccc;
             background-color: #fff5f5;
         }
+
         .icon-btn.danger:hover {
             background-color: #dc3545;
             color: #fff;
@@ -135,7 +137,7 @@
             font-size: 15px;
             font-family: inherit;
             transition: border-color 0.2s;
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
 
         .form-input:focus {
@@ -211,7 +213,7 @@
 
         .btn-save-fixed {
             background-color: var(--secondary-color);
-            color: #5f4c14; 
+            color: #5f4c14;
             padding: 14px 50px;
             border: none;
             border-radius: 12px;
@@ -221,6 +223,7 @@
             box-shadow: 0 4px 15px rgba(255, 187, 0, 0.3);
             transition: transform 0.2s;
         }
+        
         .btn-save-fixed:hover {
             transform: scale(1.05);
             background-color: #e6a800;
@@ -241,7 +244,9 @@
                 <div class="custom-alert success">
                     <div class="alert-content">
                         {{-- Icon Check --}}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
                         <span>{{ session('success') }}</span>
                     </div>
                     <button type="button" class="alert-close-btn" onclick="this.parentElement.remove()">✕</button>
@@ -272,16 +277,28 @@
 
                             <div class="action-icons">
                                 <button type="button" class="icon-btn btn-move-up" title="Geser Naik">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M12 19V5M5 12l7-7 7 7" />
+                                    </svg>
                                 </button>
                                 <button type="button" class="icon-btn btn-move-down" title="Geser Turun">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M12 5v14M5 12l7 7 7-7" />
+                                    </svg>
                                 </button>
                                 <button type="button" class="icon-btn btn-add-insert" title="Sisipkan Pertanyaan Disini">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
                                 </button>
                                 <button type="button" class="icon-btn danger btn-delete-question" title="Hapus Pertanyaan">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
                                 </button>
                             </div>
                         </header>
@@ -291,13 +308,13 @@
                             {{-- Baris 1: Teks Pertanyaan --}}
                             <div class="form-group">
                                 <label class="form-label">Isi Pertanyaan</label>
-                                <input type="text" class="form-input question-text-input" 
-                                    value="{{ $pertanyaan->pertanyaan ?? '' }}" 
-                                    placeholder="Tulis pertanyaan survei disini...">
+                                <input type="text" class="form-input question-text-input"
+                                    value="{{ $pertanyaan->pertanyaan ?? '' }}" placeholder="Tulis pertanyaan survei disini...">
                             </div>
 
                             {{-- Hidden Tipe --}}
-                            <input type="hidden" class="hidden-tipe-input" value="{{ $pertanyaan->tipe_pertanyaan ?? 'Pilihan Ganda' }}">
+                            <input type="hidden" class="hidden-tipe-input"
+                                value="{{ $pertanyaan->tipe_pertanyaan ?? 'Pilihan Ganda' }}">
 
                             {{-- Baris 2: Pilihan Jawaban --}}
                             @if($pertanyaan->tipe_pertanyaan != 'Isian Teks')
@@ -307,21 +324,28 @@
                                         <div class="answer-options-list">
                                             @foreach ($pertanyaan->pilihan as $pilihan)
                                                 <div class="answer-row">
-                                                    <input type="hidden" class="hidden-id-pilihan" value="{{ $pilihan->id_pilihan ?? '' }}">
+                                                    <input type="hidden" class="hidden-id-pilihan"
+                                                        value="{{ $pilihan->id_pilihan ?? '' }}">
 
                                                     <div class="option-badge">{{ chr(65 + $loop->index) }}</div>
 
-                                                    <input type="text" class="form-input input-text" style="flex-grow:1;" 
+                                                    <input type="text" class="form-input input-text" style="flex-grow:1;"
                                                         value="{{ $pilihan->pilihan ?? '' }}" placeholder="Teks Jawaban">
 
-                                                    <input type="number" class="form-input input-score" 
-                                                        placeholder="Nilai" value="{{ $pilihan->nilai ?? '' }}" title="Bobot Nilai SKM">
+                                                    <input type="number" class="form-input input-score" placeholder="Nilai"
+                                                        value="{{ $pilihan->nilai ?? '' }}" title="Bobot Nilai SKM">
 
                                                     <button type="button" class="icon-btn btn-add-answer" title="Tambah Opsi">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                        </svg>
                                                     </button>
                                                     <button type="button" class="icon-btn danger btn-delete-answer" title="Hapus Opsi">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                        </svg>
                                                     </button>
                                                 </div>
                                             @endforeach
@@ -340,7 +364,10 @@
 
             <div class="bottom-actions">
                 <button type="button" id="btn-add-new-question-bottom" class="btn-add-big">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
                     Tambah Pertanyaan Baru
                 </button>
                 <button type="submit" class="btn-save-fixed">SIMPAN PERUBAHAN</button>
@@ -358,16 +385,31 @@
                     <h3 class="question-label">Pertanyaan Baru</h3>
                 </div>
                 <div class="action-icons">
-                    <button type="button" class="icon-btn btn-move-up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-                    <button type="button" class="icon-btn btn-move-down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button>
-                    <button type="button" class="icon-btn btn-add-insert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
-                    <button type="button" class="icon-btn danger btn-delete-question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                    <button type="button" class="icon-btn btn-move-up"><svg viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <path d="M12 19V5M5 12l7-7 7 7" />
+                        </svg></button>
+                    <button type="button" class="icon-btn btn-move-down"><svg viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <path d="M12 5v14M5 12l7 7 7-7" />
+                        </svg></button>
+                    <button type="button" class="icon-btn btn-add-insert"><svg viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg></button>
+                    <button type="button" class="icon-btn danger btn-delete-question"><svg viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg></button>
                 </div>
             </header>
             <div class="question-editor">
                 <div class="form-group">
                     <label class="form-label">Isi Pertanyaan</label>
-                    <input type="text" class="form-input question-text-input" placeholder="Tulis pertanyaan survei disini...">
+                    <input type="text" class="form-input question-text-input"
+                        placeholder="Tulis pertanyaan survei disini...">
                 </div>
                 <input type="hidden" class="hidden-tipe-input" value="Pilihan Ganda">
                 <div class="form-group">
@@ -377,10 +419,19 @@
                             <div class="answer-row">
                                 <input type="hidden" class="hidden-id-pilihan" value="">
                                 <div class="option-badge">A</div>
-                                <input type="text" class="form-input input-text" style="flex-grow:1;" placeholder="Teks Jawaban">
+                                <input type="text" class="form-input input-text" style="flex-grow:1;"
+                                    placeholder="Teks Jawaban">
                                 <input type="number" class="form-input input-score" placeholder="Nilai">
-                                <button type="button" class="icon-btn btn-add-answer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
-                                <button type="button" class="icon-btn danger btn-delete-answer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                                <button type="button" class="icon-btn btn-add-answer"><svg viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg></button>
+                                <button type="button" class="icon-btn danger btn-delete-answer"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg></button>
                             </div>
                         </div>
                     </div>
@@ -438,7 +489,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             // --- VARIABLES ---
             const pageList = document.querySelector('.survey-page-list');
-            const templateHTML = document.getElementById('question-template').innerHTML; 
+            const templateHTML = document.getElementById('question-template').innerHTML;
             const confirmModal = document.getElementById('customConfirmModal');
             const alertModal = document.getElementById('customAlertModal');
             let deleteCallback = null;
@@ -447,7 +498,7 @@
             function openConfirmModal(callback) {
                 deleteCallback = callback;
                 confirmModal.style.display = 'block';
-                confirmModal.classList.add('active'); 
+                confirmModal.classList.add('active');
             }
 
             function closeConfirmModal() {
@@ -458,7 +509,7 @@
 
             document.getElementById('closeModalBtn').addEventListener('click', closeConfirmModal);
 
-            document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
                 if (deleteCallback) deleteCallback();
                 closeConfirmModal();
             });
@@ -481,7 +532,7 @@
                     block.querySelector('.question-label').textContent = `Pertanyaan ${index + 1}`;
                 });
                 const emptyState = pageList.querySelector('.empty-state');
-                if(blocks.length > 0 && emptyState) emptyState.remove();
+                if (blocks.length > 0 && emptyState) emptyState.remove();
             }
 
             function renumberOptions(list) {
@@ -499,7 +550,7 @@
                 return newBlock;
             }
 
-            document.getElementById('btn-add-new-question-bottom').addEventListener('click', function() {
+            document.getElementById('btn-add-new-question-bottom').addEventListener('click', function () {
                 const newBlock = createNewQuestion();
                 pageList.appendChild(newBlock);
                 newBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -507,11 +558,11 @@
             });
 
             // --- 4. CLICK EVENTS DELEGATION  ---
-            pageList.addEventListener('click', function(e) {
+            pageList.addEventListener('click', function (e) {
                 const target = e.target;
 
                 // A. INSERT / DUPLICATE QUESTION 
-                if(target.closest('.btn-add-insert')) {
+                if (target.closest('.btn-add-insert')) {
                     const currentBlock = target.closest('.question-block');
                     const newBlock = createNewQuestion();
                     currentBlock.after(newBlock);
@@ -519,33 +570,33 @@
                 }
 
                 // B. MOVE UP
-                else if(target.closest('.btn-move-up')) {
+                else if (target.closest('.btn-move-up')) {
                     const currentBlock = target.closest('.question-block');
                     const prevBlock = currentBlock.previousElementSibling;
-                    if(prevBlock && prevBlock.classList.contains('question-block')) {
+                    if (prevBlock && prevBlock.classList.contains('question-block')) {
                         currentBlock.parentNode.insertBefore(currentBlock, prevBlock);
                         renumberQuestions();
                     }
                 }
 
                 // C. MOVE DOWN
-                else if(target.closest('.btn-move-down')) {
+                else if (target.closest('.btn-move-down')) {
                     const currentBlock = target.closest('.question-block');
                     const nextBlock = currentBlock.nextElementSibling;
-                    if(nextBlock && nextBlock.classList.contains('question-block')) {
+                    if (nextBlock && nextBlock.classList.contains('question-block')) {
                         nextBlock.after(currentBlock);
                         renumberQuestions();
                     }
                 }
 
                 // D. DELETE QUESTION
-                else if(target.closest('.btn-delete-question')) {
+                else if (target.closest('.btn-delete-question')) {
                     const currentBlock = target.closest('.question-block');
                     const idInput = currentBlock.querySelector('.hidden-id-pertanyaan');
                     const id = idInput ? idInput.value : null;
 
                     const doDelete = () => {
-                        if(!id) {
+                        if (!id) {
                             currentBlock.remove();
                             renumberQuestions();
                             return;
@@ -561,19 +612,19 @@
                                 'Accept': 'application/json'
                             }
                         })
-                        .then(res => res.json())
-                        .then(data => {
-                            if(data.status === 'success') {
-                                currentBlock.remove();
-                                renumberQuestions();
-                            } else {
-                                showAlert('Gagal', data.message || 'Gagal menghapus pertanyaan.');
-                            }
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            showAlert('Error', 'Terjadi kesalahan server.');
-                        });
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    currentBlock.remove();
+                                    renumberQuestions();
+                                } else {
+                                    showAlert('Gagal', data.message || 'Gagal menghapus pertanyaan.');
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                showAlert('Error', 'Terjadi kesalahan server.');
+                            });
                     };
 
                     // Cek jumlah pertanyaan (Opsional)
@@ -586,7 +637,7 @@
                 }
 
                 // E. ADD ANSWER OPTION
-                else if(target.closest('.btn-add-answer')) {
+                else if (target.closest('.btn-add-answer')) {
                     const currentBlock = target.closest('.answer-row');
                     const list = currentBlock.parentElement;
 
@@ -614,7 +665,7 @@
             });
 
             // --- 5. PREPARE FORM BEFORE SUBMIT ---
-            document.getElementById('survey-form').addEventListener('submit', function(e) {
+            document.getElementById('survey-form').addEventListener('submit', function (e) {
 
                 const blocks = pageList.querySelectorAll('.question-block:not(.empty-state)');
 

@@ -31,9 +31,9 @@
 
                     <div style="margin-left: 8px;">
                         <strong>Gagal Menyimpan Data!</strong>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
                         </ul>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
             </form>
         </div>
 
-        {{-- MODAL VALIDASI ERROR  --}}
+        {{-- MODAL VALIDASI ERROR --}}
         <div id="validationModal" class="modal-overlay">
             <div class="modal-box centered-alert">
                 <div class="icon-centered">
@@ -298,7 +298,7 @@
             document.querySelectorAll('.indicator-grid input[type="number"]').forEach(function (input) {
                 if (input.value === '' || input.value === null) {
                     valid = false;
-                    input.classList.add('input-error'); 
+                    input.classList.add('input-error');
 
                     if (!firstInvalidInput) firstInvalidInput = input;
                 }
@@ -306,7 +306,7 @@
 
             if (!valid) {
                 e.preventDefault(); // Stop submit
-                validationModal.style.display = 'block'; 
+                validationModal.style.display = 'block';
 
                 // Ketika tombol OK diklik
                 btnModalOk.onclick = function () {
