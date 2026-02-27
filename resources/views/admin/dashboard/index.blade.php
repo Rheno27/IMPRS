@@ -21,7 +21,7 @@
             <h1 class="hero-title">WEBSITE PELAPORAN INDIKATOR MUTU DAN KESELAMATAN PASIEN</h1>
             <p class="hero-subtitle">
                 Website Pelaporan Indikator Mutu dan Keselamatan Pasien merupakan sebuah sistem berbasis web
-                yang dirancang untuk memfasilitasi proses pencatatan, pelaporan, dan pemantauan indikator mutu 
+                yang dirancang untuk memfasilitasi proses pencatatan, pelaporan, dan pemantauan indikator mutu
                 serta keselamatan pasien secara terpusat.
             </p>
             <a href="{{ route('admin.input_indikator') }}" class="cta-button">
@@ -109,7 +109,7 @@
                             d="M22.5 35.1875C22.0125 35.1875 21.525 34.9812 21.1688 34.6437C20.8313 34.2875 20.625 33.8 20.625 33.3125C20.625 32.825 20.8313 32.3375 21.1688 31.9813C21.8625 31.2875 23.1375 31.2875 23.8312 31.9813C24.1687 32.3375 24.375 32.825 24.375 33.3125C24.375 33.8 24.1687 34.2875 23.8312 34.6437C23.475 34.9812 22.9875 35.1875 22.5 35.1875Z"
                             fill="#FFC107" />
                         <path
-                            d="M29.0625 35.1875C28.575 35.1875 28.0875 34.9812 27.7313 34.6437C27.3938 34.2875 27.1875 33.8 27.1875 33.3125C27.1875 32.825 27.3938 32.3375 27.7313 31.9813C28.425 31.2875 29.7 31.2875 30.3937 31.9813C30.7312 32.3375 30.9375 32.825 30.9375 33.3125C30.9375 33.8 30.7312 34.2875 30.3937 34.6437C30.0375 34.9812 29.55 35.1875 29.0625 35.1875Z"
+                            d="M29.0625 35.1875C28.575 35.1875 28.0875 34.9812 27.7313 34.6437C27.3938 34.2875 27.1875 33.8 27.1875 33.3125C27.1875 32.825 27.3938 32.3375 27.7313 31.9813C28.425 31.2875 29.7 31.2875 30.3937 31.9813C30.7312 32.3375 30.9375 32.825 30.9375 33.3125C30.9375 33.8 30.7312 34.2875 30.3937 34.6437C30.0375 34.9812 29.55 34.6875 29.0625 34.6875Z"
                             fill="#FFC107" />
                     </svg>
                     <span id="selectedYear">{{ $tahun }}</span>
@@ -170,13 +170,14 @@
         </div>
     </div>
 
-    {{-- 3. BAGIAN TABEL  --}}
+    {{-- 3. BAGIAN TABEL --}}
     <div class="report-container">
         <div class="report-table-wrapper">
             {{-- Header Block Hijau --}}
             <div class="report-header-block">
                 <h3>Penilaian Indikator Mutu di Ruang {{ $user->nama_ruangan }}<br>
-                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD KALISAT</span>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD
+                        KALISAT</span>
                 </h3>
             </div>
 

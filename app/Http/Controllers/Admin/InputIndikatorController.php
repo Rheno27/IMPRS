@@ -44,7 +44,7 @@ class InputIndikatorController extends Controller
                 $mutu[$ir->id_indikator] = $record;
             }
         }
-        return view('admin.input_indikator', compact('indikator', 'mutu', 'tanggal', 'user'));
+        return view('admin.indikator_mutu.create', compact('indikator', 'mutu', 'tanggal', 'user'));
     }
 
     public function store(StoreInputMutuRequest $request)

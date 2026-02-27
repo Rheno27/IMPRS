@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PilihanJawaban;
 use App\Models\Jawaban;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 class DetailIndikatorController extends Controller
 {
@@ -68,7 +68,7 @@ class DetailIndikatorController extends Controller
         ];
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
-        return view('superadmin.detail_indikator', [
+        return view('superadmin.ruangan.detail', [
             'ruangan' => $ruangan,
             'indikatorData' => $indikatorData,
             'bulan' => $bulan,
@@ -105,7 +105,7 @@ class DetailIndikatorController extends Controller
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        $skmAnswers = Jawaban::with('pilihanJawaban') 
+        $skmAnswers = Jawaban::with('pilihanJawaban')
             ->whereMonth('tanggal', $bulan)
             ->whereYear('tanggal', $tahun)
             ->get();

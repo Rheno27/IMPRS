@@ -19,7 +19,8 @@ Route::get('/cek-error', function () {
 
 // --- PUBLIC ---
 Route::get('/', function () {
-    return redirect()->route('login'); });
+    return redirect()->route('login');
+});
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -27,11 +28,13 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // --- SKM (GUEST / TANPA LOGIN) ---
 Route::prefix('SKM')->name('guest.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('guest.dashboard'); })->name('dashboard');
+        return view('guest.dashboard.index');
+    })->name('dashboard');
     Route::get('/survei-1', [SurveyController::class, 'create'])->name('survei-1');
     Route::post('/survei-1', [SurveyController::class, 'store'])->name('survei-1.store');
     Route::get('/survei-done', function () {
-        return view('guest.skm_done'); })->name('survei-done');
+        return view('guest.skm.done');
+    })->name('survei-done');
 });
 
 // --- HALAMAN ADMIN RUANGAN ---

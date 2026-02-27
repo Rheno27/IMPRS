@@ -18,7 +18,7 @@ class IndikatorMutuController extends Controller
 
         $indikators = IndikatorMutu::with('kategori')
             ->join('kategori', 'indikator_mutu.id_kategori', '=', 'kategori.id_kategori')
-            ->select('indikator_mutu.*') 
+            ->select('indikator_mutu.*')
             ->orderBy('kategori.id_kategori')
             ->orderBy('indikator_mutu.id_indikator')
             ->when($request->input('search'), function ($query, $search) {
@@ -28,7 +28,7 @@ class IndikatorMutuController extends Controller
             ->paginate($limit)
             ->withQueryString();
 
-        return view('superadmin.create_indikator', compact('kategoris', 'indikators'));
+        return view('superadmin.indikator.create', compact('kategoris', 'indikators'));
     }
 
     public function store(Request $request)

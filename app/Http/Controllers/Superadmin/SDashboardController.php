@@ -13,7 +13,7 @@ use App\Models\IndikatorMutu;
 use App\Models\MutuRuangan;
 use App\Models\PilihanJawaban;
 use App\Models\Jawaban;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 class SDashboardController extends Controller
 {
@@ -56,8 +56,7 @@ class SDashboardController extends Controller
                 ];
             });
 
-        }
-        else {
+        } else {
             $masterIndicators = IndikatorMutu::query()
                 ->whereHas('kategori', function ($q) use ($selectedKategori) {
                     $q->where('kategori', $selectedKategori);
@@ -96,7 +95,7 @@ class SDashboardController extends Controller
             }
         }
 
-        return view('superadmin.dashboard', [
+        return view('superadmin.dashboard.index', [
             'indikatorData' => $results,
             'selectedKategori' => $selectedKategori,
             'tahun' => $tahun,

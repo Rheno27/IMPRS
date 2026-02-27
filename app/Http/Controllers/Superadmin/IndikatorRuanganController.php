@@ -72,7 +72,7 @@ class IndikatorRuanganController extends Controller
         $allMasterIndikators = IndikatorMutu::orderBy('variabel')->get();
         $allKategoris = Kategori::all();
 
-        return view('superadmin.edit_indikator', [
+        return view('superadmin.ruangan.edit_indikator', [
             'ruangan' => $ruangan,
             'activeIndikators' => $activeIndikators,
             'allMasterIndikators' => $allMasterIndikators,
