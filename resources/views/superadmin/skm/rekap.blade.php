@@ -34,7 +34,9 @@
 
 @section('content')
         {{-- Header Navigasi (Kop) --}}
-        @include('superadmin.partials.skm_nav')
+        @include('superadmin.skm.partials.nav')
+
+        {{-- Konten Utama --}}
 
         <div class="page-container" style="padding-bottom: 50px;">
             {{-- Toolbar Container --}}

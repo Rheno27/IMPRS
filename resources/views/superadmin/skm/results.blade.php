@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('superadmin.partials.skm_nav')
+    @include('superadmin.skm.partials.nav')
 
     <div class="page-container">
         {{-- === START: TOOLBAR FILTER (Copy Style dari Rekap) === --}}
