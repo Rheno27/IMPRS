@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
+
 use Illuminate\Support\Facades\DB;
 class MutuService
 {
@@ -185,5 +186,67 @@ class MutuService
             'jumlah_sesuai' => $skmTotalActual,
             'persen' => $skmPersen
         ];
+    }
+
+    /**
+     * Build chart series for a given room and year.
+     * Returns array of ['label' => string, 'monthly' => array(12)] where months without data are null.
+     */
+    public function buildChartSeriesForRuangan($id_ruangan, int $tahun): array
+    {
+        $mutuYear = MutuRuangan::with('indikatorRuangan.indikatorMutu')
+            ->whereHas('indikatorRuangan', function ($query) use ($id_ruangan) {
+                $query->where('id_ruangan', $id_ruangan);
+            })
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        $chartSeries = [];
+        if ($mutuYear->isEmpty()) {
+            return $chartSeries;
+        }
+
+        $groups = $mutuYear->groupBy(function ($item) {
+            return optional($item->indikatorRuangan->indikatorMutu)->id_indikator ?? null;
+        });
+
+        foreach ($groups as $masterId => $items) {
+            if ($masterId === null)
+                continue;
+
+            $label = optional($items->first()->indikatorRuangan->indikatorMutu)->variabel ?? ('Indikator ' . $masterId);
+
+            $monthly = [];
+            for ($m = 1; $m <= 12; $m++) {
+                $byMonth = $items->filter(function ($it) use ($m) {
+                    return (int) \Carbon\Carbon::parse($it->tanggal)->format('n') === $m;
+                });
+
+                if ($byMonth->isEmpty()) {
+                    $monthly[] = null;
+                    continue;
+                }
+
+                $sumSesuai = $byMonth->sum('pasien_sesuai');
+                $sumTotal = $byMonth->sum('total_pasien');
+
+                if ($sumTotal <= 0) {
+                    $monthly[] = null;
+                } else {
+                    $monthly[] = round(($sumSesuai / $sumTotal) * 100, 2);
+                }
+            }
+
+            // attempt to read kategori name from indikatorMutu relation
+            $kategoriName = optional($items->first()->indikatorRuangan->indikatorMutu->kategori)->kategori ?? null;
+
+            $chartSeries[] = [
+                'label' => $label,
+                'monthly' => $monthly,
+                'kategori' => $kategoriName
+            ];
+        }
+
+        return $chartSeries;
     }
 }
