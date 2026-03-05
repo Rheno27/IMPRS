@@ -10,7 +10,7 @@ class Pertanyaan extends Model
     protected $primaryKey = 'id_pertanyaan';
     public $timestamps = false;
 
-    protected $fillable = ['pertanyaan', 'urutan'];
+    protected $fillable = ['id_pertanyaan', 'pertanyaan', 'urutan'];
 
     // Relasi: Satu pertanyaan punya banyak pilihan jawaban
     public function pilihanJawaban()

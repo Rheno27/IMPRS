@@ -33,8 +33,10 @@ class SkmService
                 }
                 $safePertanyaanIds[] = $pertanyaanId;
 
-                if (isset($qData['pilihan']) && is_array($qData['pilihan'])) {
-                    foreach ($qData['pilihan'] as $pData) {
+                // Support both 'pilihan' and 'pilihan_jawaban' keys from different callers/tests
+                $pilihanList = $qData['pilihan'] ?? ($qData['pilihan_jawaban'] ?? null);
+                if (is_array($pilihanList)) {
+                    foreach ($pilihanList as $pData) {
                         $pilihanData = [
                             'id_pertanyaan' => $pertanyaanId,
                             'pilihan' => $pData['pilihan'] ?? '',
@@ -59,6 +61,8 @@ class SkmService
             $pilihanIdsToDelete = $existingPilihanIds->diff($safePilihanIds);
 
             if ($pilihanIdsToDelete->isNotEmpty()) {
+                // Remove dependent jawaban first to avoid foreign key constraint violations
+                DB::table('jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
                 DB::table('pilihan_jawaban')->whereIn('id_pilihan', $pilihanIdsToDelete)->delete();
             }
 

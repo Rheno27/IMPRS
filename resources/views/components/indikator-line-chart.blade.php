@@ -1,7 +1,7 @@
 @php
-    $chartId = $chartId ?? ('indikatorLineChart_' . uniqid());
-    $seriesJson = json_encode($series ?? []);
-    $chartTitle = $title ?? null;
+$chartId = $chartId ?? ('indikatorLineChart_' . uniqid());
+$seriesJson = json_encode($series ?? []);
+$chartTitle = $title ?? null;
 @endphp
 
 <div class="chart-box"
@@ -84,10 +84,15 @@
                             beginAtZero: true,
                             min: 0,
                             max: 100,
-                            ticks: { callback: function (value) { return value + '%'; }, stepSize: 10, count: 11 },
+                            ticks: {
+                                stepSize: 10, 
+                                callback: function (value) { return value + '%'; }
+                            },
                             grid: { color: 'rgba(0,0,0,0.06)' }
                         },
-                        x: { grid: { color: 'rgba(0,0,0,0.02)' } }
+                        x: {
+                            grid: { color: 'rgba(0,0,0,0.02)' }
+                        }
                     },
                     elements: { line: { spanGaps: false, tension: 0.18 }, point: { pointStyle: 'circle' } },
                     layout: { padding: { top: 8, right: 12, bottom: 10, left: 8 } }
@@ -100,7 +105,6 @@
                     chartInst = null;
                 }
                 chartInst = new Chart(ctx.getContext('2d'), config);
-                // render custom HTML legend split into two columns
                 renderHtmlLegend(seriesForRender);
             } catch (e) {
                 console.error('Chart render error:', e);

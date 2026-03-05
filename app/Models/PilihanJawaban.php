@@ -10,7 +10,7 @@ class PilihanJawaban extends Model
     protected $primaryKey = 'id_pilihan';
     public $timestamps = false;
 
-    protected $fillable = ['id_pertanyaan', 'pilihan', 'nilai'];
+    protected $fillable = ['id_pilihan', 'id_pertanyaan', 'pilihan', 'nilai'];
 
     public function pertanyaan()
     {
