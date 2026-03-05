@@ -141,8 +141,10 @@
                                     <td>
                                         <div class="action-group">
                                             {{-- Tombol Ganti/Edit --}}
-                                            <button type="button" class="action-btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal-{{ $item->id_indikator_ruangan }}">
-                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <button type="button" class="action-btn btn-edit" data-bs-toggle="modal"
+                                                data-bs-target="#editModal-{{ $item->id_indikator_ruangan }}">
+                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M18 18.3333H3C2.65833 18.3333 2.375 18.0499 2.375 17.7083C2.375 17.3666 2.65833 17.0833 3 17.0833H18C18.3417 17.0833 18.625 17.3666 18.625 17.7083C18.625 18.0499 18.3417 18.3333 18 18.3333Z"
                                                         fill="#DC5E3A" />
@@ -156,21 +158,23 @@
                                                 Edit
                                             </button>
                                             {{-- Tombol Hapus --}}
-                                            <button type="button" class="action-btn btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $item->id_indikator_ruangan }}">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M18.0574 4.35842C16.7157 4.22508 15.3741 4.12508 14.0241 4.05008V4.04175L13.8407 2.95841C13.7157 2.19175 13.5324 1.04175 11.5824 1.04175H9.39907C7.45741 1.04175 7.27407 2.14175 7.14074 2.95008L6.96574 4.01675C6.19074 4.06675 5.41574 4.11675 4.64074 4.19175L2.94074 4.35842C2.59074 4.39175 2.34074 4.70008 2.37407 5.04175C2.40741 5.38342 2.70741 5.63342 3.05741 5.60008L4.75741 5.43342C9.12407 5.00008 13.5241 5.16675 17.9407 5.60842C17.9657 5.60842 17.9824 5.60842 18.0074 5.60842C18.3241 5.60842 18.5991 5.36675 18.6324 5.04175C18.6574 4.70008 18.4074 4.39175 18.0574 4.35842Z"
-                                                    fill="#FFC107" />
-                                                <path
-                                                    d="M16.5245 6.78325C16.3245 6.57492 16.0495 6.45825 15.7661 6.45825H5.2328C4.94947 6.45825 4.66613 6.57492 4.47447 6.78325C4.2828 6.99159 4.17447 7.27492 4.19113 7.56659L4.7078 16.1166C4.79947 17.3833 4.91613 18.9666 7.82447 18.9666H13.1745C16.0828 18.9666 16.1995 17.3916 16.2911 16.1166L16.8078 7.57492C16.8245 7.27492 16.7161 6.99159 16.5245 6.78325Z"
-                                                    fill="#DC5E3A" />
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M8.48242 14.1667C8.48242 13.8216 8.76224 13.5417 9.10742 13.5417H11.8824C12.2276 13.5417 12.5074 13.8216 12.5074 14.1667C12.5074 14.5119 12.2276 14.7917 11.8824 14.7917H9.10742C8.76224 14.7917 8.48242 14.5119 8.48242 14.1667Z"
-                                                    fill="#FFC107" />
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M7.79102 10.8333C7.79102 10.4881 8.07084 10.2083 8.41602 10.2083H12.5827C12.9279 10.2083 13.2077 10.4881 13.2077 10.8333C13.2077 11.1784 12.9279 11.4583 12.5827 11.4583H8.41602C8.07084 11.4583 7.79102 11.1784 7.79102 10.8333Z"
-                                                    fill="#FFC107" />
-                                            </svg>
+                                            <button type="button" class="action-btn btn-delete" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal-{{ $item->id_indikator_ruangan }}">
+                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M18.0574 4.35842C16.7157 4.22508 15.3741 4.12508 14.0241 4.05008V4.04175L13.8407 2.95841C13.7157 2.19175 13.5324 1.04175 11.5824 1.04175H9.39907C7.45741 1.04175 7.27407 2.14175 7.14074 2.95008L6.96574 4.01675C6.19074 4.06675 5.41574 4.11675 4.64074 4.19175L2.94074 4.35842C2.59074 4.39175 2.34074 4.70008 2.37407 5.04175C2.40741 5.38342 2.70741 5.63342 3.05741 5.60008L4.75741 5.43342C9.12407 5.00008 13.5241 5.16675 17.9407 5.60842C17.9657 5.60842 17.9824 5.60842 18.0074 5.60842C18.3241 5.60842 18.5991 5.36675 18.6324 5.04175C18.6574 4.70008 18.4074 4.39175 18.0574 4.35842Z"
+                                                        fill="#FFC107" />
+                                                    <path
+                                                        d="M16.5245 6.78325C16.3245 6.57492 16.0495 6.45825 15.7661 6.45825H5.2328C4.94947 6.45825 4.66613 6.57492 4.47447 6.78325C4.2828 6.99159 4.17447 7.27492 4.19113 7.56659L4.7078 16.1166C4.79947 17.3833 4.91613 18.9666 7.82447 18.9666H13.1745C16.0828 18.9666 16.1995 17.3916 16.2911 16.1166L16.8078 7.57492C16.8245 7.27492 16.7161 6.99159 16.5245 6.78325Z"
+                                                        fill="#DC5E3A" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M8.48242 14.1667C8.48242 13.8216 8.76224 13.5417 9.10742 13.5417H11.8824C12.2276 13.5417 12.5074 13.8216 12.5074 14.1667C12.5074 14.5119 12.2276 14.7917 11.8824 14.7917H9.10742C8.76224 14.7917 8.48242 14.5119 8.48242 14.1667Z"
+                                                        fill="#FFC107" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M7.79102 10.8333C7.79102 10.4881 8.07084 10.2083 8.41602 10.2083H12.5827C12.9279 10.2083 13.2077 10.4881 13.2077 10.8333C13.2077 11.1784 12.9279 11.4583 12.5827 11.4583H8.41602C8.07084 11.4583 7.79102 11.1784 7.79102 10.8333Z"
+                                                        fill="#FFC107" />
+                                                </svg>
                                                 Hapus
                                             </button>
                                         </div>
@@ -208,9 +212,8 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold">1. Pilih Jenis Indikator (Kategori)</label>
                                 <select class="form-select category-select"
-                                    data-target-indicator-select="#indicator-select-{{ $item->id_indikator_ruangan }}" 
-                                    data-current-indicator-id="{{ $item->indikatorMutu->id_indikator }}"
-                                    required>
+                                    data-target-indicator-select="#indicator-select-{{ $item->id_indikator_ruangan }}"
+                                    data-current-indicator-id="{{ $item->indikatorMutu->id_indikator }}" required>
                                     <option value="" selected>-- Pilih Kategori --</option>
                                     @foreach ($allKategoris as $kategori)
                                         <option value="{{ $kategori->id_kategori }}">{{ $kategori->kategori }}</option>
@@ -228,7 +231,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary" style="background-color: var(--primary-color); border:none;">Simpan Penggantian</button>
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: var(--primary-color); border:none;">Simpan Penggantian</button>
                         </div>
                     </form>
                 </div>
@@ -250,7 +254,8 @@
                             <div class="alert alert-warning">
                                 <strong>{{ $item->indikatorMutu->variabel }}</strong>
                             </div>
-                            <small class="text-danger">Indikator akan dinonaktifkan dari ruangan, tidak dihapus permanen dari sistem.</small>
+                            <small class="text-danger">Indikator akan dinonaktifkan dari ruangan, tidak dihapus permanen dari
+                                sistem.</small>
                             <input type="hidden" name="id_indikator_ruangan" value="{{ $item->id_indikator_ruangan }}">
                         </div>
                         <div class="modal-footer">
@@ -278,7 +283,8 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">1. Pilih Jenis Indikator (Kategori)</label>
-                            <select class="form-select category-select" data-target-indicator-select="#new-indicator-select" required>
+                            <select class="form-select category-select" data-target-indicator-select="#new-indicator-select"
+                                required>
                                 <option value="" selected>-- Pilih Kategori --</option>
                                 @foreach ($allKategoris as $kategori)
                                     <option value="{{ $kategori->id_kategori }}">{{ $kategori->kategori }}</option>
@@ -288,14 +294,16 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">2. Pilih Indikator Baru</label>
-                            <select name="id_indikator_baru" id="new-indicator-select" class="form-select" required disabled>
+                            <select name="id_indikator_baru" id="new-indicator-select" class="form-select" required
+                                disabled>
                                 <option value="" selected>-- Pilih Kategori terlebih dahulu --</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary" style="background-color: var(--primary-color); border:none;">Tambahkan</button>
+                        <button type="submit" class="btn btn-primary"
+                            style="background-color: var(--primary-color); border:none;">Tambahkan</button>
                     </div>
                 </form>
             </div>
@@ -308,7 +316,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const allMasterIndikators = @json($allMasterIndikators);
-            const usedIndicatorIds = @json($usedIndicatorIds ?? []); 
+            const usedIndicatorIds = @json($usedIndicatorIds ?? []);
             const categorySelects = document.querySelectorAll('.category-select');
 
             categorySelects.forEach(select => {

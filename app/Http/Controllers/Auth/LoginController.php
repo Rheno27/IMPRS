@@ -16,7 +16,7 @@ class LoginController extends Controller
                 ? redirect()->route('superadmin.dashboard')
                 : redirect()->route('admin.dashboard');
         }
-        return view('login');
+        return view('auth.login');
     }
 
     public function login(Request $request)

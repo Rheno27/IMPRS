@@ -77,7 +77,7 @@ class DashboardController extends Controller
         ];
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
-        return view('admin.dashboard', compact(
+        return view('admin.dashboard.index', compact(
             'user',
             'indikatorData',
             'bulan',

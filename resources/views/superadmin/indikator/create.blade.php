@@ -7,11 +7,13 @@
             padding-top: 40px !important;
             align-items: stretch !important;
         }
+
         .toolbar-container {
             padding: 0 !important;
             margin-bottom: 0;
             width: 100%;
         }
+
         .crud-table-wrapper {
             width: 100%;
             border: 1px solid var(--primary-color);
@@ -19,11 +21,13 @@
             overflow-x: auto;
             background: #fff;
         }
+
         .search-container {
             position: relative;
             display: flex;
             align-items: center;
         }
+
         .search-input {
             height: 42px;
             padding: 8px 16px 8px 40px;
@@ -35,9 +39,11 @@
             width: 300px;
             transition: all 0.2s;
         }
+
         .search-input:focus {
             box-shadow: 0 0 0 3px rgba(51, 115, 84, 0.15);
         }
+
         .search-icon {
             position: absolute;
             left: 12px;
@@ -46,6 +52,7 @@
             height: 20px;
             pointer-events: none;
         }
+
         .modal {
             display: none;
         }
@@ -96,7 +103,7 @@
         {{-- Toolbar: Search, Limit, dan Tambah --}}
         <div class="toolbar-container">
             <form id="searchForm" method="GET" action="{{ route('superadmin.indikator_mutu.create') }}" class=" d-flex justify-content-between
-                align-items-center w-100 flex-wrap gap-2">
+                    align-items-center w-100 flex-wrap gap-2">
 
                 <div class="d-flex align-items-center gap-2">
                     {{-- 1. Dropdown Limit Data --}}
@@ -116,14 +123,15 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" id="serverSearchInput" name="search" value="{{ request('search') }}" 
+                        <input type="text" id="serverSearchInput" name="search" value="{{ request('search') }}"
                             class="search-input" placeholder="Cari variabel/kategori...">
                     </div>
                 </div>
 
                 {{-- 3. Tombol Tambah --}}
                 <div class="toolbar-right">
-                    <button type="button" class="btn-add-outline" data-bs-toggle="modal" data-bs-target="#addIndicatorModal">
+                    <button type="button" class="btn-add-outline" data-bs-toggle="modal"
+                        data-bs-target="#addIndicatorModal">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -168,8 +176,10 @@
                                     <td>
                                         <div class="action-group">
                                             {{-- Tombol Edit --}}
-                                            <button type="button" class="action-btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal-{{ $indikator->id_indikator }}">
-                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <button type="button" class="action-btn btn-edit" data-bs-toggle="modal"
+                                                data-bs-target="#editModal-{{ $indikator->id_indikator }}">
+                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M18 18.3333H3C2.65833 18.3333 2.375 18.0499 2.375 17.7083C2.375 17.3666 2.65833 17.0833 3 17.0833H18C18.3417 17.0833 18.625 17.3666 18.625 17.7083C18.625 18.0499 18.3417 18.3333 18 18.3333Z"
                                                         fill="#DC5E3A" />
@@ -183,8 +193,10 @@
                                                 Edit
                                             </button>
                                             {{-- Tombol Hapus --}}
-                                            <button type="button" class="action-btn btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $indikator->id_indikator }}">
-                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <button type="button" class="action-btn btn-delete" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal-{{ $indikator->id_indikator }}">
+                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M18.0574 4.35842C16.7157 4.22508 15.3741 4.12508 14.0241 4.05008V4.04175L13.8407 2.95841C13.7157 2.19175 13.5324 1.04175 11.5824 1.04175H9.39907C7.45741 1.04175 7.27407 2.14175 7.14074 2.95008L6.96574 4.01675C6.19074 4.06675 5.41574 4.11675 4.64074 4.19175L2.94074 4.35842C2.59074 4.39175 2.34074 4.70008 2.37407 5.04175C2.40741 5.38342 2.70741 5.63342 3.05741 5.60008L4.75741 5.43342C9.12407 5.00008 13.5241 5.16675 17.9407 5.60842C17.9657 5.60842 17.9824 5.60842 18.0074 5.60842C18.3241 5.60842 18.5991 5.36675 18.6324 5.04175C18.6574 4.70008 18.4074 4.39175 18.0574 4.35842Z"
                                                         fill="#FFC107" />
@@ -236,16 +248,19 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Variabel Penilaian</label>
-                            <input type="text" class="form-control" name="variabel" placeholder="Contoh: Kelengkapan pengisian..." required>
+                            <input type="text" class="form-control" name="variabel"
+                                placeholder="Contoh: Kelengkapan pengisian..." required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Standar</label>
-                            <textarea class="form-control" name="standar" rows="3" placeholder="Contoh: 100%" required></textarea>
+                            <textarea class="form-control" name="standar" rows="3" placeholder="Contoh: 100%"
+                                required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success" style="background-color: var(--primary-color); border:none;">Simpan</button>
+                        <button type="submit" class="btn btn-success"
+                            style="background-color: var(--primary-color); border:none;">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -262,10 +277,10 @@
                         <h5 class="modal-title">Edit Indikator Mutu</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form class="edit-indicator-form" action="{{ route('superadmin.indikator_mutu.update', $indikator->id_indikator) }}" method="POST"
+                    <form class="edit-indicator-form"
+                        action="{{ route('superadmin.indikator_mutu.update', $indikator->id_indikator) }}" method="POST"
                         data-original-kategori="{{ $indikator->id_kategori }}"
-                        data-original-variabel="{{ $indikator->variabel }}"
-                        data-original-standar="{{ $indikator->standar }}">
+                        data-original-variabel="{{ $indikator->variabel }}" data-original-standar="{{ $indikator->standar }}">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
@@ -281,16 +296,19 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Variabel Penilaian</label>
-                                <input type="text" class="form-control" name="variabel" value="{{ $indikator->variabel }}" required>
+                                <input type="text" class="form-control" name="variabel" value="{{ $indikator->variabel }}"
+                                    required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Standar</label>
-                                <textarea class="form-control" name="standar" rows="3" required>{{ $indikator->standar }}</textarea>
+                                <textarea class="form-control" name="standar" rows="3"
+                                    required>{{ $indikator->standar }}</textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary" style="background-color: var(--primary-color); border:none;">Simpan Perubahan</button>
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: var(--primary-color); border:none;">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>
@@ -359,17 +377,17 @@
             const searchForm = document.getElementById('searchForm');
 
             if (searchInput && searchForm) {
-                searchInput.addEventListener('input', function() {
+                searchInput.addEventListener('input', function () {
                     clearTimeout(timeout);
 
-                    timeout = setTimeout(function() {
+                    timeout = setTimeout(function () {
                         searchForm.submit();
                     }, 600);
                 });
-                
+
                 const val = searchInput.value;
                 searchInput.focus();
-                searchInput.value = ''; 
+                searchInput.value = '';
                 searchInput.value = val;
             }
         });

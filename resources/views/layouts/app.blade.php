@@ -20,6 +20,7 @@
     @yield('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="@yield('body-class')">
     <header class="site-header">
         <a href="
@@ -50,13 +51,16 @@
                     {{ Auth::user()->username ?? '---' }}
                 </span>
 
-                <a href="{{ route('logout') }}" class="logout-link" aria-label="Logout">
-                    <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M15 35H8.33333C7.44928 35 6.60143 34.6488 5.97631 34.0237C5.35119 33.3986 5 32.5507 5 31.6667V8.33333C5 7.44928 5.35119 6.60143 5.97631 5.97631C6.60143 5.35119 7.44928 5 8.33333 5H15M26.6667 28.3333L35 20M35 20L26.6667 11.6667M35 20H15"
-                            stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="logout-link" aria-label="Logout">
+                        <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15 35H8.33333C7.44928 35 6.60143 34.6488 5.97631 34.0237C5.35119 33.3986 5 32.5507 5 31.6667V8.33333C5 7.44928 5.35119 6.60143 5.97631 5.97631C6.60143 5.35119 7.44928 5 8.33333 5H15M26.6667 28.3333L35 20M35 20L26.6667 11.6667M35 20H15"
+                                stroke="#DC5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </form>
             </div>
         @endif
     </header>
@@ -65,14 +69,15 @@
         @yield('content')
     </main>
 
-    @if (!Request::is('login') && !Request::is('SKM*'))        
-    <footer id="section-footer" class="site-footer">
+    @if (!Request::is('login') && !Request::is('SKM*'))
+        <footer id="section-footer" class="site-footer">
             <div class="footer-container">
                 <div class="footer-content">
                     <div class="footer-about">
                         <div class="footer-brand">
                             <div class="logo-wrapper">
-                                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="26" height="26" viewBox="0 0 26 26" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M5.13086 13.1819C5.21879 10.1935 8.15889 4.89366 13.311 0.548828C9.61712 6.01856 7.18779 9.09172 8.32549 15.2148C7.26202 14.1154 6.6214 13.5992 5.13086 13.1819Z"
                                         fill="white" />
@@ -92,7 +97,8 @@
                                     <rect x="15.2959" y="8.97021" width="2.22656" height="2.22651" fill="white" />
                                     <rect x="10.8428" y="8.97021" width="2.22656" height="2.22651" fill="white" />
                                     <rect x="13.0693" y="11.1968" width="2.22656" height="2.22651" fill="white" />
-                                    <path d="M13.0693 8.97021C14.299 8.97021 15.2959 9.96706 15.2959 11.1967H13.0693V8.97021Z"
+                                    <path
+                                        d="M13.0693 8.97021C14.299 8.97021 15.2959 9.96706 15.2959 11.1967H13.0693V8.97021Z"
                                         fill="white" />
                                     <path
                                         d="M18.974 12.1646C16.7417 16.3981 14.5851 17.1492 10.1162 15.7948C14.761 22.5091 23.0006 19.2621 21.5394 10.6157C20.4145 10.8255 19.8493 11.1565 18.974 12.1646Z"
@@ -102,19 +108,19 @@
                             <h3 class="brand-name">RSD KALISAT JEMBER</h3>
                         </div>
                         <p class="footer-description">
-                            Website Pelaporan Indikator Mutu dan Keselamatan Pasien merupakan sebuah sistem berbasis web 
+                            Website Pelaporan Indikator Mutu dan Keselamatan Pasien merupakan sebuah sistem berbasis web
                             yang dirancang untuk memfasilitasi proses pencatatan, pelaporan, dan pemantauan indikator mutu
                             serta keselamatan pasien secara terpusat.
                         </p>
                     </div>
-        
+
                     <div class="footer-contact">
                         <div class="contact-header">
                             <h4 class="contact-title">CONTACT US</h4>
                             <p class="contact-subtitle">Hubungi salah satu kontak dibawah ini jika mengalami masalah saat
                                 menggunakan website</p>
                         </div>
-        
+
                         <div class="contact-details">
                             <a href="tel:089682024142" class="contact-item">
                                 <div class="icon-wrapper">
@@ -147,7 +153,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="footer-credit">
                     <span class="copyright-symbol">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -162,7 +168,7 @@
             </div>
         </footer>
     @endif
-    
+
     <script src="{{ asset('js/script.js') }}"></script>
     @stack('scripts')
 </body>

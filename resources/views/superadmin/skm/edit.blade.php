@@ -232,7 +232,7 @@
 @endsection
 
 @section('content')
-    @include('superadmin.partials.skm_nav')
+    @include('superadmin.skm.partials.nav')
 
     <form id="survey-form" method="POST" action="{{ route('superadmin.skm.update_pertanyaan') }}">
         @csrf @method('PUT')

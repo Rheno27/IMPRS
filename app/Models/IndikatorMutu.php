@@ -15,6 +15,7 @@ class IndikatorMutu extends Model
      * Kolom yang bisa diisi (mass assignable).
      */
     protected $fillable = [
+        'id_indikator',
         'id_kategori',
         'variabel',
         'standar'

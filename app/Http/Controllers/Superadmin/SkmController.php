@@ -95,7 +95,7 @@ class SkmController extends Controller
             }
         }
 
-        return view('superadmin.skm_rekap', [
+        return view('superadmin.skm.rekap', [
             'dataRekap' => $dataRekap,
             'rataRataKolom' => $finalRataRataKolom,
             'selectedMonth' => $selectedMonth,
@@ -147,7 +147,7 @@ class SkmController extends Controller
             return $pertanyaan;
         });
 
-        return view('superadmin.skm_edit2', compact('surveyData'));
+        return view('superadmin.skm.edit', compact('surveyData'));
     }
 
     public function updatePertanyaan(Request $request)
@@ -227,7 +227,7 @@ class SkmController extends Controller
         $allSurveyCharts = [];
 
         foreach ($pertanyaanSurvei as $pertanyaan) {
-            $data = Jawaban::from('jawaban as j') 
+            $data = Jawaban::from('jawaban as j')
                 ->join('pilihan_jawaban as pj', 'j.id_pilihan', '=', 'pj.id_pilihan')
                 ->where('j.id_pertanyaan', $pertanyaan->id_pertanyaan)
                 ->whereIn('j.id_pasien', $respondenIds)
@@ -246,7 +246,7 @@ class SkmController extends Controller
             ];
         }
 
-        return view('superadmin.skm_hasil', compact(
+        return view('superadmin.skm.results', compact(
             'totalResponden',
             'listNoRm',
             'listUmur',

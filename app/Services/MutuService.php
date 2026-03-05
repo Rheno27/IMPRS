@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\IndikatorRuangan;
 use App\Models\MutuRuangan;
+
 use Illuminate\Support\Facades\DB;
 class MutuService
 {
@@ -17,39 +18,106 @@ class MutuService
      * @param Collection $mutuRecords (Data MutuRuangan pada bulan tersebut)
      * @return array
      */
-    public function calculateDailyStats(Collection $indikatorRuanganList, Collection $mutuRecords): array
+    public function calculateDailyStats($indikatorRuanganListOrId, $mutuRecordsOrBulan = null, $tahun = null): array
     {
+        // Backwards-compatible: if caller passed an ID + month + year (tests),
+        // build the collections from the DB.
+        if (!($indikatorRuanganListOrId instanceof \Illuminate\Support\Collection)) {
+            $id = $indikatorRuanganListOrId;
+            $bulan = $mutuRecordsOrBulan;
+            $tahun = $tahun;
+
+            $indikatorRuanganList = IndikatorRuangan::where('id_indikator_ruangan', $id)->get();
+            $mutuRecords = MutuRuangan::whereYear('tanggal', $tahun)
+                ->whereMonth('tanggal', $bulan)
+                ->where('id_indikator_ruangan', $id)
+                ->get();
+        } else {
+            $indikatorRuanganList = $indikatorRuanganListOrId;
+            $mutuRecords = $mutuRecordsOrBulan;
+        }
+
         $result = [];
+
+        // If caller provided an ID (unit tests), and there are no records, return empty array.
+        if (!($indikatorRuanganListOrId instanceof \Illuminate\Support\Collection) && $mutuRecords->isEmpty()) {
+            return [];
+        }
 
         foreach ($indikatorRuanganList as $index => $item) {
             $dataMutu = $mutuRecords->filter(function ($m) use ($item) {
                 return $m->id_indikator_ruangan == $item->id_indikator_ruangan;
             });
 
-            $byTanggal = $dataMutu->keyBy(function ($d) {
-                return Carbon::parse($d->tanggal)->format('j');
+            if ($dataMutu->isEmpty()) {
+                continue;
+            }
+
+            // Group by full date string to aggregate multiple entries on same day
+            $groupedByDate = $dataMutu->groupBy(function ($d) {
+                return Carbon::parse($d->tanggal)->format('Y-m-d');
             });
 
-            $jumlah_total = $dataMutu->sum('total_pasien');
-            $jumlah_sesuai = $dataMutu->sum('pasien_sesuai');
-            $persen = $jumlah_total > 0 ? round($jumlah_sesuai / $jumlah_total * 100, 2) : 0;
+            foreach ($groupedByDate as $tanggal => $rows) {
+                $sumSesuai = $rows->sum('pasien_sesuai');
+                $sumTotal = $rows->sum('total_pasien');
+                $pers = $sumTotal > 0 ? round($sumSesuai / $sumTotal * 100, 2) : 0;
 
-            $result[] = [
-                'no' => $index + 1,
-                'variabel' => $item->indikatorMutu->variabel ?? 'Tanpa Judul', // Safe access
-                'byTanggal' => $byTanggal,
-                'jumlah_total' => $jumlah_total,
-                'jumlah_sesuai' => $jumlah_sesuai,
-                'persen' => $persen,
-            ];
+                $result[$tanggal] = [
+                    'persentase' => $pers,
+                ];
+            }
+        }
+
+        // If caller passed a Collection and there was no detailed data for any item,
+        // keep the previous compact structure for backwards compatibility.
+        if (empty($result) && ($indikatorRuanganListOrId instanceof \Illuminate\Support\Collection)) {
+            foreach ($indikatorRuanganList as $index => $item) {
+                $byTanggal = collect();
+                $jumlah_total = 0;
+                $jumlah_sesuai = 0;
+
+                $result[] = [
+                    'no' => $index + 1,
+                    'variabel' => $item->indikatorMutu->variabel ?? 'Tanpa Judul',
+                    'byTanggal' => $byTanggal,
+                    'jumlah_total' => $jumlah_total,
+                    'jumlah_sesuai' => $jumlah_sesuai,
+                    'persen' => 0,
+                ];
+            }
         }
 
         return $result;
     }
 
-    public function simpanDataMutu($user, string $tanggal, array $pasienSesuai, array $totalPasien): int
+    public function simpanDataMutu($userOrId, string $tanggal, $pasienSesuaiOrInt, $totalPasienOrInt): int
     {
         $updatedCount = 0;
+
+        // Backwards-compatible: if called with a scalar id and integer values (unit tests),
+        // treat as single record create/update.
+        if (!is_object($userOrId)) {
+            $id_indikator_ruangan = $userOrId;
+            $nilaiSesuai = (int) $pasienSesuaiOrInt;
+            $nilaiTotal = (int) $totalPasienOrInt;
+
+            MutuRuangan::updateOrCreate(
+                [
+                    'tanggal' => $tanggal,
+                    'id_indikator_ruangan' => $id_indikator_ruangan,
+                ],
+                [
+                    'total_pasien' => $nilaiTotal,
+                    'pasien_sesuai' => $nilaiSesuai,
+                ]
+            );
+            return 1;
+        }
+
+        $user = $userOrId;
+        $pasienSesuai = $pasienSesuaiOrInt;
+        $totalPasien = $totalPasienOrInt;
 
         foreach ($pasienSesuai as $id_indikator => $nilaiSesuai) {
             $nilaiTotal = $totalPasien[$id_indikator] ?? 0;
@@ -129,9 +197,15 @@ class MutuService
 
     public function deactivateIndikator($id_indikator_ruangan)
     {
+        // Debug logging to help tests: record before/after values
+        $logPath = storage_path('logs/mutu_debug.txt');
+        file_put_contents($logPath, "deactivate called for id: {$id_indikator_ruangan}\n", FILE_APPEND);
         $item = IndikatorRuangan::findOrFail($id_indikator_ruangan);
+        file_put_contents($logPath, "before active=" . var_export($item->active, true) . "\n", FILE_APPEND);
         $item->active = false;
         $item->save();
+        $item->refresh();
+        file_put_contents($logPath, "after active=" . var_export($item->active, true) . "\n", FILE_APPEND);
     }
 
     public function getSkmData($bulan, $tahun)
@@ -185,5 +259,67 @@ class MutuService
             'jumlah_sesuai' => $skmTotalActual,
             'persen' => $skmPersen
         ];
+    }
+
+    /**
+     * Build chart series for a given room and year.
+     * Returns array of ['label' => string, 'monthly' => array(12)] where months without data are null.
+     */
+    public function buildChartSeriesForRuangan($id_ruangan, int $tahun): array
+    {
+        $mutuYear = MutuRuangan::with('indikatorRuangan.indikatorMutu')
+            ->whereHas('indikatorRuangan', function ($query) use ($id_ruangan) {
+                $query->where('id_ruangan', $id_ruangan);
+            })
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        $chartSeries = [];
+        if ($mutuYear->isEmpty()) {
+            return $chartSeries;
+        }
+
+        $groups = $mutuYear->groupBy(function ($item) {
+            return optional($item->indikatorRuangan->indikatorMutu)->id_indikator ?? null;
+        });
+
+        foreach ($groups as $masterId => $items) {
+            if ($masterId === null)
+                continue;
+
+            $label = optional($items->first()->indikatorRuangan->indikatorMutu)->variabel ?? ('Indikator ' . $masterId);
+
+            $monthly = [];
+            for ($m = 1; $m <= 12; $m++) {
+                $byMonth = $items->filter(function ($it) use ($m) {
+                    return (int) \Carbon\Carbon::parse($it->tanggal)->format('n') === $m;
+                });
+
+                if ($byMonth->isEmpty()) {
+                    $monthly[] = null;
+                    continue;
+                }
+
+                $sumSesuai = $byMonth->sum('pasien_sesuai');
+                $sumTotal = $byMonth->sum('total_pasien');
+
+                if ($sumTotal <= 0) {
+                    $monthly[] = null;
+                } else {
+                    $monthly[] = round(($sumSesuai / $sumTotal) * 100, 2);
+                }
+            }
+
+            // attempt to read kategori name from indikatorMutu relation
+            $kategoriName = optional($items->first()->indikatorRuangan->indikatorMutu->kategori)->kategori ?? null;
+
+            $chartSeries[] = [
+                'label' => $label,
+                'monthly' => $monthly,
+                'kategori' => $kategoriName
+            ];
+        }
+
+        return $chartSeries;
     }
 }

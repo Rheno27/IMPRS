@@ -82,7 +82,8 @@
         <div class="report-table-wrapper">
             <div class="report-header-block">
                 <h3>Penilaian Indikator Mutu di Ruang {{ $ruangan->nama_ruangan }}<br>
-                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD KALISAT</span>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Bulan {{ $namaBulan[(int) $bulan] ?? '' }} - RSD
+                        KALISAT</span>
                 </h3>
             </div>
 
@@ -125,6 +126,62 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    {{-- Navigation Kategori --}}
+    @php
+        $categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
+        $keys = array_keys($categoryMap);
+        $current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
+        $prev = ($current - 1 + count($keys)) % count($keys);
+        $next = ($current + 1) % count($keys);
+    @endphp
+
+    <div class="category-nav" style="margin:10px 0; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'kategori' => $keys[$prev], 'bulan' => $bulan, 'tahun' => $tahun]) }}"
+            class="nav-arrow chart-category-btn" data-category="{{ $keys[$prev] }}" data-chart-id="indikatorLineChart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </a>
+
+        <div class="category-items">
+            {{-- Semua pill --}}
+            <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'bulan' => $bulan, 'tahun' => $tahun]) }}"
+                class="category-pill chart-category-btn {{ empty($selectedKategori) ? 'active' : '' }}" data-category="all"
+                data-chart-id="indikatorLineChart">Semua</a>
+
+            @foreach([$prev, $current, $next] as $idx)
+                <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'kategori' => $keys[$idx], 'bulan' => $bulan, 'tahun' => $tahun]) }}"
+                    class="category-pill chart-category-btn {{ (isset($selectedKategori) && $selectedKategori == $keys[$idx]) ? 'active' : '' }}"
+                    data-category="{{ $keys[$idx] }}" data-chart-id="indikatorLineChart">
+                    {{ $categoryMap[$keys[$idx]] }}
+                </a>
+            @endforeach
+        </div>
+
+        <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'kategori' => $keys[$next], 'bulan' => $bulan, 'tahun' => $tahun]) }}"
+            class="nav-arrow chart-category-btn" data-category="{{ $keys[$next] }}" data-chart-id="indikatorLineChart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    {{-- Grafik Line Indikator per Tahun (Jan - Des) --}}
+    <div class="report-container" style="margin-top: 20px;">
+        <div class="report-table-wrapper">
+            <div class="report-header-block">
+                <h3>Grafik Kinerja Ruangan<br>
+                    <span style="font-size: 0.8em; opacity: 0.9;">Tahun {{ $tahun }}</span>
+                </h3>
+            </div>
+
+
+            @include('components.indikator-line-chart', ['series' => $chartSeries ?? [], 'chartId' => 'indikatorLineChart', 'selectedKategori' => $selectedKategori ?? 'all'])
         </div>
     </div>
 
@@ -199,7 +256,7 @@
                 monthNames.forEach((m, i) => {
                     let btn = document.createElement('button');
                     btn.textContent = m;
-                    btn.className = 'day-btn'; 
+                    btn.className = 'day-btn';
                     btn.style.width = '100%';
 
                     if (currentYear == {{ $tahun }} && (i + 1) == {{ $bulan }}) {
@@ -214,4 +271,5 @@
             }
         })();
     </script>
+    {{-- Chart is rendered by components/indikator-line-chart.blade.php --}}
 @endpush

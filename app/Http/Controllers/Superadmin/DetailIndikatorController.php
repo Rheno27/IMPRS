@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PilihanJawaban;
 use App\Models\Jawaban;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 class DetailIndikatorController extends Controller
 {
@@ -29,12 +29,21 @@ class DetailIndikatorController extends Controller
     {
         $bulan = (int) $request->input('bulan', date('n'));
         $tahun = (int) $request->input('tahun', date('Y'));
+        $selectedKategori = $request->input('kategori', null);
 
+        // fetch records for the current month (for the table) and for the whole year (for chart)
         $mutu = MutuRuangan::with('indikatorRuangan.indikatorMutu')
             ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
                 $query->where('id_ruangan', $ruangan->id_ruangan);
             })
             ->whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        $mutuYear = MutuRuangan::with('indikatorRuangan.indikatorMutu')
+            ->whereHas('indikatorRuangan', function ($query) use ($ruangan) {
+                $query->where('id_ruangan', $ruangan->id_ruangan);
+            })
             ->whereYear('tanggal', $tahun)
             ->get();
 
@@ -66,15 +75,20 @@ class DetailIndikatorController extends Controller
             11 => 'November',
             12 => 'Desember'
         ];
+
         $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
-        return view('superadmin.detail_indikator', [
+        $chartSeries = $this->mutuService->buildChartSeriesForRuangan($ruangan->id_ruangan, $tahun);
+
+        return view('superadmin.ruangan.detail', [
             'ruangan' => $ruangan,
             'indikatorData' => $indikatorData,
             'bulan' => $bulan,
             'tahun' => $tahun,
             'namaBulan' => $namaBulan,
-            'jumlahHari' => $jumlahHari
+            'jumlahHari' => $jumlahHari,
+            'chartSeries' => $chartSeries,
+            'selectedKategori' => $selectedKategori
         ]);
     }
 
@@ -105,7 +119,7 @@ class DetailIndikatorController extends Controller
             ->groupBy('id_pertanyaan')
             ->pluck('max_nilai', 'id_pertanyaan');
 
-        $skmAnswers = Jawaban::with('pilihanJawaban') 
+        $skmAnswers = Jawaban::with('pilihanJawaban')
             ->whereMonth('tanggal', $bulan)
             ->whereYear('tanggal', $tahun)
             ->get();

@@ -28,7 +28,7 @@ class SurveyController extends Controller
 
         $ruangan = Ruangan::where('id_ruangan', '!=', 'SP00')->get();
 
-        return view('guest.skm1', compact('pertanyaan', 'pilihanJawaban', 'ruangan', 'pertanyaanKritikSaran'));
+        return view('guest.skm.form', compact('pertanyaan', 'pilihanJawaban', 'ruangan', 'pertanyaanKritikSaran'));
     }
 
     public function store(Request $request)
