@@ -132,10 +132,8 @@ class MutuServiceTest extends TestCase
     // U24 - assignIndikatorToRuangan() creates new record with active = true
     public function test_assign_indikator_to_ruangan_creates_active_record()
     {
-        $ruangan = Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
-        $indikator = IndikatorMutu::firstOrCreate([
-            'id_indikator' => 1,
-        ], [
+        Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
+        IndikatorMutu::firstOrCreate(['id_indikator' => 1], [
             'variabel' => 'Variabel Test',
             'standar' => 90,
         ]);
@@ -161,5 +159,53 @@ class MutuServiceTest extends TestCase
             'id_indikator' => 1,
             'active' => true,
         ], $overrides));
+    }
+
+    // U43 - getSkmData() mengembalikan format yang benar (keys + default jika tidak ada data)
+    public function test_get_skm_data_returns_correct_format()
+    {
+        $result = $this->service->getSkmData(1, 2025);
+
+        $this->assertArrayHasKey('variabel', $result);
+        $this->assertArrayHasKey('byTanggal', $result);
+        $this->assertArrayHasKey('jumlah_total', $result);
+        $this->assertArrayHasKey('jumlah_sesuai', $result);
+        $this->assertArrayHasKey('persen', $result);
+        $this->assertEquals('Kepuasan Masyarakat', $result['variabel']);
+        $this->assertEquals(0, $result['persen']);
+    }
+
+    // U44 - buildChartSeriesForRuangan() mengembalikan array kosong jika tidak ada data mutu
+    public function test_build_chart_series_returns_empty_when_no_data()
+    {
+        Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
+
+        $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
+
+        $this->assertIsArray($result);
+        $this->assertEmpty($result);
+    }
+
+    // U45 - buildChartSeriesForRuangan() mengembalikan data 12 bulan per indikator
+    public function test_build_chart_series_returns_12_monthly_slots_per_indikator()
+    {
+        $ir = $this->createIndikatorRuangan();
+
+        \App\Models\MutuRuangan::create([
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
+            'tanggal' => '2025-03-10',
+            'pasien_sesuai' => 8,
+            'total_pasien' => 10,
+        ]);
+
+        $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
+
+        $this->assertNotEmpty($result);
+        $this->assertArrayHasKey('label', $result[0]);
+        $this->assertArrayHasKey('monthly', $result[0]);
+        // Harus ada 12 slot (satu per bulan)
+        $this->assertCount(12, $result[0]['monthly']);
+        // Bulan Maret (index 2) harus terisi = 80%
+        $this->assertEquals(80.0, $result[0]['monthly'][2]);
     }
 }

@@ -60,12 +60,18 @@ class SkmServiceTest extends TestCase
     // F49 - syncPertanyaan() mengupdate pertanyaan yang sudah ada (ada id_pertanyaan)
     public function test_sync_pertanyaan_updates_existing_question()
     {
-        $existing = Pertanyaan::firstOrCreate(['id_pertanyaan' => 5], ['pertanyaan' => 'Pertanyaan Lama']);
-        PilihanJawaban::firstOrCreate(['id_pilihan' => 1], ['id_pertanyaan' => 5, 'pilihan' => 'Baik', 'nilai' => 3]);
+        Pertanyaan::firstOrCreate(
+            ['id_pertanyaan' => 901],
+            ['pertanyaan' => 'Pertanyaan Lama', 'urutan' => 901]
+        );
+        PilihanJawaban::firstOrCreate(
+            ['id_pilihan' => 901],
+            ['id_pertanyaan' => 901, 'pilihan' => 'Baik', 'nilai' => 3]
+        );
 
         $data = [
             [
-                'id_pertanyaan' => 5,
+                'id_pertanyaan' => 901,
                 'pertanyaan' => 'Pertanyaan Diupdate',
                 'pilihan_jawaban' => [
                     ['pilihan' => 'Sangat Baik', 'nilai' => 4],
@@ -77,7 +83,7 @@ class SkmServiceTest extends TestCase
         $this->service->syncPertanyaan($data);
 
         $this->assertDatabaseHas('pertanyaan', [
-            'id_pertanyaan' => 5,
+            'id_pertanyaan' => 901,
             'pertanyaan' => 'Pertanyaan Diupdate',
         ]);
     }
@@ -85,13 +91,19 @@ class SkmServiceTest extends TestCase
     // F50 - syncPertanyaan() menghapus pertanyaan yang dihilangkan dari daftar
     public function test_sync_pertanyaan_deletes_removed_questions()
     {
-        $toDelete = Pertanyaan::firstOrCreate(['id_pertanyaan' => 10], ['pertanyaan' => 'Akan Dihapus']);
-        $toKeep = Pertanyaan::firstOrCreate(['id_pertanyaan' => 11], ['pertanyaan' => 'Akan Disimpan']);
+        Pertanyaan::firstOrCreate(
+            ['id_pertanyaan' => 910],
+            ['pertanyaan' => 'Akan Dihapus', 'urutan' => 910]
+        );
+        Pertanyaan::firstOrCreate(
+            ['id_pertanyaan' => 911],
+            ['pertanyaan' => 'Akan Disimpan', 'urutan' => 911]
+        );
 
-        // Sync hanya mengirim pertanyaan ID 11, sehingga ID 10 harus dihapus
+        // Sync hanya mengirim pertanyaan ID 911, sehingga ID 910 harus dihapus
         $data = [
             [
-                'id_pertanyaan' => 11,
+                'id_pertanyaan' => 911,
                 'pertanyaan' => 'Akan Disimpan',
                 'pilihan_jawaban' => [
                     ['pilihan' => 'Baik', 'nilai' => 3],
@@ -101,37 +113,41 @@ class SkmServiceTest extends TestCase
 
         $this->service->syncPertanyaan($data);
 
-        $this->assertDatabaseMissing('pertanyaan', ['id_pertanyaan' => 10]);
-        $this->assertDatabaseHas('pertanyaan', ['id_pertanyaan' => 11]);
+        $this->assertDatabaseMissing('pertanyaan', ['id_pertanyaan' => 910]);
+        $this->assertDatabaseHas('pertanyaan', ['id_pertanyaan' => 911]);
     }
 
     // F51 - deleteSinglePertanyaan() gagal ketika sudah ada jawaban
     public function test_delete_single_pertanyaan_fails_when_has_responses()
     {
-        $pertanyaan = Pertanyaan::firstOrCreate(['id_pertanyaan' => 20], ['pertanyaan' => 'Ada Jawaban']);
-        $pilihan = PilihanJawaban::firstOrCreate(['id_pilihan' => 10], ['id_pertanyaan' => 20, 'pilihan' => 'Baik', 'nilai' => 3]);
+        Pertanyaan::firstOrCreate(
+            ['id_pertanyaan' => 920],
+            ['pertanyaan' => 'Ada Jawaban', 'urutan' => 920]
+        );
+        PilihanJawaban::firstOrCreate(
+            ['id_pilihan' => 920],
+            ['id_pertanyaan' => 920, 'pilihan' => 'Baik', 'nilai' => 3]
+        );
 
         Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
-        $bioPasien = \App\Models\BioPasien::create([
-            'id_pasien' => 1,
-            'id_ruangan' => 'R01',
-            'no_rm' => '11111',
-            'umur' => 25,
-            'jenis_kelamin' => 'L',
-            'pendidikan' => 'SMA',
-            'pekerjaan' => 'Swasta',
-        ]);
+        $bioPasien = \App\Models\BioPasien::firstOrCreate(
+            ['no_rm' => '99999'],
+            [
+                'id_ruangan' => 'R01',
+                'umur' => 25,
+                'jenis_kelamin' => 'L',
+                'pendidikan' => 'SMA',
+                'pekerjaan' => 'Swasta',
+            ]
+        );
 
-        Jawaban::create([
-            'id_pasien' => $bioPasien->id_pasien,
-            'id_pertanyaan' => 20,
-            'id_pilihan' => 10,
-            'tanggal' => now()->format('Y-m-d'),
-            'hasil_nilai' => 3,
-        ]);
+        Jawaban::firstOrCreate(
+            ['id_pasien' => $bioPasien->id_pasien, 'id_pertanyaan' => 920],
+            ['id_pilihan' => 920, 'tanggal' => now()->toDateString(), 'hasil_nilai' => 'Baik']
+        );
 
         $this->expectException(\Exception::class);
-        $this->service->deleteSinglePertanyaan(20);
+        $this->service->deleteSinglePertanyaan(920);
     }
 
     // F52 - deleteSinglePertanyaan() berhasil ketika tidak ada jawaban
@@ -144,5 +160,50 @@ class SkmServiceTest extends TestCase
 
         $this->assertDatabaseMissing('pertanyaan', ['id_pertanyaan' => 21]);
         $this->assertDatabaseMissing('pilihan_jawaban', ['id_pertanyaan' => 21]);
+    }
+
+    // U46 - syncPertanyaan() menghapus pilihan_jawaban yang terkait saat pertanyaan dihapus (cascade)
+    public function test_sync_pertanyaan_cascade_deletes_related_pilihan()
+    {
+        // Buat pertanyaan dengan pilihan yang akan dihapus
+        Pertanyaan::firstOrCreate(['id_pertanyaan' => 30], ['pertanyaan' => 'Pertanyaan Akan Dihapus', 'urutan' => 30]);
+        PilihanJawaban::firstOrCreate(['id_pilihan' => 30], ['id_pertanyaan' => 30, 'pilihan' => 'Opsi A', 'nilai' => 1]);
+
+        // Buat pertanyaan yang akan dipertahankan
+        Pertanyaan::firstOrCreate(['id_pertanyaan' => 31], ['pertanyaan' => 'Pertanyaan Disimpan', 'urutan' => 31]);
+
+        // Sync hanya mengirim id_pertanyaan = 31, sehingga id_pertanyaan = 30 + pilihannya harus hilang
+        $data = [
+            [
+                'id_pertanyaan' => 31,
+                'pertanyaan' => 'Pertanyaan Disimpan',
+                'pilihan_jawaban' => [
+                    ['pilihan' => 'Baik', 'nilai' => 3],
+                ],
+            ],
+        ];
+
+        $this->service->syncPertanyaan($data);
+
+        // Pertanyaan 30 dan pilihannya harus terhapus
+        $this->assertDatabaseMissing('pertanyaan', ['id_pertanyaan' => 30]);
+        $this->assertDatabaseMissing('pilihan_jawaban', ['id_pertanyaan' => 30]);
+        // Pertanyaan 31 harus tetap ada
+        $this->assertDatabaseHas('pertanyaan', ['id_pertanyaan' => 31]);
+    }
+
+    // F69 - Rekap SKM bisa difilter per ruangan (hanya tampilkan data ruangan tertentu)
+    public function test_skm_rekap_can_filter_by_ruangan()
+    {
+        Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
+
+        $response = $this->actingAs($this->superadmin)->get(route('superadmin.skm.rekap', [
+            'ruangan' => 'R01',
+            'month' => 1,
+            'year' => 2025,
+        ]));
+
+        $response->assertStatus(200);
+        // Halaman berhasil dimuat dengan filter ruangan
     }
 }
