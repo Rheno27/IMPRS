@@ -22,6 +22,31 @@ class RoleMiddlewareTest extends TestCase
         Ruangan::firstOrCreate(['id_ruangan' => 'SP00'], ['nama_ruangan' => 'Superadmin']);
         Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
 
+        // ✅ Tambahkan setup data indikator agar dashboard tidak error
+        \App\Models\Kategori::firstOrCreate(
+            ['id_kategori' => 1],
+            ['kategori' => 'Kategori A']
+        );
+
+        $indikator = \App\Models\IndikatorMutu::create([
+            'id_kategori' => 1,
+            'variabel' => 'Indikator Test',
+            'standar' => '90',
+        ]);
+
+        $indikatorRuangan = \App\Models\IndikatorRuangan::create([
+            'id_ruangan' => 'R01',
+            'id_indikator' => $indikator->id_indikator,
+            'active' => true,
+        ]);
+
+        \App\Models\MutuRuangan::create([
+            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'tanggal' => now()->format('Y-m-d'),
+            'pasien_sesuai' => 8,
+            'total_pasien' => 10,
+        ]);
+        
         $this->admin = User::create([
             'id_user'      => 'U001',
             'id_ruangan'   => 'R01',
