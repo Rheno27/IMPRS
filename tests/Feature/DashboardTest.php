@@ -31,40 +31,38 @@ class DashboardTest extends TestCase
             ['kategori' => 'Kategori A']
         );
 
-        IndikatorMutu::create([
-            'id_indikator' => 1,
-            'id_kategori'  => 1,
-            'variabel'     => 'Indikator A',
-            'standar'      => 90,
+        $indikator = IndikatorMutu::create([
+            'id_kategori' => 1,
+            'variabel' => 'Indikator A',
+            'standar' => 90,
         ]);
 
-        IndikatorRuangan::create([
-            'id_indikator_ruangan' => 1,
-            'id_ruangan'           => 'R01',
-            'id_indikator'         => 1,
-            'active'               => true,
+        $indikatorRuangan = IndikatorRuangan::create([
+            'id_ruangan' => 'R01',
+            'id_indikator' => $indikator->id_indikator, 
+            'active' => true,
         ]);
 
         MutuRuangan::create([
-            'id_indikator_ruangan' => 1,
-            'tanggal'              => now()->format('Y-m-15'),
-            'pasien_sesuai'        => 8,
-            'total_pasien'         => 10,
+            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'tanggal' => now()->format('Y-m-15'),
+            'pasien_sesuai' => 8,
+            'total_pasien' => 10,
         ]);
 
         $this->admin = User::create([
-            'id_user'      => 'U001',
-            'id_ruangan'   => 'R01',
-            'username'     => 'admin',
-            'password'     => Hash::make('password'),
+            'id_user' => 'U001',
+            'id_ruangan' => 'R01',
+            'username' => 'admin',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Ruangan A',
         ]);
 
         $this->superadmin = User::create([
-            'id_user'      => 'SP001',
-            'id_ruangan'   => 'SP00',
-            'username'     => 'superadmin',
-            'password'     => Hash::make('password'),
+            'id_user' => 'SP001',
+            'id_ruangan' => 'SP00',
+            'username' => 'superadmin',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Super Admin',
         ]);
     }
@@ -75,8 +73,6 @@ class DashboardTest extends TestCase
         $response = $this->actingAs($this->admin)->get(route('admin.dashboard'));
 
         $response->assertStatus(200);
-        // Cukup verifikasi halaman berhasil dimuat (status 200)
-        // assertSee dihapus karena tampilan view tergantung struktur blade
     }
 
     // F45 - Admin dashboard menerima query bulan/tahun custom

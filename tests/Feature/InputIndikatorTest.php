@@ -137,12 +137,15 @@ class InputIndikatorTest extends TestCase
     // F23 - Form hanya menampilkan indikator aktif milik ruangan user
     public function test_form_shows_only_active_indikators_for_user_ruangan()
     {
-        // Buat indikator non-aktif
-        IndikatorMutu::create(['id_indikator' => 3, 'id_kategori' => 1, 'variabel' => 'Indikator Nonaktif', 'standar' => 80]);
+        $indikatorNonaktif = IndikatorMutu::create([
+            'id_kategori' => 1,
+            'variabel' => 'Indikator Nonaktif',
+            'standar' => 80
+        ]);
+
         IndikatorRuangan::create([
-            'id_indikator_ruangan' => 3,
             'id_ruangan' => 'R01',
-            'id_indikator' => 3,
+            'id_indikator' => $indikatorNonaktif->id_indikator,
             'active' => false,
         ]);
 
