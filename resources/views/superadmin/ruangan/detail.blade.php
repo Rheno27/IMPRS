@@ -59,7 +59,16 @@
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                <span style="color: var(--primary-color);">Download File</span>
+                <span style="color: var(--primary-color);">Download Rekap</span>
+            </button>
+
+            <button id="downloadChartBtn" type="button" class="btn-control">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC5E3A" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span style="color: var(--primary-color);">Download Grafik</span>
             </button>
         </div>
 
@@ -131,11 +140,11 @@
 
     {{-- Navigation Kategori --}}
     @php
-        $categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
-        $keys = array_keys($categoryMap);
-        $current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
-        $prev = ($current - 1 + count($keys)) % count($keys);
-        $next = ($current + 1) % count($keys);
+$categoryMap = ['Indikator Mutu Prioritas Unit' => 'IMPU', 'Indikator Nasional Mutu' => 'INM', 'Indikator Mutu Prioritas RS' => 'IMPRS'];
+$keys = array_keys($categoryMap);
+$current = array_search($selectedKategori, $keys) !== false ? array_search($selectedKategori, $keys) : 0;
+$prev = ($current - 1 + count($keys)) % count($keys);
+$next = ($current + 1) % count($keys);
     @endphp
 
     <div class="category-nav" style="margin:10px 0; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
@@ -151,7 +160,7 @@
             {{-- Semua pill --}}
             <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'bulan' => $bulan, 'tahun' => $tahun]) }}"
                 class="category-pill chart-category-btn {{ empty($selectedKategori) ? 'active' : '' }}" data-category="all"
-                data-chart-id="indikatorLineChart">Semua</a>
+                data-chart-id="indikatorLineChart">REKAP</a>
 
             @foreach([$prev, $current, $next] as $idx)
                 <a href="{{ route('superadmin.ruangan.detail', ['ruangan' => $ruangan, 'kategori' => $keys[$idx], 'bulan' => $bulan, 'tahun' => $tahun]) }}"
@@ -175,13 +184,17 @@
     <div class="report-container" style="margin-top: 20px;">
         <div class="report-table-wrapper">
             <div class="report-header-block">
-                <h3>Grafik Kinerja Ruangan<br>
+                <h3 id="dynamic-chart-title">
+                    Grafik <span id="dynamic-category-name">Kinerja</span> Ruangan {{ $ruangan->nama_ruangan }}<br>
                     <span style="font-size: 0.8em; opacity: 0.9;">Tahun {{ $tahun }}</span>
                 </h3>
             </div>
 
-
-            @include('components.indikator-line-chart', ['series' => $chartSeries ?? [], 'chartId' => 'indikatorLineChart', 'selectedKategori' => $selectedKategori ?? 'all'])
+            @include('components.indikator-line-chart', [
+    'series' => $chartSeries ?? [],
+    'chartId' => 'indikatorLineChart',
+    'selectedKategori' => $selectedKategori ?? 'all'
+])
         </div>
     </div>
 
@@ -270,6 +283,116 @@
                 });
             }
         })();
+
+        /* ── Download Grafik ── */
+        document.getElementById('downloadChartBtn').addEventListener('click', function () {
+            const canvas = document.getElementById('indikatorLineChart');
+            if (!canvas) return;
+
+            // 1. Ambil Chart Instance untuk mendapatkan data warna & label yang akurat
+            const chartInstance = Chart.getChart(canvas);
+            if (!chartInstance) return;
+
+            const activeBtn = document.querySelector('.chart-category-btn.active');
+            const kategori = activeBtn ? activeBtn.textContent.trim() : 'Semua';
+
+            // 2. Siapkan data legenda dari dataset yang ada di chart
+            const legendItems = chartInstance.data.datasets.map((ds, index) => {
+                return {
+                    text: ds.label,
+                    color: ds.borderColor,
+                    hidden: !chartInstance.isDatasetVisible(index)
+                };
+            });
+
+            // 3. Pengaturan Ukuran (Layouting)
+            const scale = 2; // High DPI
+            const W = canvas.offsetWidth;
+            const titleH = 70;
+            const chartH = canvas.offsetHeight;
+            const padding = 20;
+            const lineH = 25; // Jarak antar baris legenda
+
+            // Hitung tinggi legenda (2 kolom)
+            const legendRows = Math.ceil(legendItems.length / 2);
+            const legendH = (legendRows * lineH) + padding;
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = W * scale;
+            tempCanvas.height = (titleH + chartH + legendH) * scale;
+
+            const ctx = tempCanvas.getContext('2d');
+            ctx.scale(scale, scale);
+
+            // Background Putih
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, W, titleH + chartH + legendH);
+
+            // 4. Gambar Judul
+            ctx.fillStyle = '#1a6b42';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Grafik ' + kategori + ' Ruangan {{ $ruangan->nama_ruangan }}', W / 2, 30);
+
+            ctx.fillStyle = '#666666';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('Tahun {{ $tahun }}', W / 2, 50);
+
+            // 5. Gambar Chart Utama
+            ctx.drawImage(canvas, 0, titleH, W, chartH);
+
+            // 6. Gambar Legenda (Informasi Indikator)
+            const legendStartY = titleH + chartH + 15;
+            const colWidth = (W - (padding * 2)) / 2;
+            const swatchSize = 10;
+            const LineH = 30;
+
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            legendItems.forEach((item, idx) => {
+                const col = idx % 2;
+                const row = Math.floor(idx / 2);
+
+                const x = padding + (col * colWidth);
+                const y = legendStartY + (row * lineH);
+
+                // Gambar Kotak/Lingkaran Warna
+                ctx.fillStyle = item.color;
+                if (item.hidden) ctx.globalAlpha = 0.3; 
+
+                ctx.beginPath();
+                ctx.roundRect(x, y, swatchSize, swatchSize, 2);
+                ctx.fill();
+
+                // Gambar Teks Indikator
+                ctx.fillStyle = '#333333';
+                ctx.font = '11px sans-serif';
+
+                // Efek coret jika hidden
+                let text = item.text;
+
+                ctx.fillText(text, x + swatchSize + 8, y + (swatchSize / 2) + 1);
+
+                if (item.hidden) {
+                    // Gambar garis coret manual karena canvas tidak punya text-decoration
+                    const textWidth = ctx.measureText(text).width;
+                    ctx.strokeStyle = '#999999';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(x + swatchSize + 8, y + (swatchSize / 2) + 1);
+                    ctx.lineTo(x + swatchSize + 8 + textWidth, y + (swatchSize / 2) + 1);
+                    ctx.stroke();
+                }
+
+                ctx.globalAlpha = 1.0; // Reset alpha
+            });
+
+            // 7. Proses Download
+            const link = document.createElement('a');
+            link.download = `Grafik_${kategori}_{{ $ruangan->nama_ruangan }}_{{ $tahun }}.png`;
+            link.href = tempCanvas.toDataURL('image/png', 1.0);
+            link.click();
+        });
     </script>
-    {{-- Chart is rendered by components/indikator-line-chart.blade.php --}}
 @endpush
