@@ -25,7 +25,6 @@ class SDashboardController extends Controller
         $results = collect();
 
         if ($selectedKategori === 'Indikator Mutu Prioritas Unit') {
-
             $relevantIndicators = IndikatorRuangan::query()
                 ->whereHas('indikatorMutu.kategori', function ($query) use ($selectedKategori) {
                     $query->where('kategori', $selectedKategori);
@@ -38,24 +37,26 @@ class SDashboardController extends Controller
                         $query->whereYear('tanggal', $tahun);
                     }
                 ])
-                ->orderBy('id_ruangan', 'asc')
                 ->get();
 
-            $results = $relevantIndicators->map(function ($indicator) {
-                $monthlyData = $indicator->mutuRuangan->groupBy(function ($mutu) {
-                    return (int) date('n', strtotime($mutu->tanggal));
-                });
-
-                $monthlyAverages = $this->calculateMonthlyStats($monthlyData);
-
+            // Grouping berdasarkan Nama Ruangan
+            $results = $relevantIndicators->groupBy(function ($item) {
+                return $item->ruangan->nama_ruangan ?? 'N/A';
+            })->map(function ($indicators, $namaRuangan) {
                 return (object) [
-                    'ruangan' => $indicator->ruangan->nama_ruangan ?? 'N/A',
-                    'judul' => $indicator->indikatorMutu->variabel ?? 'N/A',
-                    'standar' => $indicator->indikatorMutu->standar ?? 'N/A',
-                    'data_bulan' => $monthlyAverages,
+                    'nama_ruangan' => $namaRuangan,
+                    'indikators' => $indicators->map(function ($indicator) {
+                        $monthlyData = $indicator->mutuRuangan->groupBy(function ($mutu) {
+                            return (int) date('n', strtotime($mutu->tanggal));
+                        });
+                        return (object) [
+                            'judul' => $indicator->indikatorMutu->variabel ?? 'N/A',
+                            'standar' => $indicator->indikatorMutu->standar ?? 'N/A',
+                            'data_bulan' => $this->calculateMonthlyStats($monthlyData),
+                        ];
+                    })
                 ];
             });
-
         } else {
             $masterIndicators = IndikatorMutu::query()
                 ->whereHas('kategori', function ($q) use ($selectedKategori) {

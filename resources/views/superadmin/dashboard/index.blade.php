@@ -5,6 +5,13 @@
         .features-section {
             background-image: url('{{ asset('image/background.png') }}');
         }
+        .data-table tr.cursor-pointer:hover {
+            background-color: #ecfdf5 !important; /* Hijau sangat muda */
+        }
+        .data-table td {
+            border: 1px solid #e2e8f0; /* Garis tipis halus */
+            padding: 12px 8px;
+        }
     </style>
 @endsection
 
@@ -488,7 +495,14 @@
                         <tr>
                             <th style="width: 50px;">No.</th>
                             @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
-                            <th>Ruangan</th> @endif
+                            <th>
+                                Ruangan
+                                <button id="toggleAllBtn" type="button"
+                                    style="margin-left:8px; background:none; border:1px solid #337354; color:#337354; border-radius:6px; padding:2px 8px; font-size:0.75rem; font-weight:600; cursor:pointer; white-space:nowrap;">
+                                    ＋ Buka Semua
+                                </button>
+                            </th>
+                            @endif
                             <th>Judul Indikator</th>
                             <th>Standart</th>
                             @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] as $m)
@@ -496,23 +510,67 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($indikatorData as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}.</td>
-                                @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
-                                    <td>{{ $item->ruangan }}</td>
-                                @endif
-                                <td class="text-start">{{ $item->judul }}</td>
-                                <td>{{ $item->standar }}</td>
-                                @for ($m = 1; $m <= 12; $m++)
-                                    <td>{{ $item->data_bulan[$m] ?? '' }}</td>
-                                @endfor
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="16" style="padding: 20px;">Tidak ada data laporan.</td>
-                            </tr>
-                        @endforelse
+                        @if($selectedKategori === 'Indikator Mutu Prioritas Unit')
+                            @forelse ($indikatorData as $groupIdx => $ruanganGroup)
+                                {{-- Baris Header Collapsible --}}
+                                <tr class="impu-header-row"
+                                    data-group="impu-group-{{ $groupIdx }}"
+                                    style="background-color: #f1f5f9; cursor: pointer; transition: background-color 0.2s;">
+                                    <td class="text-center" style="width: 50px;">
+                                        <span class="toggle-icon" style="font-size: 0.9rem; color: #1F925A; user-select: none;">▶</span>
+                                    </td>
+                                    <td class="text-start" style="font-weight: bold; color: #1F925A;">
+                                        Ruangan: {{ $ruanganGroup->nama_ruangan }}
+                                        <span style="font-weight: normal; font-size: 0.8rem; color: #64748b; margin-left: 8px;">
+                                            ({{ $ruanganGroup->indikators->count() }} Indikator)
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                    <td style="text-align: center;">-</td>
+                                    @for ($m = 1; $m <= 12; $m++)
+                                        <td></td>
+                                    @endfor
+                                </tr>
+
+                                {{-- Baris Detail Indikator dengan Rowspan --}}
+                                @foreach ($ruanganGroup->indikators as $item)
+                                    <tr class="impu-detail-row impu-group-{{ $groupIdx }}"
+                                        style="display: none; background-color: #ffffff; border-bottom: 1px solid #e2e8f0;">
+                                        @if ($loop->first)
+                                            <td class="text-center"
+                                                rowspan="{{ $ruanganGroup->indikators->count() }}"
+                                                style="font-weight: 600; vertical-align: middle;">
+                                                {{ $loop->parent->iteration }}.
+                                            </td>
+                                            <td rowspan="{{ $ruanganGroup->indikators->count() }}"
+                                                style="vertical-align: middle; text-align: center;">
+                                                {{ $ruanganGroup->nama_ruangan }}
+                                            </td>
+                                        @endif
+                                        <td class="text-start">{{ $item->judul }}</td>
+                                        <td style="text-align: center;">{{ $item->standar }}</td>
+                                        @for ($m = 1; $m <= 12; $m++)
+                                            <td style="text-align: center;">{{ $item->data_bulan[$m] ?? '' }}</td>
+                                        @endfor
+                                    </tr>
+                                @endforeach
+
+                            @empty
+                                <tr><td colspan="16" class="text-center" style="padding: 40px;">Data tidak ditemukan.</td></tr>
+                            @endforelse
+                        @else
+                            {{-- Kategori Selain IMPU (INM & IMPRS) --}}
+                            @foreach ($indikatorData as $index => $item)
+                                <tr>
+                                    <td class="text-center">{{ $index + 1 }}.</td>
+                                    <td class="text-start">{{ $item->judul }}</td>
+                                    <td>{{ $item->standar }}</td>
+                                    @for ($m = 1; $m <= 12; $m++)
+                                        <td>{{ $item->data_bulan[$m] ?? '' }}</td>
+                                    @endfor
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -523,6 +581,55 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+
+            /* ── Tombol Buka/Tutup Semua ── */
+            const toggleAllBtn = document.getElementById('toggleAllBtn');
+            if (toggleAllBtn) {
+                let allOpen = false;
+                toggleAllBtn.addEventListener('click', function () {
+                    allOpen = !allOpen;
+                    document.querySelectorAll('.impu-header-row').forEach(function (headerRow) {
+                        var groupClass = headerRow.dataset.group;
+                        var detailRows = document.querySelectorAll('tr.' + groupClass);
+                        var icon = headerRow.querySelector('.toggle-icon');
+                        if (allOpen) {
+                            detailRows.forEach(function (r) { r.style.display = ''; });
+                            icon.textContent = '▼';
+                            headerRow.style.backgroundColor = '#e8f5ee';
+                        } else {
+                            detailRows.forEach(function (r) { r.style.display = 'none'; });
+                            icon.textContent = '▶';
+                            headerRow.style.backgroundColor = '#f1f5f9';
+                        }
+                    });
+                    toggleAllBtn.textContent = allOpen ? '－ Tutup Semua' : '＋ Buka Semua';
+                });
+            }
+
+            /* ── Toggle IMPU collapsible rows ── */
+            document.querySelectorAll('.impu-header-row').forEach(function (headerRow) {
+                headerRow.addEventListener('click', function () {
+                    // data-group = "impu-group-0", detail rows punya class "impu-group-0"
+                    var groupClass = headerRow.dataset.group;  // e.g. "impu-group-0"
+                    var detailRows = document.querySelectorAll('tr.' + groupClass);
+                    var icon = headerRow.querySelector('.toggle-icon');
+                    var isOpen = icon.textContent.trim() === '▼';
+
+                    if (isOpen) {
+                        // Tutup
+                        detailRows.forEach(function (r) { r.style.display = 'none'; });
+                        icon.textContent = '▶';
+                        headerRow.style.backgroundColor = '#f1f5f9';
+                    } else {
+                        // Buka
+                        detailRows.forEach(function (r) { r.style.display = ''; });
+                        icon.textContent = '▼';
+                        headerRow.style.backgroundColor = '#e8f5ee';
+                    }
+                });
+            });
+
+            /* ── Year picker ── */
             const yearBtn = document.getElementById('yearPickerBtn');
             const yearPanel = document.getElementById('yearPanel');
             const yearGrid = document.getElementById('yearGrid');
