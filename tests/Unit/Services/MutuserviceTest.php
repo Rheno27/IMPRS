@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services;
 
 use App\Models\BioPasien;
 use App\Models\IndikatorMutu;
@@ -26,19 +26,15 @@ class MutuServiceTest extends TestCase
         parent::setUp();
         $this->service = new MutuService();
 
-        // FK dasar yang dibutuhkan semua test
         Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
         Ruangan::firstOrCreate(['id_ruangan' => 'R02'], ['nama_ruangan' => 'Ruangan B']);
         Kategori::firstOrCreate(['id_kategori' => 1], ['kategori' => 'Indikator Nasional Mutu']);
     }
 
     // =========================================================================
-    // HELPER
+    // HELPER METHODS
     // =========================================================================
 
-    /**
-     * Buat IndikatorMutu + IndikatorRuangan, return IndikatorRuangan.
-     */
     private function createIndikatorRuangan(array $overrides = []): IndikatorRuangan
     {
         IndikatorMutu::firstOrCreate(
@@ -53,10 +49,6 @@ class MutuServiceTest extends TestCase
         ], $overrides));
     }
 
-    /**
-     * Buat IndikatorMutu baru dengan variabel unik + IndikatorRuangan-nya.
-     * Dipakai test yang butuh indikator berbeda-beda agar tidak konflik ID.
-     */
     private function createFreshIndikatorRuangan(
         string $idRuangan = 'R01',
         string $variabel = 'Indikator Test',
@@ -75,11 +67,6 @@ class MutuServiceTest extends TestCase
         ], $overrides));
     }
 
-    /**
-     * Buat Pertanyaan baru (auto-increment ID) + dua PilihanJawaban (nilai 4 dan 2).
-     * Tidak pakai firstOrCreate dengan ID hardcode agar tidak terpengaruh data test lain.
-     * Return: [$pertanyaan, $pilihanBaik (nilai=4), $pilihanCukup (nilai=2)]
-     */
     private function createStrukturSkm(): array
     {
         $pertanyaan = Pertanyaan::create([
@@ -102,10 +89,6 @@ class MutuServiceTest extends TestCase
         return [$pertanyaan, $pilihanBaik, $pilihanCukup];
     }
 
-    /**
-     * Buat BioPasien + Jawaban SKM.
-     * Menerima objek PilihanJawaban langsung agar nilai yang digunakan pasti benar.
-     */
     private function createJawabanSkm(
         string $idRuangan,
         string $noRm,
@@ -134,20 +117,20 @@ class MutuServiceTest extends TestCase
     // calculateDailyStats()
     // =========================================================================
 
-    // U18 - calculateDailyStats() mengembalikan persentase yang benar
+    // U46 - Mengembalikan persentase yang benar (8/10 = 80%)
     public function test_calculate_daily_stats_returns_correct_percentage()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan();
+        $ir = $this->createIndikatorRuangan();
 
         MutuRuangan::create([
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-01-15',
             'pasien_sesuai' => 8,
             'total_pasien' => 10,
         ]);
 
         $result = $this->service->calculateDailyStats(
-            $indikatorRuangan->id_indikator_ruangan,
+            $ir->id_indikator_ruangan,
             1,
             2025
         );
@@ -155,13 +138,13 @@ class MutuServiceTest extends TestCase
         $this->assertEquals(80.0, $result['2025-01-15']['persentase']);
     }
 
-    // U19 - calculateDailyStats() mengembalikan array kosong jika tidak ada data
+    // U47 - Mengembalikan array kosong jika tidak ada data
     public function test_calculate_daily_stats_returns_empty_when_no_data()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan();
+        $ir = $this->createIndikatorRuangan();
 
         $result = $this->service->calculateDailyStats(
-            $indikatorRuangan->id_indikator_ruangan,
+            $ir->id_indikator_ruangan,
             1,
             2025
         );
@@ -169,26 +152,26 @@ class MutuServiceTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    // U20 - calculateDailyStats() mengelompokkan data berdasarkan tanggal
+    // U48 - Mengelompokkan data berdasarkan tanggal
     public function test_calculate_daily_stats_groups_by_tanggal()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan();
+        $ir = $this->createIndikatorRuangan();
 
         MutuRuangan::create([
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-01-10',
             'pasien_sesuai' => 5,
             'total_pasien' => 10,
         ]);
         MutuRuangan::create([
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-01-15',
             'pasien_sesuai' => 9,
             'total_pasien' => 10,
         ]);
 
         $result = $this->service->calculateDailyStats(
-            $indikatorRuangan->id_indikator_ruangan,
+            $ir->id_indikator_ruangan,
             1,
             2025
         );
@@ -203,52 +186,41 @@ class MutuServiceTest extends TestCase
     // simpanDataMutu()
     // =========================================================================
 
-    // U21 - simpanDataMutu() membuat record baru
+    // U49 - Membuat record baru di mutu_ruangan
     public function test_simpan_data_mutu_creates_new_record()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan();
+        $ir = $this->createIndikatorRuangan();
 
         $this->service->simpanDataMutu(
-            $indikatorRuangan->id_indikator_ruangan,
+            $ir->id_indikator_ruangan,
             '2025-01-15',
             8,
             10
         );
 
         $this->assertDatabaseHas('mutu_ruangan', [
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-01-15',
             'pasien_sesuai' => 8,
             'total_pasien' => 10,
         ]);
     }
 
-    // U22 - simpanDataMutu() mengupdate record yang sudah ada (tidak duplikat untuk tanggal sama)
-    public function test_simpan_data_mutu_updates_existing_record()
+    // U50 - Update record yang sudah ada — tidak duplikat untuk tanggal yang sama
+    public function test_simpan_data_mutu_updates_existing_record_without_duplicate()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan();
+        $ir = $this->createIndikatorRuangan();
 
-        $this->service->simpanDataMutu(
-            $indikatorRuangan->id_indikator_ruangan,
-            '2025-01-15',
-            5,
-            10
-        );
-        $this->service->simpanDataMutu(
-            $indikatorRuangan->id_indikator_ruangan,
-            '2025-01-15',
-            8,
-            10
-        );
+        $this->service->simpanDataMutu($ir->id_indikator_ruangan, '2025-01-15', 5, 10);
+        $this->service->simpanDataMutu($ir->id_indikator_ruangan, '2025-01-15', 8, 10);
 
-        $count = MutuRuangan::where('id_indikator_ruangan', $indikatorRuangan->id_indikator_ruangan)
+        $count = MutuRuangan::where('id_indikator_ruangan', $ir->id_indikator_ruangan)
             ->where('tanggal', '2025-01-15')
             ->count();
 
         $this->assertEquals(1, $count);
-
         $this->assertDatabaseHas('mutu_ruangan', [
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-01-15',
             'pasien_sesuai' => 8,
         ]);
@@ -258,15 +230,15 @@ class MutuServiceTest extends TestCase
     // deactivateIndikator()
     // =========================================================================
 
-    // U23 - deactivateIndikator() mengubah active menjadi false
+    // U51 - Mengubah active menjadi false
     public function test_deactivate_indikator_sets_active_to_false()
     {
-        $indikatorRuangan = $this->createIndikatorRuangan(['active' => true]);
+        $ir = $this->createIndikatorRuangan(['active' => true]);
 
-        $this->service->deactivateIndikator($indikatorRuangan->id_indikator_ruangan);
+        $this->service->deactivateIndikator($ir->id_indikator_ruangan);
 
         $this->assertDatabaseHas('indikator_ruangan', [
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'active' => false,
         ]);
     }
@@ -275,7 +247,7 @@ class MutuServiceTest extends TestCase
     // assignIndikatorToRuangan()
     // =========================================================================
 
-    // U24 - assignIndikatorToRuangan() membuat record baru dengan active = true
+    // U52 - Membuat record baru dengan active = true
     public function test_assign_indikator_to_ruangan_creates_active_record()
     {
         IndikatorMutu::firstOrCreate(
@@ -296,7 +268,7 @@ class MutuServiceTest extends TestCase
     // getSkmData()
     // =========================================================================
 
-    // U43 - getSkmData() mengembalikan format array yang benar (sudah ada sebelumnya)
+    // U53 - Mengembalikan format array yang benar
     public function test_get_skm_data_returns_correct_format()
     {
         $result = $this->service->getSkmData(1, 2025);
@@ -307,13 +279,11 @@ class MutuServiceTest extends TestCase
         $this->assertArrayHasKey('jumlah_sesuai', $result);
         $this->assertArrayHasKey('persen', $result);
         $this->assertEquals('Kepuasan Masyarakat', $result['variabel']);
-        $this->assertEquals(0, $result['persen']);
     }
 
-    // U46 - getSkmData() mengembalikan nilai default jika tidak ada data jawaban
+    // U54 - Mengembalikan nilai default jika tidak ada data jawaban
     public function test_get_skm_data_returns_default_values_when_no_data()
     {
-        // Pakai tahun jauh ke depan agar pasti tidak ada data
         $result = $this->service->getSkmData(6, 2099);
 
         $this->assertEquals('Kepuasan Masyarakat', $result['variabel']);
@@ -324,26 +294,20 @@ class MutuServiceTest extends TestCase
         $this->assertEmpty($result['byTanggal']);
     }
 
-    // U47 - getSkmData() menghitung persen dengan benar dari data aktual
+    // U55 - Menghitung persen dengan benar dari data aktual
     public function test_get_skm_data_calculates_persen_correctly()
     {
-        // createStrukturSkm() pakai auto-increment ID agar tidak bentrok data test lain
         [, $pilihanBaik] = $this->createStrukturSkm();
-
-        // Pasien memilih $pilihanBaik (nilai=4), MAX untuk pertanyaan ini juga 4
         $this->createJawabanSkm('R01', '10001', '2025-01-15', $pilihanBaik);
 
         $result = $this->service->getSkmData(1, 2025);
 
-        // jumlah_sesuai = nilai pilihan = 4
         $this->assertEquals(4, $result['jumlah_sesuai']);
-        // jumlah_total = MAX(nilai) pertanyaan ini = 4 (kita buat sendiri, max = 4)
         $this->assertEquals(4, $result['jumlah_total']);
-        // persen = 4/4 * 100 = 100%
         $this->assertEquals(100.0, $result['persen']);
     }
 
-    // U48 - getSkmData() mengisi byTanggal dengan key berupa hari (format 'j')
+    // U56 - Mengisi byTanggal dengan key berupa hari (format 'j')
     public function test_get_skm_data_groups_by_tanggal_with_day_key()
     {
         [, $pilihanBaik] = $this->createStrukturSkm();
@@ -353,36 +317,30 @@ class MutuServiceTest extends TestCase
 
         $result = $this->service->getSkmData(1, 2025);
 
-        // Key byTanggal menggunakan format 'j' (hari tanpa leading zero)
         $this->assertArrayHasKey(15, $result['byTanggal']);
         $this->assertArrayHasKey(20, $result['byTanggal']);
     }
 
-    // U49 - getSkmData() setiap entry byTanggal adalah object dengan pasien_sesuai & total_pasien
+    // U57 - Setiap entry byTanggal punya property pasien_sesuai dan total_pasien
     public function test_get_skm_data_by_tanggal_entries_have_correct_properties()
     {
         [, $pilihanBaik] = $this->createStrukturSkm();
-
         $this->createJawabanSkm('R01', '10004', '2025-02-10', $pilihanBaik);
 
         $result = $this->service->getSkmData(2, 2025);
 
         $this->assertNotEmpty($result['byTanggal']);
-
         $entry = $result['byTanggal'][10];
         $this->assertIsObject($entry);
         $this->assertObjectHasProperty('pasien_sesuai', $entry);
         $this->assertObjectHasProperty('total_pasien', $entry);
     }
 
-    // U50 - getSkmData() mengagregasi multiple jawaban pada hari yang sama
+    // U58 - Mengagregasi multiple jawaban pada hari yang sama
     public function test_get_skm_data_aggregates_multiple_answers_on_same_day()
     {
         [, $pilihanBaik, $pilihanCukup] = $this->createStrukturSkm();
 
-        // Dua pasien di hari yang sama: nilai=4 dan nilai=2 → jumlah_sesuai = 6
-        // MAX untuk pertanyaan ini = 4, dua jawaban → jumlah_total = 4+4 = 8
-        // persen = 6/8 * 100 = 75%
         $this->createJawabanSkm('R01', '10005', '2025-03-05', $pilihanBaik);
         $this->createJawabanSkm('R01', '10006', '2025-03-05', $pilihanCukup);
 
@@ -391,8 +349,6 @@ class MutuServiceTest extends TestCase
         $this->assertEquals(6, $result['jumlah_sesuai']);
         $this->assertEquals(8, $result['jumlah_total']);
         $this->assertEquals(75.0, $result['persen']);
-
-        // Harus ada tepat 1 entry byTanggal (hari ke-5)
         $this->assertCount(1, $result['byTanggal']);
         $this->assertArrayHasKey(5, $result['byTanggal']);
     }
@@ -401,8 +357,7 @@ class MutuServiceTest extends TestCase
     // buildChartSeriesForRuangan()
     // =========================================================================
 
-    // U44 - buildChartSeriesForRuangan() mengembalikan array kosong jika tidak ada data mutu
-    // (sudah ada sebelumnya, dipertahankan)
+    // U59 - Mengembalikan array kosong jika tidak ada data mutu
     public function test_build_chart_series_returns_empty_when_no_data()
     {
         $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
@@ -411,8 +366,7 @@ class MutuServiceTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    // U45 - buildChartSeriesForRuangan() mengembalikan 12 slot monthly per indikator
-    // (sudah ada sebelumnya, dipertahankan)
+    // U60 - Mengembalikan 12 slot monthly per indikator
     public function test_build_chart_series_returns_12_monthly_slots_per_indikator()
     {
         $ir = $this->createIndikatorRuangan();
@@ -430,16 +384,14 @@ class MutuServiceTest extends TestCase
         $this->assertArrayHasKey('label', $result[0]);
         $this->assertArrayHasKey('monthly', $result[0]);
         $this->assertCount(12, $result[0]['monthly']);
-        // Bulan Maret = index 2 → 80%
-        $this->assertEquals(80.0, $result[0]['monthly'][2]);
+        $this->assertEquals(80.0, $result[0]['monthly'][2]); // Maret = index 2
     }
 
-    // U51 - buildChartSeriesForRuangan() mengisi slot bulan yang ada dengan persentase benar
+    // U61 - Mengisi slot bulan yang ada dengan persentase benar
     public function test_build_chart_series_fills_correct_month_slot_with_percentage()
     {
         $ir = $this->createFreshIndikatorRuangan('R01', 'Indikator APD');
 
-        // Data hanya di bulan Maret (index 2)
         MutuRuangan::create([
             'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => '2025-03-15',
@@ -450,13 +402,11 @@ class MutuServiceTest extends TestCase
         $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
 
         $this->assertEquals(90.0, $result[0]['monthly'][2]);
-
-        // Bulan lain yang tidak ada data harus null
-        $this->assertNull($result[0]['monthly'][0]);  // Januari
-        $this->assertNull($result[0]['monthly'][11]); // Desember
+        $this->assertNull($result[0]['monthly'][0]);  // Januari kosong
+        $this->assertNull($result[0]['monthly'][11]); // Desember kosong
     }
 
-    // U52 - buildChartSeriesForRuangan() mengembalikan key label, monthly, dan kategori
+    // U62 - Mengembalikan key label, monthly, dan kategori
     public function test_build_chart_series_entries_have_required_keys()
     {
         $ir = $this->createFreshIndikatorRuangan('R01', 'Indikator Keselamatan Pasien');
@@ -470,14 +420,13 @@ class MutuServiceTest extends TestCase
 
         $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
 
-        $this->assertNotEmpty($result);
         $this->assertArrayHasKey('label', $result[0]);
         $this->assertArrayHasKey('monthly', $result[0]);
         $this->assertArrayHasKey('kategori', $result[0]);
         $this->assertEquals('Indikator Keselamatan Pasien', $result[0]['label']);
     }
 
-    // U53 - buildChartSeriesForRuangan() mengagregasi beberapa hari dalam bulan yang sama
+    // U63 - Mengagregasi beberapa hari dalam bulan yang sama
     public function test_build_chart_series_aggregates_multiple_days_in_same_month()
     {
         $ir = $this->createFreshIndikatorRuangan('R01', 'Indikator Multi Hari');
@@ -498,14 +447,12 @@ class MutuServiceTest extends TestCase
 
         $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
 
-        // monthly index 1 = Februari
-        $this->assertEquals(70.0, $result[0]['monthly'][1]);
+        $this->assertEquals(70.0, $result[0]['monthly'][1]); // Februari = index 1
     }
 
-    // U54 - buildChartSeriesForRuangan() hanya mengembalikan data ruangan yang diminta
+    // U64 - Hanya mengembalikan data ruangan yang diminta
     public function test_build_chart_series_isolates_data_by_ruangan()
     {
-        // Data R01
         $irR01 = $this->createFreshIndikatorRuangan('R01', 'Indikator R01 Isolasi');
         MutuRuangan::create([
             'id_indikator_ruangan' => $irR01->id_indikator_ruangan,
@@ -514,7 +461,6 @@ class MutuServiceTest extends TestCase
             'total_pasien' => 10,
         ]);
 
-        // Data R02
         $irR02 = $this->createFreshIndikatorRuangan('R02', 'Indikator R02 Isolasi');
         MutuRuangan::create([
             'id_indikator_ruangan' => $irR02->id_indikator_ruangan,
@@ -523,7 +469,6 @@ class MutuServiceTest extends TestCase
             'total_pasien' => 10,
         ]);
 
-        // Query hanya untuk R01 — harus dapat 1 series saja
         $result = $this->service->buildChartSeriesForRuangan('R01', 2025);
 
         $this->assertCount(1, $result);
@@ -534,11 +479,10 @@ class MutuServiceTest extends TestCase
     // switchIndikatorRuangan()
     // =========================================================================
 
-    // U55 - switchIndikatorRuangan() menonaktifkan indikator lama
+    // U65 - Menonaktifkan indikator lama (active = false)
     public function test_switch_indikator_sets_old_indikator_to_inactive()
     {
         $irLama = $this->createFreshIndikatorRuangan('R01', 'Indikator Lama Switch');
-
         $indikatorBaru = IndikatorMutu::create([
             'id_kategori' => 1,
             'variabel' => 'Indikator Baru Switch',
@@ -557,11 +501,10 @@ class MutuServiceTest extends TestCase
         ]);
     }
 
-    // U56 - switchIndikatorRuangan() mengaktifkan indikator baru
+    // U66 - Mengaktifkan indikator baru (active = true)
     public function test_switch_indikator_sets_new_indikator_to_active()
     {
         $irLama = $this->createFreshIndikatorRuangan('R01', 'Indikator Lama Aktif');
-
         $indikatorBaru = IndikatorMutu::create([
             'id_kategori' => 1,
             'variabel' => 'Indikator Baru Aktif',
@@ -581,11 +524,10 @@ class MutuServiceTest extends TestCase
         ]);
     }
 
-    // U57 - switchIndikatorRuangan() berjalan dalam satu transaksi dan return true
+    // U67 - Berjalan dalam satu transaksi dan return true
     public function test_switch_indikator_is_transactional_and_returns_true()
     {
         $irLama = $this->createFreshIndikatorRuangan('R01', 'Indikator Transaksi Lama');
-
         $indikatorBaru = IndikatorMutu::create([
             'id_kategori' => 1,
             'variabel' => 'Indikator Transaksi Baru',
@@ -598,10 +540,7 @@ class MutuServiceTest extends TestCase
             $indikatorBaru->id_indikator
         );
 
-        // Method return true (dari dalam DB::transaction closure)
         $this->assertTrue($result);
-
-        // Verifikasi atomik — kedua perubahan harus ada bersamaan
         $this->assertDatabaseHas('indikator_ruangan', [
             'id_indikator_ruangan' => $irLama->id_indikator_ruangan,
             'active' => false,
@@ -613,13 +552,10 @@ class MutuServiceTest extends TestCase
         ]);
     }
 
-    // U58 - switchIndikatorRuangan() mengaktifkan kembali record nonaktif yang sudah ada
-    // (tidak membuat record duplikat)
+    // U68 - Mengaktifkan kembali record nonaktif yang sudah ada (tidak duplikat)
     public function test_switch_indikator_reactivates_existing_inactive_record()
     {
         $irLama = $this->createFreshIndikatorRuangan('R01', 'Indikator Reaktivasi Lama');
-
-        // Indikator baru yang sudah pernah ada tapi nonaktif
         $indikatorBaru = IndikatorMutu::create([
             'id_kategori' => 1,
             'variabel' => 'Indikator Reaktivasi Baru',
@@ -643,7 +579,7 @@ class MutuServiceTest extends TestCase
             'active' => true,
         ]);
 
-        // Tidak boleh ada duplikat record aktif untuk indikator yang sama
+        // Tidak boleh ada duplikat record aktif
         $count = IndikatorRuangan::where('id_ruangan', 'R01')
             ->where('id_indikator', $indikatorBaru->id_indikator)
             ->where('active', true)

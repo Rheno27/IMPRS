@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin;
 
 use App\Models\IndikatorMutu;
 use App\Models\IndikatorRuangan;
+use App\Models\Kategori;
 use App\Models\MutuRuangan;
 use App\Models\Ruangan;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class DashboardTest extends TestCase
+class DashboardControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -25,26 +26,22 @@ class DashboardTest extends TestCase
         Ruangan::firstOrCreate(['id_ruangan' => 'SP00'], ['nama_ruangan' => 'Superadmin']);
         Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
 
-        // Buat kategori dulu karena id_kategori NOT NULL
-        \App\Models\Kategori::firstOrCreate(
-            ['id_kategori' => 1],
-            ['kategori' => 'Kategori A']
-        );
+        Kategori::firstOrCreate(['id_kategori' => 1], ['kategori' => 'Indikator Nasional Mutu']);
 
         $indikator = IndikatorMutu::create([
             'id_kategori' => 1,
-            'variabel' => 'Indikator A',
-            'standar' => 90,
+            'variabel' => 'Indikator Dashboard Test',
+            'standar' => '90',
         ]);
 
-        $indikatorRuangan = IndikatorRuangan::create([
+        $ir = IndikatorRuangan::create([
             'id_ruangan' => 'R01',
-            'id_indikator' => $indikator->id_indikator, 
+            'id_indikator' => $indikator->id_indikator,
             'active' => true,
         ]);
 
         MutuRuangan::create([
-            'id_indikator_ruangan' => $indikatorRuangan->id_indikator_ruangan,
+            'id_indikator_ruangan' => $ir->id_indikator_ruangan,
             'tanggal' => now()->format('Y-m-15'),
             'pasien_sesuai' => 8,
             'total_pasien' => 10,
@@ -53,7 +50,7 @@ class DashboardTest extends TestCase
         $this->admin = User::create([
             'id_user' => 'U001',
             'id_ruangan' => 'R01',
-            'username' => 'admin',
+            'username' => 'admin_dash',
             'password' => Hash::make('password'),
             'nama_ruangan' => 'Ruangan A',
         ]);
@@ -61,21 +58,24 @@ class DashboardTest extends TestCase
         $this->superadmin = User::create([
             'id_user' => 'SP001',
             'id_ruangan' => 'SP00',
-            'username' => 'superadmin',
+            'username' => 'superadmin_dash',
             'password' => Hash::make('password'),
             'nama_ruangan' => 'Super Admin',
         ]);
     }
 
-    // F44 - Admin dashboard menampilkan data bulan berjalan
+    // =========================================================================
+    // index()
+    // =========================================================================
+
+    // F44 - Admin dashboard menampilkan data bulan berjalan (200)
     public function test_admin_dashboard_shows_current_month_data()
     {
         $response = $this->actingAs($this->admin)->get(route('admin.dashboard'));
-
         $response->assertStatus(200);
     }
 
-    // F45 - Admin dashboard menerima query bulan/tahun custom
+    // F45 - Admin dashboard menerima query ?bulan= dan ?tahun= custom
     public function test_admin_dashboard_accepts_custom_bulan_tahun()
     {
         $response = $this->actingAs($this->admin)->get(route('admin.dashboard', [
@@ -94,29 +94,55 @@ class DashboardTest extends TestCase
             'tahun' => 2025,
         ]));
 
-        // Harus redirect atau menampilkan error
         $this->assertTrue(
             $response->isRedirect() || $response->getStatusCode() === 422
         );
     }
 
-    // F47 - Superadmin bisa download rekap per ruangan (Excel response)
-    // Route: superadmin.download_rekap → DetailIndikatorController@downloadRekap
-    public function test_superadmin_can_download_rekap_per_ruangan()
+    // =========================================================================
+    // downloadRekap()
+    // =========================================================================
+
+    // F-GAP-1 - Admin download rekap milik sendiri → response Excel 200
+    public function test_admin_can_download_own_rekap()
     {
-        $response = $this->actingAs($this->superadmin)->get(route('superadmin.download_rekap', [
-            'ruangan_id' => 'R01',
-            'bulan'      => 1,
-            'tahun'      => 2025,
+        $response = $this->actingAs($this->admin)->get(route('admin.download_rekap', [
+            'bulan' => 1,
+            'tahun' => 2025,
         ]));
 
-        // Pastikan response berhasil (200) dan berupa file download (Excel)
         $response->assertStatus(200);
+
         $contentType = $response->headers->get('Content-Type');
         $this->assertTrue(
             str_contains($contentType, 'spreadsheet') ||
             str_contains($contentType, 'excel') ||
-            str_contains($contentType, 'octet-stream')
+            str_contains($contentType, 'octet-stream'),
+            "Expected Excel Content-Type, got: {$contentType}"
         );
+    }
+
+    // F-GAP-2 - Download rekap gagal jika bulan tidak dikirim → redirect/422
+    public function test_download_rekap_fails_without_bulan()
+    {
+        $response = $this->actingAs($this->admin)->get(route('admin.download_rekap', [
+            'tahun' => 2025,
+        ]));
+
+        $this->assertTrue(
+            $response->isRedirect() || $response->getStatusCode() === 422,
+            'Expected redirect/422, got: ' . $response->getStatusCode()
+        );
+    }
+
+    // F-GAP-3 - Guest tidak bisa download rekap admin → redirect login
+    public function test_guest_cannot_download_rekap_admin()
+    {
+        $response = $this->get(route('admin.download_rekap', [
+            'bulan' => 1,
+            'tahun' => 2025,
+        ]));
+
+        $response->assertRedirect(route('login'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
 use App\Models\Ruangan;
 use App\Models\User;
@@ -8,33 +8,55 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class AuthLoginTest extends TestCase
+class LoginControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
     protected function setUp(): void
     {
         parent::setUp();
-        // Pastikan ruangan SP00 ada sebagai FK superadmin
         Ruangan::firstOrCreate(['id_ruangan' => 'SP00'], ['nama_ruangan' => 'Superadmin']);
         Ruangan::firstOrCreate(['id_ruangan' => 'R01'], ['nama_ruangan' => 'Ruangan A']);
     }
 
-    // F01 - Halaman login dapat diakses
+    // =========================================================================
+    // showLoginForm()
+    // =========================================================================
+
+    // F01 - Halaman login dapat diakses (GET 200)
     public function test_login_page_is_accessible()
     {
         $response = $this->get(route('login'));
         $response->assertStatus(200);
     }
 
-    // F02 - Superadmin login redirect ke /superadmin/dashboard
-    public function test_superadmin_login_redirects_to_superadmin_dashboard()
+    // F07 - User yang sudah login di-redirect dari halaman login
+    public function test_authenticated_user_is_redirected_from_login_page()
     {
         $user = User::create([
-            'id_user'      => 'SP001',
-            'id_ruangan'   => 'SP00',
-            'username'     => 'superadmin',
-            'password'     => Hash::make('password'),
+            'id_user' => 'U001',
+            'id_ruangan' => 'R01',
+            'username' => 'admin',
+            'password' => Hash::make('password'),
+            'nama_ruangan' => 'Ruangan A',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('login'));
+        $response->assertRedirect();
+    }
+
+    // =========================================================================
+    // login()
+    // =========================================================================
+
+    // F02 - Superadmin login redirect ke superadmin.dashboard
+    public function test_superadmin_login_redirects_to_superadmin_dashboard()
+    {
+        User::create([
+            'id_user' => 'SP001',
+            'id_ruangan' => 'SP00',
+            'username' => 'superadmin',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Super Admin',
         ]);
 
@@ -46,14 +68,14 @@ class AuthLoginTest extends TestCase
         $response->assertRedirect(route('superadmin.dashboard'));
     }
 
-    // F03 - Admin login redirect ke /admin/dashboard
+    // F03 - Admin login redirect ke admin.dashboard
     public function test_admin_login_redirects_to_admin_dashboard()
     {
-        $user = User::create([
-            'id_user'      => 'U001',
-            'id_ruangan'   => 'R01',
-            'username'     => 'adminruangan',
-            'password'     => Hash::make('password'),
+        User::create([
+            'id_user' => 'U001',
+            'id_ruangan' => 'R01',
+            'username' => 'adminruangan',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Ruangan A',
         ]);
 
@@ -69,10 +91,10 @@ class AuthLoginTest extends TestCase
     public function test_login_fails_with_wrong_password()
     {
         User::create([
-            'id_user'      => 'U001',
-            'id_ruangan'   => 'R01',
-            'username'     => 'adminruangan',
-            'password'     => Hash::make('password'),
+            'id_user' => 'U001',
+            'id_ruangan' => 'R01',
+            'username' => 'adminruangan',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Ruangan A',
         ]);
 
@@ -108,29 +130,18 @@ class AuthLoginTest extends TestCase
         $response->assertSessionHasErrors(['username', 'password']);
     }
 
-    // F07 - User yang sudah login di-redirect dari halaman login
-    public function test_authenticated_user_is_redirected_from_login_page()
-    {
-        $user = User::create([
-            'id_user'      => 'U001',
-            'id_ruangan'   => 'R01',
-            'username'     => 'admin',
-            'password'     => Hash::make('password'),
-            'nama_ruangan' => 'Ruangan A',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('login'));
-        $response->assertRedirect();
-    }
+    // =========================================================================
+    // logout()
+    // =========================================================================
 
     // F08 - Logout menghapus session
     public function test_logout_invalidates_session()
     {
         $user = User::create([
-            'id_user'      => 'U001',
-            'id_ruangan'   => 'R01',
-            'username'     => 'admin',
-            'password'     => Hash::make('password'),
+            'id_user' => 'U001',
+            'id_ruangan' => 'R01',
+            'username' => 'admin',
+            'password' => Hash::make('password'),
             'nama_ruangan' => 'Ruangan A',
         ]);
 
