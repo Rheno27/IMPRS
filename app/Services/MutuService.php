@@ -55,7 +55,7 @@ class MutuService
                 foreach ($groupedByDate as $tanggal => $rows) {
                     $sumSesuai = $rows->sum('pasien_sesuai');
                     $sumTotal = $rows->sum('total_pasien');
-                    $pers = $sumTotal > 0 ? round($sumSesuai / $sumTotal * 100, 2) : 0;
+                    $pers = $sumTotal > 0 ? round($sumSesuai / $sumTotal * 100, 2) : 100;
 
                     $result[$tanggal] = ['persentase' => $pers];
                 }
@@ -100,7 +100,7 @@ class MutuService
                 }
             }
 
-            $persen = $jumlahTotal > 0 ? round(($jumlahSesuai / $jumlahTotal) * 100, 2) : 0;
+            $persen = $jumlahTotal > 0 ? round(($jumlahSesuai / $jumlahTotal) * 100, 2) : 100;
 
             $result[] = [
                 'no' => $index + 1,
@@ -321,7 +321,7 @@ class MutuService
                 $sumSesuai = $byMonth->sum('pasien_sesuai');
                 $sumTotal = $byMonth->sum('total_pasien');
 
-                $monthly[] = $sumTotal > 0 ? round(($sumSesuai / $sumTotal) * 100, 2) : null;
+                $monthly[] = $sumTotal > 0 ? round(($sumSesuai / $sumTotal) * 100, 2) : 100;
             }
 
             $kategoriName = optional($items->first()->indikatorRuangan->indikatorMutu->kategori)->kategori ?? null;
